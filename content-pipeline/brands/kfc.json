@@ -1,0 +1,129 @@
+{
+  "brand_id": "kfc",
+  "brand_name": "KFC",
+  "category": "fastfood_cafe",
+  "store_example": {
+    "name": "KFC 신림점",
+    "sub": "도보 6분 · 키오스크 주문"
+  },
+  "device": {
+    "shape": "freestanding_totem",
+    "orientation": "portrait",
+    "theme": {
+      "bg": "#241012",
+      "card": "#3A1518",
+      "accent": "#E63946",
+      "text": "#FFFFFF",
+      "mute": "#C9A9A9"
+    }
+  },
+  "flow": {
+    "flow_id": "kfc_default_v1",
+    "base_price": 0,
+    "steps": [
+      {
+        "step_id": "menu",
+        "type": "single_select",
+        "priceMode": "absolute",
+        "title": "메뉴를 선택하세요",
+        "voice_text": "주문하실 버거를 골라주세요.",
+        "options": [
+          {
+            "option_id": "tower",
+            "label": "타워버거",
+            "price": 7900
+          },
+          {
+            "option_id": "original_chicken",
+            "label": "오리지널 치킨버거",
+            "price": 4900
+          },
+          {
+            "option_id": "zinger",
+            "label": "징거버거",
+            "price": 6700
+          }
+        ],
+        "visual": "burger"
+      },
+      {
+        "step_id": "set",
+        "type": "binary_choice",
+        "priceMode": "delta",
+        "title": "세트로 하시겠어요?",
+        "voice_text": "세트로 하시면 사이드와 음료가 같이 나와요.",
+        "options": [
+          {
+            "option_id": "set",
+            "label": "네, 세트로 주세요",
+            "price": 2200
+          },
+          {
+            "option_id": "single",
+            "label": "아니요, 버거만 주세요",
+            "price": 0
+          }
+        ]
+      },
+      {
+        "step_id": "drink",
+        "type": "single_select",
+        "priceMode": "delta",
+        "condition": {
+          "step_id": "set",
+          "option_id": "set"
+        },
+        "title": "세트 음료를 선택하세요",
+        "voice_text": "세트에 포함된 음료를 골라주세요.",
+        "options": [
+          {
+            "option_id": "coke",
+            "label": "코카콜라",
+            "price": 0
+          },
+          {
+            "option_id": "sprite",
+            "label": "스프라이트",
+            "price": 0
+          },
+          {
+            "option_id": "ice_americano",
+            "label": "아이스 아메리카노",
+            "price": 300
+          }
+        ],
+        "visual": "drink"
+      },
+      {
+        "step_id": "confirm_order",
+        "type": "confirm",
+        "title": "선택하신 내용을 확인해주세요",
+        "voice_text": "지금까지 고르신 내용이 맞는지 확인해주세요."
+      },
+      {
+        "step_id": "payment",
+        "type": "payment_mock",
+        "title": "결제 방법을 선택하세요",
+        "voice_text": "결제 방법을 선택해주세요.",
+        "options": [
+          {
+            "option_id": "card",
+            "label": "카드 삽입",
+            "icon": "card"
+          },
+          {
+            "option_id": "phone",
+            "label": "휴대폰 태그",
+            "icon": "phone"
+          },
+          {
+            "option_id": "cash",
+            "label": "현금",
+            "icon": "cash"
+          }
+        ]
+      }
+    ]
+  },
+  "_source_notes": "타워버거 단품 7,900원/오!치킨버거 베이직 단품 4,900원/클래식 징거 통다리버거 단품 6,700원 - 나무위키 메뉴 문서 기준(최근 갱신). 세트 추가금은 타워버거 세트-단품 차액(10,100-7,900=2,200원) 참고. 기기 형태는 온라인 조사 기반 추정, 현장 확인 전 잠정치."
+}

@@ -1,0 +1,129 @@
+{
+  "brand_id": "subway",
+  "brand_name": "서브웨이",
+  "category": "fastfood_cafe",
+  "store_example": {
+    "name": "서브웨이 강남점",
+    "sub": "도보 3분 · 키오스크 주문"
+  },
+  "device": {
+    "shape": "freestanding_totem",
+    "orientation": "portrait",
+    "theme": {
+      "bg": "#F7F3EA",
+      "card": "#FFFFFF",
+      "accent": "#0F6E56",
+      "text": "#232E28",
+      "mute": "#8A9089"
+    }
+  },
+  "flow": {
+    "flow_id": "subway_default_v1",
+    "base_price": 7900,
+    "steps": [
+      {
+        "step_id": "bread",
+        "type": "single_select",
+        "priceMode": "delta",
+        "title": "빵 종류를 선택하세요",
+        "voice_text": "먼저 빵 종류를 골라주세요.",
+        "options": [
+          {
+            "option_id": "white",
+            "label": "화이트빵",
+            "price": 0
+          },
+          {
+            "option_id": "wheat",
+            "label": "위트빵",
+            "price": 0
+          },
+          {
+            "option_id": "italian",
+            "label": "이탈리안 빵",
+            "price": 0
+          }
+        ],
+        "visual": "bread"
+      },
+      {
+        "step_id": "toast",
+        "type": "binary_choice",
+        "priceMode": "delta",
+        "title": "빵을 데워드릴까요?",
+        "voice_text": "빵을 따뜻하게 데워드릴지 선택해주세요.",
+        "options": [
+          {
+            "option_id": "yes",
+            "label": "네, 데워주세요",
+            "price": 0
+          },
+          {
+            "option_id": "no",
+            "label": "아니요",
+            "price": 0
+          }
+        ]
+      },
+      {
+        "step_id": "vegetables",
+        "type": "multi_select",
+        "priceMode": "delta",
+        "title": "야채를 선택하세요",
+        "voice_text": "원하는 야채를 모두 골라주세요.",
+        "options": [
+          {
+            "option_id": "lettuce",
+            "label": "양상추",
+            "price": 0
+          },
+          {
+            "option_id": "tomato",
+            "label": "토마토",
+            "price": 0
+          },
+          {
+            "option_id": "onion",
+            "label": "양파",
+            "price": 0
+          },
+          {
+            "option_id": "pickle",
+            "label": "피클",
+            "price": 0
+          }
+        ],
+        "visual": "vegetable"
+      },
+      {
+        "step_id": "confirm_order",
+        "type": "confirm",
+        "title": "선택하신 내용을 확인해주세요",
+        "voice_text": "지금까지 고르신 내용이 맞는지 확인해주세요."
+      },
+      {
+        "step_id": "payment",
+        "type": "payment_mock",
+        "title": "결제 방법을 선택하세요",
+        "voice_text": "결제 방법을 선택해주세요.",
+        "options": [
+          {
+            "option_id": "card",
+            "label": "카드 삽입",
+            "icon": "card"
+          },
+          {
+            "option_id": "phone",
+            "label": "휴대폰 태그",
+            "icon": "phone"
+          },
+          {
+            "option_id": "cash",
+            "label": "현금",
+            "icon": "cash"
+          }
+        ]
+      }
+    ]
+  }
+}

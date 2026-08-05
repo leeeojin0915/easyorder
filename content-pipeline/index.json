@@ -1,0 +1,9 @@
+{
+  "brands": [
+    { "brand_id": "subway", "brand_name": "서브웨이", "category": "fastfood_cafe", "device_shape": "freestanding_totem", "status": "live" },
+    { "brand_id": "burgerking", "brand_name": "버거킹", "category": "fastfood_cafe", "device_shape": "countertop_tablet", "status": "live" },
+    { "brand_id": "mcdonalds", "brand_name": "맥도날드", "category": "fastfood_cafe", "device_shape": "freestanding_totem", "status": "live" },
+    { "brand_id": "lotteria", "brand_name": "롯데리아", "category": "fastfood_cafe", "device_shape": "countertop_tablet", "status": "live" },
+    { "brand_id": "kfc", "brand_name": "KFC", "category": "fastfood_cafe", "device_shape": "freestanding_totem", "status": "live" }
+  ]
+}

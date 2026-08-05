@@ -1,0 +1,99 @@
+{
+  "brand_id": "burgerking",
+  "brand_name": "버거킹",
+  "category": "fastfood_cafe",
+  "store_example": {
+    "name": "버거킹 홍대점",
+    "sub": "도보 5분 · 키오스크 주문"
+  },
+  "device": {
+    "shape": "countertop_tablet",
+    "orientation": "landscape",
+    "theme": {
+      "bg": "#241B17",
+      "card": "#332822",
+      "accent": "#E4592D",
+      "text": "#FFFFFF",
+      "mute": "#B9ACA5"
+    }
+  },
+  "flow": {
+    "flow_id": "burgerking_default_v1",
+    "base_price": 0,
+    "steps": [
+      {
+        "step_id": "menu",
+        "type": "single_select",
+        "priceMode": "absolute",
+        "title": "메뉴를 선택하세요",
+        "voice_text": "주문하실 버거를 골라주세요.",
+        "options": [
+          {
+            "option_id": "whopper",
+            "label": "와퍼",
+            "price": 7900
+          },
+          {
+            "option_id": "cheese",
+            "label": "치즈버거",
+            "price": 6900
+          },
+          {
+            "option_id": "chicken",
+            "label": "치킨버거",
+            "price": 7500
+          }
+        ],
+        "visual": "burger"
+      },
+      {
+        "step_id": "set",
+        "type": "binary_choice",
+        "priceMode": "delta",
+        "title": "세트로 하시겠어요?",
+        "voice_text": "단품과 세트 중 골라주세요.",
+        "options": [
+          {
+            "option_id": "set",
+            "label": "네, 세트로 주세요",
+            "price": 2000
+          },
+          {
+            "option_id": "single",
+            "label": "아니요, 단품으로",
+            "price": 0
+          }
+        ]
+      },
+      {
+        "step_id": "confirm_order",
+        "type": "confirm",
+        "title": "선택하신 내용을 확인해주세요",
+        "voice_text": "지금까지 고르신 내용이 맞는지 확인해주세요."
+      },
+      {
+        "step_id": "payment",
+        "type": "payment_mock",
+        "title": "결제 방법을 선택하세요",
+        "voice_text": "결제 방법을 선택해주세요.",
+        "options": [
+          {
+            "option_id": "card",
+            "label": "카드 삽입",
+            "icon": "card"
+          },
+          {
+            "option_id": "phone",
+            "label": "휴대폰 태그",
+            "icon": "phone"
+          },
+          {
+            "option_id": "cash",
+            "label": "현금",
+            "icon": "cash"
+          }
+        ]
+      }
+    ]
+  }
+}
