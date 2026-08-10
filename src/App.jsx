@@ -3,7 +3,7 @@ import { storage } from './lib/storage';
 import {
   Search, Home as HomeIcon, List, Settings as SettingsIcon, Heart, ChevronRight,
   Volume2, VolumeX, RotateCcw, User, CreditCard, Smartphone, Banknote,
-  Check, ArrowLeft, Sandwich, Utensils, Trash2, Type, Eye, ClipboardCheck,
+  Check, ArrowLeft, Sandwich, Utensils, Trash2, Type, Eye, ClipboardCheck, Plus,
 } from 'lucide-react';
 
 /* ---------------------------------------------------------------
@@ -13,124 +13,630 @@ import {
 const CONTENT = {
   subway: {
     store: { name: '서브웨이 강남점', sub: '도보 3분 · 키오스크 주문', icon: Sandwich, iconBg: '#0F6E56' },
-    basePrice: 7900,
     device: {
       shape: 'freestanding_totem', orientation: 'portrait',
       theme: { bg: '#F7F3EA', card: '#FFFFFF', accent: '#0F6E56', text: '#232E28', mute: '#8A9089' },
     },
-    flow: { flow_id: 'subway_default_v1', steps: [
-      { step_id: 'bread', type: 'single_select', priceMode: 'delta', visual: 'bread', title: '빵 종류를 선택하세요', voice_text: '먼저 빵 종류를 골라주세요.',
-        options: [{ option_id: 'white', label: '화이트빵', price: 0 }, { option_id: 'wheat', label: '위트빵', price: 0 }, { option_id: 'italian', label: '이탈리안 빵', price: 0 }] },
-      { step_id: 'toast', type: 'binary_choice', priceMode: 'delta', title: '빵을 데워드릴까요?', voice_text: '빵을 따뜻하게 데워드릴지 선택해주세요.',
-        options: [{ option_id: 'yes', label: '네, 데워주세요', price: 0 }, { option_id: 'no', label: '아니요', price: 0 }] },
-      { step_id: 'vegetables', type: 'multi_select', priceMode: 'delta', visual: 'vegetable', title: '야채를 선택하세요', voice_text: '원하는 야채를 모두 골라주세요.',
-        options: [{ option_id: 'lettuce', label: '양상추', price: 0 }, { option_id: 'tomato', label: '토마토', price: 0 }, { option_id: 'onion', label: '양파', price: 0 }, { option_id: 'pickle', label: '피클', price: 0 }] },
+    dining_options: { step_id: 'dining', type: 'binary_choice', title: '매장에서 드실 건가요, 포장하시겠어요?', voice_text: '매장에서 드실지 포장하실지 선택해주세요.',
+      options: [{ option_id: 'dine_in', label: '매장에서 식사', price: 0 }, { option_id: 'takeaway', label: '포장', price: 0 }] },
+    menu: { menu_id: 'subway_default_v1', categories: [
+      { category_id: 'sandwiches', label: '샌드위치', items: [
+        { item_id: 'egg_mayo', label: '에그마요', base_price: 6900, visual: 'bread', customize_steps: [
+          { step_id: 'bread', type: 'single_select', priceMode: 'delta', visual: 'bread', title: '빵 종류를 선택하세요', voice_text: '먼저 빵 종류를 골라주세요.',
+            options: [{ option_id: 'white', label: '화이트빵', price: 0 }, { option_id: 'wheat', label: '위트빵', price: 0 }, { option_id: 'parmesan_oregano', label: '파마산오레가노', price: 0 }, { option_id: 'honey_oat', label: '허니오트빵', price: 0 }, { option_id: 'grain', label: '그레인빵', price: 0 }, { option_id: 'flatbread', label: '플랫브레드', price: 0 }] },
+          { step_id: 'bread_length', type: 'binary_choice', priceMode: 'delta', title: '빵 길이를 선택하세요', voice_text: '15센티인지 30센티인지 선택해주세요.',
+            options: [{ option_id: '15cm', label: '15cm', price: 0 }, { option_id: '30cm', label: '30cm', price: 4000 }] },
+          { step_id: 'cheese', type: 'single_select', priceMode: 'delta', title: '치즈를 선택하세요', voice_text: '치즈를 추가할지 선택해주세요.',
+            options: [{ option_id: 'none', label: '없음', price: 0 }, { option_id: 'american', label: '아메리칸 치즈', price: 0 }, { option_id: 'shredded', label: '슈레드 치즈', price: 0 }, { option_id: 'mozzarella', label: '모차렐라 치즈', price: 0 }] },
+          { step_id: 'extra_toppings', type: 'multi_select', priceMode: 'delta', title: '추가 토핑을 선택하세요', voice_text: '추가하고 싶은 토핑이 있으면 골라주세요. 추가 요금이 있어요.',
+            options: [{ option_id: 'extra_meat', label: '미트 추가', price: 1500 }, { option_id: 'egg_mayo_topping', label: '에그마요 추가', price: 1000 }, { option_id: 'omelette', label: '오믈렛 추가', price: 1500 }] },
+          { step_id: 'toast', type: 'binary_choice', priceMode: 'delta', title: '빵을 데워드릴까요?', voice_text: '빵을 따뜻하게 데워드릴지 선택해주세요.',
+            options: [{ option_id: 'yes', label: '네, 데워주세요', price: 0 }, { option_id: 'no', label: '아니요', price: 0 }] },
+          { step_id: 'vegetables', type: 'multi_select', priceMode: 'delta', visual: 'vegetable', title: '야채를 선택하세요', voice_text: '원하는 야채를 모두 골라주세요.',
+            options: [{ option_id: 'lettuce', label: '양상추', price: 0 }, { option_id: 'tomato', label: '토마토', price: 0 }, { option_id: 'cucumber', label: '오이', price: 0 }, { option_id: 'bell_pepper', label: '피망/파프리카', price: 0 }, { option_id: 'onion', label: '양파', price: 0 }, { option_id: 'pickle', label: '피클', price: 0 }, { option_id: 'olive', label: '올리브', price: 0 }, { option_id: 'jalapeno', label: '할라피뇨', price: 0 }, { option_id: 'avocado', label: '아보카도', price: 0 }] },
+          { step_id: 'sauce', type: 'multi_select', priceMode: 'delta', max_selections: 3, title: '소스를 선택하세요 (최대 3개 무료)', voice_text: '원하는 소스를 최대 3개까지 골라주세요.',
+            options: [{ option_id: 'sweet_onion', label: '스위트어니언', price: 0 }, { option_id: 'mayo', label: '마요네즈', price: 0 }, { option_id: 'mustard', label: '허니 머스타드', price: 0 }, { option_id: 'sweet_chili', label: '스위트칠리', price: 0 }, { option_id: 'ranch', label: '랜치', price: 0 }, { option_id: 'onion_mayo', label: '어니언마요', price: 0 }, { option_id: 'hot_chili', label: '핫칠리', price: 0 }, { option_id: 'plain_mustard', label: '플레인 머스타드', price: 0 }, { option_id: 'ketchup', label: '케찹', price: 0 }, { option_id: 'sw_chipotle', label: '사우스웨스트 치폴레', price: 0 }, { option_id: 'oil_vinegar', label: '오일&비네거', price: 0 }, { option_id: 'bbq', label: '바베큐', price: 0 }, { option_id: 'italian', label: '이탈리안', price: 0 }, { option_id: 'sriracha', label: '스리라차', price: 0 }, { option_id: 'garlic', label: '갈릭', price: 0 }] },
+          { step_id: 'set', type: 'binary_choice', priceMode: 'delta', title: '단품으로 드릴까요, 세트로 드릴까요?', voice_text: '단품인지 세트인지 선택해주세요.',
+            options: [{ option_id: 'single', label: '단품', price: 0 }, { option_id: 'set', label: '세트', price: 0 }] },
+          { step_id: 'included_side', type: 'single_select', priceMode: 'delta', condition: { step_id: 'set', option_id: 'set' }, title: '세트 사이드를 선택하세요', voice_text: '세트에 포함될 사이드를 선택해주세요.',
+            options: [{ option_id: 'cookie_chip', label: '쿠키/칩', price: 2500 }, { option_id: 'wedge_potato', label: '웨지포테이토', price: 3100 }] },
+          { step_id: 'included_drink', type: 'single_select', priceMode: 'delta', condition: { step_id: 'set', option_id: 'set' }, title: '세트 음료를 선택하세요', voice_text: '세트에 포함될 음료를 선택해주세요.',
+            options: [{ option_id: 'coke', label: '코카콜라', price: 0 }, { option_id: 'sprite', label: '스프라이트', price: 0 }, { option_id: 'ice_tea', label: '아이스티', price: 300 }] },
+        ] },
+        { item_id: 'tuna', label: '참치', base_price: 7900, visual: 'bread', customize_steps: [
+          { step_id: 'bread', type: 'single_select', priceMode: 'delta', visual: 'bread', title: '빵 종류를 선택하세요', voice_text: '먼저 빵 종류를 골라주세요.',
+            options: [{ option_id: 'white', label: '화이트빵', price: 0 }, { option_id: 'wheat', label: '위트빵', price: 0 }, { option_id: 'parmesan_oregano', label: '파마산오레가노', price: 0 }, { option_id: 'honey_oat', label: '허니오트빵', price: 0 }, { option_id: 'grain', label: '그레인빵', price: 0 }, { option_id: 'flatbread', label: '플랫브레드', price: 0 }] },
+          { step_id: 'bread_length', type: 'binary_choice', priceMode: 'delta', title: '빵 길이를 선택하세요', voice_text: '15센티인지 30센티인지 선택해주세요.',
+            options: [{ option_id: '15cm', label: '15cm', price: 0 }, { option_id: '30cm', label: '30cm', price: 4000 }] },
+          { step_id: 'cheese', type: 'single_select', priceMode: 'delta', title: '치즈를 선택하세요', voice_text: '치즈를 추가할지 선택해주세요.',
+            options: [{ option_id: 'none', label: '없음', price: 0 }, { option_id: 'american', label: '아메리칸 치즈', price: 0 }, { option_id: 'shredded', label: '슈레드 치즈', price: 0 }, { option_id: 'mozzarella', label: '모차렐라 치즈', price: 0 }] },
+          { step_id: 'extra_toppings', type: 'multi_select', priceMode: 'delta', title: '추가 토핑을 선택하세요', voice_text: '추가하고 싶은 토핑이 있으면 골라주세요. 추가 요금이 있어요.',
+            options: [{ option_id: 'extra_meat', label: '미트 추가', price: 1500 }, { option_id: 'egg_mayo_topping', label: '에그마요 추가', price: 1000 }, { option_id: 'omelette', label: '오믈렛 추가', price: 1500 }] },
+          { step_id: 'toast', type: 'binary_choice', priceMode: 'delta', title: '빵을 데워드릴까요?', voice_text: '빵을 따뜻하게 데워드릴지 선택해주세요.',
+            options: [{ option_id: 'yes', label: '네, 데워주세요', price: 0 }, { option_id: 'no', label: '아니요', price: 0 }] },
+          { step_id: 'vegetables', type: 'multi_select', priceMode: 'delta', visual: 'vegetable', title: '야채를 선택하세요', voice_text: '원하는 야채를 모두 골라주세요.',
+            options: [{ option_id: 'lettuce', label: '양상추', price: 0 }, { option_id: 'tomato', label: '토마토', price: 0 }, { option_id: 'cucumber', label: '오이', price: 0 }, { option_id: 'bell_pepper', label: '피망/파프리카', price: 0 }, { option_id: 'onion', label: '양파', price: 0 }, { option_id: 'pickle', label: '피클', price: 0 }, { option_id: 'olive', label: '올리브', price: 0 }, { option_id: 'jalapeno', label: '할라피뇨', price: 0 }, { option_id: 'avocado', label: '아보카도', price: 0 }] },
+          { step_id: 'sauce', type: 'multi_select', priceMode: 'delta', max_selections: 3, title: '소스를 선택하세요 (최대 3개 무료)', voice_text: '원하는 소스를 최대 3개까지 골라주세요.',
+            options: [{ option_id: 'sweet_onion', label: '스위트어니언', price: 0 }, { option_id: 'mayo', label: '마요네즈', price: 0 }, { option_id: 'mustard', label: '허니 머스타드', price: 0 }, { option_id: 'sweet_chili', label: '스위트칠리', price: 0 }, { option_id: 'ranch', label: '랜치', price: 0 }, { option_id: 'onion_mayo', label: '어니언마요', price: 0 }, { option_id: 'hot_chili', label: '핫칠리', price: 0 }, { option_id: 'plain_mustard', label: '플레인 머스타드', price: 0 }, { option_id: 'ketchup', label: '케찹', price: 0 }, { option_id: 'sw_chipotle', label: '사우스웨스트 치폴레', price: 0 }, { option_id: 'oil_vinegar', label: '오일&비네거', price: 0 }, { option_id: 'bbq', label: '바베큐', price: 0 }, { option_id: 'italian', label: '이탈리안', price: 0 }, { option_id: 'sriracha', label: '스리라차', price: 0 }, { option_id: 'garlic', label: '갈릭', price: 0 }] },
+          { step_id: 'set', type: 'binary_choice', priceMode: 'delta', title: '단품으로 드릴까요, 세트로 드릴까요?', voice_text: '단품인지 세트인지 선택해주세요.',
+            options: [{ option_id: 'single', label: '단품', price: 0 }, { option_id: 'set', label: '세트', price: 0 }] },
+          { step_id: 'included_side', type: 'single_select', priceMode: 'delta', condition: { step_id: 'set', option_id: 'set' }, title: '세트 사이드를 선택하세요', voice_text: '세트에 포함될 사이드를 선택해주세요.',
+            options: [{ option_id: 'cookie_chip', label: '쿠키/칩', price: 2500 }, { option_id: 'wedge_potato', label: '웨지포테이토', price: 3100 }] },
+          { step_id: 'included_drink', type: 'single_select', priceMode: 'delta', condition: { step_id: 'set', option_id: 'set' }, title: '세트 음료를 선택하세요', voice_text: '세트에 포함될 음료를 선택해주세요.',
+            options: [{ option_id: 'coke', label: '코카콜라', price: 0 }, { option_id: 'sprite', label: '스프라이트', price: 0 }, { option_id: 'ice_tea', label: '아이스티', price: 300 }] },
+        ] },
+        { item_id: 'meatball_marinara', label: '미트볼 마리나라', base_price: 7900, visual: 'bread', customize_steps: [
+          { step_id: 'bread', type: 'single_select', priceMode: 'delta', visual: 'bread', title: '빵 종류를 선택하세요', voice_text: '먼저 빵 종류를 골라주세요.',
+            options: [{ option_id: 'white', label: '화이트빵', price: 0 }, { option_id: 'wheat', label: '위트빵', price: 0 }, { option_id: 'parmesan_oregano', label: '파마산오레가노', price: 0 }, { option_id: 'honey_oat', label: '허니오트빵', price: 0 }, { option_id: 'grain', label: '그레인빵', price: 0 }, { option_id: 'flatbread', label: '플랫브레드', price: 0 }] },
+          { step_id: 'bread_length', type: 'binary_choice', priceMode: 'delta', title: '빵 길이를 선택하세요', voice_text: '15센티인지 30센티인지 선택해주세요.',
+            options: [{ option_id: '15cm', label: '15cm', price: 0 }, { option_id: '30cm', label: '30cm', price: 4000 }] },
+          { step_id: 'cheese', type: 'single_select', priceMode: 'delta', title: '치즈를 선택하세요', voice_text: '치즈를 추가할지 선택해주세요.',
+            options: [{ option_id: 'none', label: '없음', price: 0 }, { option_id: 'american', label: '아메리칸 치즈', price: 0 }, { option_id: 'shredded', label: '슈레드 치즈', price: 0 }, { option_id: 'mozzarella', label: '모차렐라 치즈', price: 0 }] },
+          { step_id: 'extra_toppings', type: 'multi_select', priceMode: 'delta', title: '추가 토핑을 선택하세요', voice_text: '추가하고 싶은 토핑이 있으면 골라주세요. 추가 요금이 있어요.',
+            options: [{ option_id: 'extra_meat', label: '미트 추가', price: 1500 }, { option_id: 'egg_mayo_topping', label: '에그마요 추가', price: 1000 }, { option_id: 'omelette', label: '오믈렛 추가', price: 1500 }] },
+          { step_id: 'toast', type: 'binary_choice', priceMode: 'delta', title: '빵을 데워드릴까요?', voice_text: '빵을 따뜻하게 데워드릴지 선택해주세요.',
+            options: [{ option_id: 'yes', label: '네, 데워주세요', price: 0 }, { option_id: 'no', label: '아니요', price: 0 }] },
+          { step_id: 'vegetables', type: 'multi_select', priceMode: 'delta', visual: 'vegetable', title: '야채를 선택하세요', voice_text: '원하는 야채를 모두 골라주세요.',
+            options: [{ option_id: 'lettuce', label: '양상추', price: 0 }, { option_id: 'tomato', label: '토마토', price: 0 }, { option_id: 'cucumber', label: '오이', price: 0 }, { option_id: 'bell_pepper', label: '피망/파프리카', price: 0 }, { option_id: 'onion', label: '양파', price: 0 }, { option_id: 'pickle', label: '피클', price: 0 }, { option_id: 'olive', label: '올리브', price: 0 }, { option_id: 'jalapeno', label: '할라피뇨', price: 0 }, { option_id: 'avocado', label: '아보카도', price: 0 }] },
+          { step_id: 'sauce', type: 'multi_select', priceMode: 'delta', max_selections: 3, title: '소스를 선택하세요 (최대 3개 무료)', voice_text: '원하는 소스를 최대 3개까지 골라주세요.',
+            options: [{ option_id: 'sweet_onion', label: '스위트어니언', price: 0 }, { option_id: 'mayo', label: '마요네즈', price: 0 }, { option_id: 'mustard', label: '허니 머스타드', price: 0 }, { option_id: 'sweet_chili', label: '스위트칠리', price: 0 }, { option_id: 'ranch', label: '랜치', price: 0 }, { option_id: 'onion_mayo', label: '어니언마요', price: 0 }, { option_id: 'hot_chili', label: '핫칠리', price: 0 }, { option_id: 'plain_mustard', label: '플레인 머스타드', price: 0 }, { option_id: 'ketchup', label: '케찹', price: 0 }, { option_id: 'sw_chipotle', label: '사우스웨스트 치폴레', price: 0 }, { option_id: 'oil_vinegar', label: '오일&비네거', price: 0 }, { option_id: 'bbq', label: '바베큐', price: 0 }, { option_id: 'italian', label: '이탈리안', price: 0 }, { option_id: 'sriracha', label: '스리라차', price: 0 }, { option_id: 'garlic', label: '갈릭', price: 0 }] },
+          { step_id: 'set', type: 'binary_choice', priceMode: 'delta', title: '단품으로 드릴까요, 세트로 드릴까요?', voice_text: '단품인지 세트인지 선택해주세요.',
+            options: [{ option_id: 'single', label: '단품', price: 0 }, { option_id: 'set', label: '세트', price: 0 }] },
+          { step_id: 'included_side', type: 'single_select', priceMode: 'delta', condition: { step_id: 'set', option_id: 'set' }, title: '세트 사이드를 선택하세요', voice_text: '세트에 포함될 사이드를 선택해주세요.',
+            options: [{ option_id: 'cookie_chip', label: '쿠키/칩', price: 2500 }, { option_id: 'wedge_potato', label: '웨지포테이토', price: 3100 }] },
+          { step_id: 'included_drink', type: 'single_select', priceMode: 'delta', condition: { step_id: 'set', option_id: 'set' }, title: '세트 음료를 선택하세요', voice_text: '세트에 포함될 음료를 선택해주세요.',
+            options: [{ option_id: 'coke', label: '코카콜라', price: 0 }, { option_id: 'sprite', label: '스프라이트', price: 0 }, { option_id: 'ice_tea', label: '아이스티', price: 300 }] },
+        ] },
+        { item_id: 'turkey_breast', label: '터키 브레스트', base_price: 7900, visual: 'bread', customize_steps: [
+          { step_id: 'bread', type: 'single_select', priceMode: 'delta', visual: 'bread', title: '빵 종류를 선택하세요', voice_text: '먼저 빵 종류를 골라주세요.',
+            options: [{ option_id: 'white', label: '화이트빵', price: 0 }, { option_id: 'wheat', label: '위트빵', price: 0 }, { option_id: 'parmesan_oregano', label: '파마산오레가노', price: 0 }, { option_id: 'honey_oat', label: '허니오트빵', price: 0 }, { option_id: 'grain', label: '그레인빵', price: 0 }, { option_id: 'flatbread', label: '플랫브레드', price: 0 }] },
+          { step_id: 'bread_length', type: 'binary_choice', priceMode: 'delta', title: '빵 길이를 선택하세요', voice_text: '15센티인지 30센티인지 선택해주세요.',
+            options: [{ option_id: '15cm', label: '15cm', price: 0 }, { option_id: '30cm', label: '30cm', price: 4000 }] },
+          { step_id: 'cheese', type: 'single_select', priceMode: 'delta', title: '치즈를 선택하세요', voice_text: '치즈를 추가할지 선택해주세요.',
+            options: [{ option_id: 'none', label: '없음', price: 0 }, { option_id: 'american', label: '아메리칸 치즈', price: 0 }, { option_id: 'shredded', label: '슈레드 치즈', price: 0 }, { option_id: 'mozzarella', label: '모차렐라 치즈', price: 0 }] },
+          { step_id: 'extra_toppings', type: 'multi_select', priceMode: 'delta', title: '추가 토핑을 선택하세요', voice_text: '추가하고 싶은 토핑이 있으면 골라주세요. 추가 요금이 있어요.',
+            options: [{ option_id: 'extra_meat', label: '미트 추가', price: 1500 }, { option_id: 'egg_mayo_topping', label: '에그마요 추가', price: 1000 }, { option_id: 'omelette', label: '오믈렛 추가', price: 1500 }] },
+          { step_id: 'toast', type: 'binary_choice', priceMode: 'delta', title: '빵을 데워드릴까요?', voice_text: '빵을 따뜻하게 데워드릴지 선택해주세요.',
+            options: [{ option_id: 'yes', label: '네, 데워주세요', price: 0 }, { option_id: 'no', label: '아니요', price: 0 }] },
+          { step_id: 'vegetables', type: 'multi_select', priceMode: 'delta', visual: 'vegetable', title: '야채를 선택하세요', voice_text: '원하는 야채를 모두 골라주세요.',
+            options: [{ option_id: 'lettuce', label: '양상추', price: 0 }, { option_id: 'tomato', label: '토마토', price: 0 }, { option_id: 'cucumber', label: '오이', price: 0 }, { option_id: 'bell_pepper', label: '피망/파프리카', price: 0 }, { option_id: 'onion', label: '양파', price: 0 }, { option_id: 'pickle', label: '피클', price: 0 }, { option_id: 'olive', label: '올리브', price: 0 }, { option_id: 'jalapeno', label: '할라피뇨', price: 0 }, { option_id: 'avocado', label: '아보카도', price: 0 }] },
+          { step_id: 'sauce', type: 'multi_select', priceMode: 'delta', max_selections: 3, title: '소스를 선택하세요 (최대 3개 무료)', voice_text: '원하는 소스를 최대 3개까지 골라주세요.',
+            options: [{ option_id: 'sweet_onion', label: '스위트어니언', price: 0 }, { option_id: 'mayo', label: '마요네즈', price: 0 }, { option_id: 'mustard', label: '허니 머스타드', price: 0 }, { option_id: 'sweet_chili', label: '스위트칠리', price: 0 }, { option_id: 'ranch', label: '랜치', price: 0 }, { option_id: 'onion_mayo', label: '어니언마요', price: 0 }, { option_id: 'hot_chili', label: '핫칠리', price: 0 }, { option_id: 'plain_mustard', label: '플레인 머스타드', price: 0 }, { option_id: 'ketchup', label: '케찹', price: 0 }, { option_id: 'sw_chipotle', label: '사우스웨스트 치폴레', price: 0 }, { option_id: 'oil_vinegar', label: '오일&비네거', price: 0 }, { option_id: 'bbq', label: '바베큐', price: 0 }, { option_id: 'italian', label: '이탈리안', price: 0 }, { option_id: 'sriracha', label: '스리라차', price: 0 }, { option_id: 'garlic', label: '갈릭', price: 0 }] },
+          { step_id: 'set', type: 'binary_choice', priceMode: 'delta', title: '단품으로 드릴까요, 세트로 드릴까요?', voice_text: '단품인지 세트인지 선택해주세요.',
+            options: [{ option_id: 'single', label: '단품', price: 0 }, { option_id: 'set', label: '세트', price: 0 }] },
+          { step_id: 'included_side', type: 'single_select', priceMode: 'delta', condition: { step_id: 'set', option_id: 'set' }, title: '세트 사이드를 선택하세요', voice_text: '세트에 포함될 사이드를 선택해주세요.',
+            options: [{ option_id: 'cookie_chip', label: '쿠키/칩', price: 2500 }, { option_id: 'wedge_potato', label: '웨지포테이토', price: 3100 }] },
+          { step_id: 'included_drink', type: 'single_select', priceMode: 'delta', condition: { step_id: 'set', option_id: 'set' }, title: '세트 음료를 선택하세요', voice_text: '세트에 포함될 음료를 선택해주세요.',
+            options: [{ option_id: 'coke', label: '코카콜라', price: 0 }, { option_id: 'sprite', label: '스프라이트', price: 0 }, { option_id: 'ice_tea', label: '아이스티', price: 300 }] },
+        ] },
+        { item_id: 'italian_bmt', label: '이탈리안 비엠티', base_price: 8900, visual: 'bread', customize_steps: [
+          { step_id: 'bread', type: 'single_select', priceMode: 'delta', visual: 'bread', title: '빵 종류를 선택하세요', voice_text: '먼저 빵 종류를 골라주세요.',
+            options: [{ option_id: 'white', label: '화이트빵', price: 0 }, { option_id: 'wheat', label: '위트빵', price: 0 }, { option_id: 'parmesan_oregano', label: '파마산오레가노', price: 0 }, { option_id: 'honey_oat', label: '허니오트빵', price: 0 }, { option_id: 'grain', label: '그레인빵', price: 0 }, { option_id: 'flatbread', label: '플랫브레드', price: 0 }] },
+          { step_id: 'bread_length', type: 'binary_choice', priceMode: 'delta', title: '빵 길이를 선택하세요', voice_text: '15센티인지 30센티인지 선택해주세요.',
+            options: [{ option_id: '15cm', label: '15cm', price: 0 }, { option_id: '30cm', label: '30cm', price: 4000 }] },
+          { step_id: 'cheese', type: 'single_select', priceMode: 'delta', title: '치즈를 선택하세요', voice_text: '치즈를 추가할지 선택해주세요.',
+            options: [{ option_id: 'none', label: '없음', price: 0 }, { option_id: 'american', label: '아메리칸 치즈', price: 0 }, { option_id: 'shredded', label: '슈레드 치즈', price: 0 }, { option_id: 'mozzarella', label: '모차렐라 치즈', price: 0 }] },
+          { step_id: 'extra_toppings', type: 'multi_select', priceMode: 'delta', title: '추가 토핑을 선택하세요', voice_text: '추가하고 싶은 토핑이 있으면 골라주세요. 추가 요금이 있어요.',
+            options: [{ option_id: 'extra_meat', label: '미트 추가', price: 1500 }, { option_id: 'egg_mayo_topping', label: '에그마요 추가', price: 1000 }, { option_id: 'omelette', label: '오믈렛 추가', price: 1500 }] },
+          { step_id: 'toast', type: 'binary_choice', priceMode: 'delta', title: '빵을 데워드릴까요?', voice_text: '빵을 따뜻하게 데워드릴지 선택해주세요.',
+            options: [{ option_id: 'yes', label: '네, 데워주세요', price: 0 }, { option_id: 'no', label: '아니요', price: 0 }] },
+          { step_id: 'vegetables', type: 'multi_select', priceMode: 'delta', visual: 'vegetable', title: '야채를 선택하세요', voice_text: '원하는 야채를 모두 골라주세요.',
+            options: [{ option_id: 'lettuce', label: '양상추', price: 0 }, { option_id: 'tomato', label: '토마토', price: 0 }, { option_id: 'cucumber', label: '오이', price: 0 }, { option_id: 'bell_pepper', label: '피망/파프리카', price: 0 }, { option_id: 'onion', label: '양파', price: 0 }, { option_id: 'pickle', label: '피클', price: 0 }, { option_id: 'olive', label: '올리브', price: 0 }, { option_id: 'jalapeno', label: '할라피뇨', price: 0 }, { option_id: 'avocado', label: '아보카도', price: 0 }] },
+          { step_id: 'sauce', type: 'multi_select', priceMode: 'delta', max_selections: 3, title: '소스를 선택하세요 (최대 3개 무료)', voice_text: '원하는 소스를 최대 3개까지 골라주세요.',
+            options: [{ option_id: 'sweet_onion', label: '스위트어니언', price: 0 }, { option_id: 'mayo', label: '마요네즈', price: 0 }, { option_id: 'mustard', label: '허니 머스타드', price: 0 }, { option_id: 'sweet_chili', label: '스위트칠리', price: 0 }, { option_id: 'ranch', label: '랜치', price: 0 }, { option_id: 'onion_mayo', label: '어니언마요', price: 0 }, { option_id: 'hot_chili', label: '핫칠리', price: 0 }, { option_id: 'plain_mustard', label: '플레인 머스타드', price: 0 }, { option_id: 'ketchup', label: '케찹', price: 0 }, { option_id: 'sw_chipotle', label: '사우스웨스트 치폴레', price: 0 }, { option_id: 'oil_vinegar', label: '오일&비네거', price: 0 }, { option_id: 'bbq', label: '바베큐', price: 0 }, { option_id: 'italian', label: '이탈리안', price: 0 }, { option_id: 'sriracha', label: '스리라차', price: 0 }, { option_id: 'garlic', label: '갈릭', price: 0 }] },
+          { step_id: 'set', type: 'binary_choice', priceMode: 'delta', title: '단품으로 드릴까요, 세트로 드릴까요?', voice_text: '단품인지 세트인지 선택해주세요.',
+            options: [{ option_id: 'single', label: '단품', price: 0 }, { option_id: 'set', label: '세트', price: 0 }] },
+          { step_id: 'included_side', type: 'single_select', priceMode: 'delta', condition: { step_id: 'set', option_id: 'set' }, title: '세트 사이드를 선택하세요', voice_text: '세트에 포함될 사이드를 선택해주세요.',
+            options: [{ option_id: 'cookie_chip', label: '쿠키/칩', price: 2500 }, { option_id: 'wedge_potato', label: '웨지포테이토', price: 3100 }] },
+          { step_id: 'included_drink', type: 'single_select', priceMode: 'delta', condition: { step_id: 'set', option_id: 'set' }, title: '세트 음료를 선택하세요', voice_text: '세트에 포함될 음료를 선택해주세요.',
+            options: [{ option_id: 'coke', label: '코카콜라', price: 0 }, { option_id: 'sprite', label: '스프라이트', price: 0 }, { option_id: 'ice_tea', label: '아이스티', price: 300 }] },
+        ] },
+        { item_id: 'subway_club', label: '서브웨이 클럽', base_price: 8900, visual: 'bread', customize_steps: [
+          { step_id: 'bread', type: 'single_select', priceMode: 'delta', visual: 'bread', title: '빵 종류를 선택하세요', voice_text: '먼저 빵 종류를 골라주세요.',
+            options: [{ option_id: 'white', label: '화이트빵', price: 0 }, { option_id: 'wheat', label: '위트빵', price: 0 }, { option_id: 'parmesan_oregano', label: '파마산오레가노', price: 0 }, { option_id: 'honey_oat', label: '허니오트빵', price: 0 }, { option_id: 'grain', label: '그레인빵', price: 0 }, { option_id: 'flatbread', label: '플랫브레드', price: 0 }] },
+          { step_id: 'bread_length', type: 'binary_choice', priceMode: 'delta', title: '빵 길이를 선택하세요', voice_text: '15센티인지 30센티인지 선택해주세요.',
+            options: [{ option_id: '15cm', label: '15cm', price: 0 }, { option_id: '30cm', label: '30cm', price: 4000 }] },
+          { step_id: 'cheese', type: 'single_select', priceMode: 'delta', title: '치즈를 선택하세요', voice_text: '치즈를 추가할지 선택해주세요.',
+            options: [{ option_id: 'none', label: '없음', price: 0 }, { option_id: 'american', label: '아메리칸 치즈', price: 0 }, { option_id: 'shredded', label: '슈레드 치즈', price: 0 }, { option_id: 'mozzarella', label: '모차렐라 치즈', price: 0 }] },
+          { step_id: 'extra_toppings', type: 'multi_select', priceMode: 'delta', title: '추가 토핑을 선택하세요', voice_text: '추가하고 싶은 토핑이 있으면 골라주세요. 추가 요금이 있어요.',
+            options: [{ option_id: 'extra_meat', label: '미트 추가', price: 1500 }, { option_id: 'egg_mayo_topping', label: '에그마요 추가', price: 1000 }, { option_id: 'omelette', label: '오믈렛 추가', price: 1500 }] },
+          { step_id: 'toast', type: 'binary_choice', priceMode: 'delta', title: '빵을 데워드릴까요?', voice_text: '빵을 따뜻하게 데워드릴지 선택해주세요.',
+            options: [{ option_id: 'yes', label: '네, 데워주세요', price: 0 }, { option_id: 'no', label: '아니요', price: 0 }] },
+          { step_id: 'vegetables', type: 'multi_select', priceMode: 'delta', visual: 'vegetable', title: '야채를 선택하세요', voice_text: '원하는 야채를 모두 골라주세요.',
+            options: [{ option_id: 'lettuce', label: '양상추', price: 0 }, { option_id: 'tomato', label: '토마토', price: 0 }, { option_id: 'cucumber', label: '오이', price: 0 }, { option_id: 'bell_pepper', label: '피망/파프리카', price: 0 }, { option_id: 'onion', label: '양파', price: 0 }, { option_id: 'pickle', label: '피클', price: 0 }, { option_id: 'olive', label: '올리브', price: 0 }, { option_id: 'jalapeno', label: '할라피뇨', price: 0 }, { option_id: 'avocado', label: '아보카도', price: 0 }] },
+          { step_id: 'sauce', type: 'multi_select', priceMode: 'delta', max_selections: 3, title: '소스를 선택하세요 (최대 3개 무료)', voice_text: '원하는 소스를 최대 3개까지 골라주세요.',
+            options: [{ option_id: 'sweet_onion', label: '스위트어니언', price: 0 }, { option_id: 'mayo', label: '마요네즈', price: 0 }, { option_id: 'mustard', label: '허니 머스타드', price: 0 }, { option_id: 'sweet_chili', label: '스위트칠리', price: 0 }, { option_id: 'ranch', label: '랜치', price: 0 }, { option_id: 'onion_mayo', label: '어니언마요', price: 0 }, { option_id: 'hot_chili', label: '핫칠리', price: 0 }, { option_id: 'plain_mustard', label: '플레인 머스타드', price: 0 }, { option_id: 'ketchup', label: '케찹', price: 0 }, { option_id: 'sw_chipotle', label: '사우스웨스트 치폴레', price: 0 }, { option_id: 'oil_vinegar', label: '오일&비네거', price: 0 }, { option_id: 'bbq', label: '바베큐', price: 0 }, { option_id: 'italian', label: '이탈리안', price: 0 }, { option_id: 'sriracha', label: '스리라차', price: 0 }, { option_id: 'garlic', label: '갈릭', price: 0 }] },
+          { step_id: 'set', type: 'binary_choice', priceMode: 'delta', title: '단품으로 드릴까요, 세트로 드릴까요?', voice_text: '단품인지 세트인지 선택해주세요.',
+            options: [{ option_id: 'single', label: '단품', price: 0 }, { option_id: 'set', label: '세트', price: 0 }] },
+          { step_id: 'included_side', type: 'single_select', priceMode: 'delta', condition: { step_id: 'set', option_id: 'set' }, title: '세트 사이드를 선택하세요', voice_text: '세트에 포함될 사이드를 선택해주세요.',
+            options: [{ option_id: 'cookie_chip', label: '쿠키/칩', price: 2500 }, { option_id: 'wedge_potato', label: '웨지포테이토', price: 3100 }] },
+          { step_id: 'included_drink', type: 'single_select', priceMode: 'delta', condition: { step_id: 'set', option_id: 'set' }, title: '세트 음료를 선택하세요', voice_text: '세트에 포함될 음료를 선택해주세요.',
+            options: [{ option_id: 'coke', label: '코카콜라', price: 0 }, { option_id: 'sprite', label: '스프라이트', price: 0 }, { option_id: 'ice_tea', label: '아이스티', price: 300 }] },
+        ] },
+      ] },
+      { category_id: 'drinks', label: '음료', items: [
+        { item_id: 'coke_standalone', label: '코카콜라', base_price: 2500, visual: 'drink', customize_steps: [] },
+        { item_id: 'sprite_standalone', label: '스프라이트', base_price: 2500, visual: 'drink', customize_steps: [] },
+        { item_id: 'ice_tea_standalone', label: '아이스티', base_price: 2800, visual: 'drink', customize_steps: [] },
+      ] },
+    ] },
+    order_steps: [
       { step_id: 'confirm_order', type: 'confirm', title: '선택하신 내용을 확인해주세요', voice_text: '지금까지 고르신 내용이 맞는지 확인해주세요.' },
       { step_id: 'payment', type: 'payment_mock', title: '결제 방법을 선택하세요', voice_text: '결제 방법을 선택해주세요.',
         options: [{ option_id: 'card', label: '카드 삽입', icon: 'card' }, { option_id: 'phone', label: '휴대폰 태그', icon: 'phone' }, { option_id: 'cash', label: '현금', icon: 'cash' }] },
-    ] },
+    ],
   },
   burgerking: {
     store: { name: '버거킹 홍대점', sub: '도보 5분 · 키오스크 주문', icon: Utensils, iconBg: '#C1502B' },
-    basePrice: 0,
     device: {
       shape: 'countertop_tablet', orientation: 'landscape',
       theme: { bg: '#241B17', card: '#332822', accent: '#E4592D', text: '#FFFFFF', mute: '#B9ACA5' },
     },
-    flow: { flow_id: 'burgerking_default_v1', steps: [
-      { step_id: 'menu', type: 'single_select', priceMode: 'absolute', visual: 'burger', title: '메뉴를 선택하세요', voice_text: '주문하실 버거를 골라주세요.',
-        options: [{ option_id: 'whopper', label: '와퍼', price: 7900 }, { option_id: 'cheese', label: '치즈버거', price: 6900 }, { option_id: 'chicken', label: '치킨버거', price: 7500 }] },
-      { step_id: 'set', type: 'binary_choice', priceMode: 'delta', title: '세트로 하시겠어요?', voice_text: '단품과 세트 중 골라주세요.',
-        options: [{ option_id: 'set', label: '네, 세트로 주세요', price: 2000 }, { option_id: 'single', label: '아니요, 단품으로', price: 0 }] },
+    dining_options: { step_id: 'dining', type: 'binary_choice', title: '매장에서 드실 건가요, 포장하시겠어요?', voice_text: '매장에서 드실지 포장하실지 선택해주세요.',
+      options: [{ option_id: 'dine_in', label: '매장에서 식사', price: 0 }, { option_id: 'takeaway', label: '포장', price: 0 }] },
+    menu: { menu_id: 'burgerking_default_v1', categories: [
+      { category_id: 'burgers', label: '버거', items: [
+        { item_id: 'whopper', label: '와퍼', base_price: 7900, visual: 'burger', customize_steps: [
+          { step_id: 'set', type: 'binary_choice', priceMode: 'delta', title: '세트로 하시겠어요?', voice_text: '단품과 세트 중 골라주세요.',
+            options: [{ option_id: 'set', label: '네, 세트로 주세요', price: 2000 }, { option_id: 'single', label: '아니요, 단품으로', price: 0 }] },
+          { step_id: 'included_side', type: 'single_select', priceMode: 'delta', condition: { step_id: 'set', option_id: 'set' },
+            title: '세트 사이드를 선택하세요', voice_text: '세트에 포함된 사이드를 골라주세요.',
+            options: [
+              { option_id: 'fries', label: '프렌치프라이', price: 0 },
+              { option_id: 'cheese_sticks', label: '치즈스틱', price: 0 },
+              { option_id: 'nugget_king_3', label: '너겟킹 3조각', price: 0 },
+              { option_id: 'corn_salad', label: '콘샐러드', price: 0 },
+              { option_id: 'coleslaw', label: '코울슬로', price: 0 },
+              { option_id: 'onion_rings', label: '어니언링', price: 300 },
+              { option_id: 'nugget_king_4', label: '너겟킹 4조각', price: 300 },
+              { option_id: 'cheese_fries', label: '치즈프라이', price: 900 },
+              { option_id: 'fries_large', label: '프렌치프라이(L)', price: 500 },
+            ] },
+          { step_id: 'included_drink', type: 'single_select', priceMode: 'delta', visual: 'drink', condition: { step_id: 'set', option_id: 'set' },
+            title: '세트 음료를 선택하세요', voice_text: '세트에 포함된 음료를 골라주세요.',
+            options: [
+              { option_id: 'coke', label: '코카콜라', price: 0 },
+              { option_id: 'americano', label: '아메리카노', price: 0 },
+              { option_id: 'choco', label: '초코', price: 300 },
+              { option_id: 'zero_toktok', label: '제로톡톡', price: 300 },
+              { option_id: 'minute_maid', label: '미닛메이드', price: 900 },
+            ] },
+          { step_id: 'set_size', type: 'binary_choice', priceMode: 'delta', condition: { step_id: 'set', option_id: 'set' },
+            title: '세트 사이즈를 선택하세요', voice_text: '세트를 라지로 업그레이드하시겠어요?',
+            options: [{ option_id: 'basic', label: '기본', price: 0 }, { option_id: 'large', label: '라지 업그레이드', price: 700 }] },
+        ] },
+        { item_id: 'cheese', label: '치즈버거', base_price: 6900, visual: 'burger', customize_steps: [
+          { step_id: 'set', type: 'binary_choice', priceMode: 'delta', title: '세트로 하시겠어요?', voice_text: '단품과 세트 중 골라주세요.',
+            options: [{ option_id: 'set', label: '네, 세트로 주세요', price: 2000 }, { option_id: 'single', label: '아니요, 단품으로', price: 0 }] },
+          { step_id: 'included_side', type: 'single_select', priceMode: 'delta', condition: { step_id: 'set', option_id: 'set' },
+            title: '세트 사이드를 선택하세요', voice_text: '세트에 포함된 사이드를 골라주세요.',
+            options: [
+              { option_id: 'fries', label: '프렌치프라이', price: 0 },
+              { option_id: 'cheese_sticks', label: '치즈스틱', price: 0 },
+              { option_id: 'nugget_king_3', label: '너겟킹 3조각', price: 0 },
+              { option_id: 'corn_salad', label: '콘샐러드', price: 0 },
+              { option_id: 'coleslaw', label: '코울슬로', price: 0 },
+              { option_id: 'onion_rings', label: '어니언링', price: 300 },
+              { option_id: 'nugget_king_4', label: '너겟킹 4조각', price: 300 },
+              { option_id: 'cheese_fries', label: '치즈프라이', price: 900 },
+              { option_id: 'fries_large', label: '프렌치프라이(L)', price: 500 },
+            ] },
+          { step_id: 'included_drink', type: 'single_select', priceMode: 'delta', visual: 'drink', condition: { step_id: 'set', option_id: 'set' },
+            title: '세트 음료를 선택하세요', voice_text: '세트에 포함된 음료를 골라주세요.',
+            options: [
+              { option_id: 'coke', label: '코카콜라', price: 0 },
+              { option_id: 'americano', label: '아메리카노', price: 0 },
+              { option_id: 'choco', label: '초코', price: 300 },
+              { option_id: 'zero_toktok', label: '제로톡톡', price: 300 },
+              { option_id: 'minute_maid', label: '미닛메이드', price: 900 },
+            ] },
+          { step_id: 'set_size', type: 'binary_choice', priceMode: 'delta', condition: { step_id: 'set', option_id: 'set' },
+            title: '세트 사이즈를 선택하세요', voice_text: '세트를 라지로 업그레이드하시겠어요?',
+            options: [{ option_id: 'basic', label: '기본', price: 0 }, { option_id: 'large', label: '라지 업그레이드', price: 700 }] },
+        ] },
+        { item_id: 'chicken', label: '치킨버거', base_price: 7500, visual: 'burger', customize_steps: [
+          { step_id: 'set', type: 'binary_choice', priceMode: 'delta', title: '세트로 하시겠어요?', voice_text: '단품과 세트 중 골라주세요.',
+            options: [{ option_id: 'set', label: '네, 세트로 주세요', price: 2000 }, { option_id: 'single', label: '아니요, 단품으로', price: 0 }] },
+          { step_id: 'included_side', type: 'single_select', priceMode: 'delta', condition: { step_id: 'set', option_id: 'set' },
+            title: '세트 사이드를 선택하세요', voice_text: '세트에 포함된 사이드를 골라주세요.',
+            options: [
+              { option_id: 'fries', label: '프렌치프라이', price: 0 },
+              { option_id: 'cheese_sticks', label: '치즈스틱', price: 0 },
+              { option_id: 'nugget_king_3', label: '너겟킹 3조각', price: 0 },
+              { option_id: 'corn_salad', label: '콘샐러드', price: 0 },
+              { option_id: 'coleslaw', label: '코울슬로', price: 0 },
+              { option_id: 'onion_rings', label: '어니언링', price: 300 },
+              { option_id: 'nugget_king_4', label: '너겟킹 4조각', price: 300 },
+              { option_id: 'cheese_fries', label: '치즈프라이', price: 900 },
+              { option_id: 'fries_large', label: '프렌치프라이(L)', price: 500 },
+            ] },
+          { step_id: 'included_drink', type: 'single_select', priceMode: 'delta', visual: 'drink', condition: { step_id: 'set', option_id: 'set' },
+            title: '세트 음료를 선택하세요', voice_text: '세트에 포함된 음료를 골라주세요.',
+            options: [
+              { option_id: 'coke', label: '코카콜라', price: 0 },
+              { option_id: 'americano', label: '아메리카노', price: 0 },
+              { option_id: 'choco', label: '초코', price: 300 },
+              { option_id: 'zero_toktok', label: '제로톡톡', price: 300 },
+              { option_id: 'minute_maid', label: '미닛메이드', price: 900 },
+            ] },
+          { step_id: 'set_size', type: 'binary_choice', priceMode: 'delta', condition: { step_id: 'set', option_id: 'set' },
+            title: '세트 사이즈를 선택하세요', voice_text: '세트를 라지로 업그레이드하시겠어요?',
+            options: [{ option_id: 'basic', label: '기본', price: 0 }, { option_id: 'large', label: '라지 업그레이드', price: 700 }] },
+        ] },
+        { item_id: 'shrimp_whopper', label: '통새우와퍼', base_price: 8900, visual: 'burger', customize_steps: [
+          { step_id: 'set', type: 'binary_choice', priceMode: 'delta', title: '세트로 하시겠어요?', voice_text: '단품과 세트 중 골라주세요.',
+            options: [{ option_id: 'set', label: '네, 세트로 주세요', price: 2000 }, { option_id: 'single', label: '아니요, 단품으로', price: 0 }] },
+          { step_id: 'included_side', type: 'single_select', priceMode: 'delta', condition: { step_id: 'set', option_id: 'set' },
+            title: '세트 사이드를 선택하세요', voice_text: '세트에 포함된 사이드를 골라주세요.',
+            options: [
+              { option_id: 'fries', label: '프렌치프라이', price: 0 },
+              { option_id: 'cheese_sticks', label: '치즈스틱', price: 0 },
+              { option_id: 'nugget_king_3', label: '너겟킹 3조각', price: 0 },
+              { option_id: 'corn_salad', label: '콘샐러드', price: 0 },
+              { option_id: 'coleslaw', label: '코울슬로', price: 0 },
+              { option_id: 'onion_rings', label: '어니언링', price: 300 },
+              { option_id: 'nugget_king_4', label: '너겟킹 4조각', price: 300 },
+              { option_id: 'cheese_fries', label: '치즈프라이', price: 900 },
+              { option_id: 'fries_large', label: '프렌치프라이(L)', price: 500 },
+            ] },
+          { step_id: 'included_drink', type: 'single_select', priceMode: 'delta', visual: 'drink', condition: { step_id: 'set', option_id: 'set' },
+            title: '세트 음료를 선택하세요', voice_text: '세트에 포함된 음료를 골라주세요.',
+            options: [
+              { option_id: 'coke', label: '코카콜라', price: 0 },
+              { option_id: 'americano', label: '아메리카노', price: 0 },
+              { option_id: 'choco', label: '초코', price: 300 },
+              { option_id: 'zero_toktok', label: '제로톡톡', price: 300 },
+              { option_id: 'minute_maid', label: '미닛메이드', price: 900 },
+            ] },
+          { step_id: 'set_size', type: 'binary_choice', priceMode: 'delta', condition: { step_id: 'set', option_id: 'set' },
+            title: '세트 사이즈를 선택하세요', voice_text: '세트를 라지로 업그레이드하시겠어요?',
+            options: [{ option_id: 'basic', label: '기본', price: 0 }, { option_id: 'large', label: '라지 업그레이드', price: 700 }] },
+        ] },
+        { item_id: 'bulgogi_whopper', label: '불고기와퍼', base_price: 7200, visual: 'burger', customize_steps: [
+          { step_id: 'set', type: 'binary_choice', priceMode: 'delta', title: '세트로 하시겠어요?', voice_text: '단품과 세트 중 골라주세요.',
+            options: [{ option_id: 'set', label: '네, 세트로 주세요', price: 2000 }, { option_id: 'single', label: '아니요, 단품으로', price: 0 }] },
+          { step_id: 'included_side', type: 'single_select', priceMode: 'delta', condition: { step_id: 'set', option_id: 'set' },
+            title: '세트 사이드를 선택하세요', voice_text: '세트에 포함된 사이드를 골라주세요.',
+            options: [
+              { option_id: 'fries', label: '프렌치프라이', price: 0 },
+              { option_id: 'cheese_sticks', label: '치즈스틱', price: 0 },
+              { option_id: 'nugget_king_3', label: '너겟킹 3조각', price: 0 },
+              { option_id: 'corn_salad', label: '콘샐러드', price: 0 },
+              { option_id: 'coleslaw', label: '코울슬로', price: 0 },
+              { option_id: 'onion_rings', label: '어니언링', price: 300 },
+              { option_id: 'nugget_king_4', label: '너겟킹 4조각', price: 300 },
+              { option_id: 'cheese_fries', label: '치즈프라이', price: 900 },
+              { option_id: 'fries_large', label: '프렌치프라이(L)', price: 500 },
+            ] },
+          { step_id: 'included_drink', type: 'single_select', priceMode: 'delta', visual: 'drink', condition: { step_id: 'set', option_id: 'set' },
+            title: '세트 음료를 선택하세요', voice_text: '세트에 포함된 음료를 골라주세요.',
+            options: [
+              { option_id: 'coke', label: '코카콜라', price: 0 },
+              { option_id: 'americano', label: '아메리카노', price: 0 },
+              { option_id: 'choco', label: '초코', price: 300 },
+              { option_id: 'zero_toktok', label: '제로톡톡', price: 300 },
+              { option_id: 'minute_maid', label: '미닛메이드', price: 900 },
+            ] },
+          { step_id: 'set_size', type: 'binary_choice', priceMode: 'delta', condition: { step_id: 'set', option_id: 'set' },
+            title: '세트 사이즈를 선택하세요', voice_text: '세트를 라지로 업그레이드하시겠어요?',
+            options: [{ option_id: 'basic', label: '기본', price: 0 }, { option_id: 'large', label: '라지 업그레이드', price: 700 }] },
+        ] },
+        { item_id: 'whopper_jr', label: '와퍼주니어', base_price: 5200, visual: 'burger', customize_steps: [
+          { step_id: 'set', type: 'binary_choice', priceMode: 'delta', title: '세트로 하시겠어요?', voice_text: '단품과 세트 중 골라주세요.',
+            options: [{ option_id: 'set', label: '네, 세트로 주세요', price: 2000 }, { option_id: 'single', label: '아니요, 단품으로', price: 0 }] },
+          { step_id: 'included_side', type: 'single_select', priceMode: 'delta', condition: { step_id: 'set', option_id: 'set' },
+            title: '세트 사이드를 선택하세요', voice_text: '세트에 포함된 사이드를 골라주세요.',
+            options: [
+              { option_id: 'fries', label: '프렌치프라이', price: 0 },
+              { option_id: 'cheese_sticks', label: '치즈스틱', price: 0 },
+              { option_id: 'nugget_king_3', label: '너겟킹 3조각', price: 0 },
+              { option_id: 'corn_salad', label: '콘샐러드', price: 0 },
+              { option_id: 'coleslaw', label: '코울슬로', price: 0 },
+              { option_id: 'onion_rings', label: '어니언링', price: 300 },
+              { option_id: 'nugget_king_4', label: '너겟킹 4조각', price: 300 },
+              { option_id: 'cheese_fries', label: '치즈프라이', price: 900 },
+              { option_id: 'fries_large', label: '프렌치프라이(L)', price: 500 },
+            ] },
+          { step_id: 'included_drink', type: 'single_select', priceMode: 'delta', visual: 'drink', condition: { step_id: 'set', option_id: 'set' },
+            title: '세트 음료를 선택하세요', voice_text: '세트에 포함된 음료를 골라주세요.',
+            options: [
+              { option_id: 'coke', label: '코카콜라', price: 0 },
+              { option_id: 'americano', label: '아메리카노', price: 0 },
+              { option_id: 'choco', label: '초코', price: 300 },
+              { option_id: 'zero_toktok', label: '제로톡톡', price: 300 },
+              { option_id: 'minute_maid', label: '미닛메이드', price: 900 },
+            ] },
+          { step_id: 'set_size', type: 'binary_choice', priceMode: 'delta', condition: { step_id: 'set', option_id: 'set' },
+            title: '세트 사이즈를 선택하세요', voice_text: '세트를 라지로 업그레이드하시겠어요?',
+            options: [{ option_id: 'basic', label: '기본', price: 0 }, { option_id: 'large', label: '라지 업그레이드', price: 700 }] },
+        ] },
+      ] },
+      { category_id: 'drinks', label: '음료', items: [
+        { item_id: 'coke_standalone', label: '코카콜라', base_price: 2200, visual: 'drink', customize_steps: [] },
+        { item_id: 'sprite_standalone', label: '스프라이트', base_price: 2200, visual: 'drink', customize_steps: [] },
+        { item_id: 'ice_americano_standalone', label: '아이스 아메리카노', base_price: 2500, visual: 'drink', customize_steps: [] },
+      ] },
+    ] },
+    order_steps: [
       { step_id: 'confirm_order', type: 'confirm', title: '선택하신 내용을 확인해주세요', voice_text: '지금까지 고르신 내용이 맞는지 확인해주세요.' },
       { step_id: 'payment', type: 'payment_mock', title: '결제 방법을 선택하세요', voice_text: '결제 방법을 선택해주세요.',
         options: [{ option_id: 'card', label: '카드 삽입', icon: 'card' }, { option_id: 'phone', label: '휴대폰 태그', icon: 'phone' }, { option_id: 'cash', label: '현금', icon: 'cash' }] },
-    ] },
+    ],
   },
   mcdonalds: {
     store: { name: '맥도날드 종로점', sub: '도보 4분 · 키오스크 주문', icon: Utensils, iconBg: '#C62828' },
-    basePrice: 0,
     device: {
       shape: 'freestanding_totem', orientation: 'portrait',
       theme: { bg: '#FFFBF2', card: '#FFFFFF', accent: '#C62828', text: '#2A211B', mute: '#9A8F84' },
     },
-    flow: { flow_id: 'mcdonalds_default_v1', steps: [
-      { step_id: 'menu', type: 'single_select', priceMode: 'absolute', visual: 'burger', title: '메뉴를 선택하세요', voice_text: '주문하실 버거를 골라주세요.',
-        options: [{ option_id: 'bigmac', label: '빅맥', price: 5700 }, { option_id: 'shanghai', label: '맥스파이시 상하이 버거', price: 5200 }, { option_id: 'bulgogi', label: '불고기버거', price: 3800 }] },
-      { step_id: 'set', type: 'binary_choice', priceMode: 'delta', title: '세트로 하시겠어요?', voice_text: '세트로 하시면 감자튀김과 음료가 같이 나와요.',
-        options: [{ option_id: 'set', label: '네, 세트로 주세요', price: 1900 }, { option_id: 'single', label: '아니요, 버거만 주세요', price: 0 }] },
-      { step_id: 'drink', type: 'single_select', priceMode: 'delta', visual: 'drink', condition: { step_id: 'set', option_id: 'set' }, title: '세트 음료를 선택하세요', voice_text: '세트에 포함된 음료를 골라주세요.',
-        options: [{ option_id: 'coke', label: '코카콜라', price: 0 }, { option_id: 'sprite', label: '스프라이트', price: 0 }, { option_id: 'ice_americano', label: '아이스 아메리카노', price: 300 }] },
+    dining_options: { step_id: 'dining', type: 'binary_choice', title: '매장에서 드실 건가요, 포장하시겠어요?', voice_text: '매장에서 드실지 포장하실지 선택해주세요.',
+      options: [{ option_id: 'dine_in', label: '매장에서 식사', price: 0 }, { option_id: 'takeaway', label: '포장', price: 0 }] },
+    menu: { menu_id: 'mcdonalds_default_v1', categories: [
+      { category_id: 'burgers', label: '버거', items: [
+        { item_id: 'bigmac', label: '빅맥', base_price: 5700, visual: 'burger', customize_steps: [
+          { step_id: 'set', type: 'binary_choice', priceMode: 'delta', title: '세트로 하시겠어요?', voice_text: '세트로 하시면 감자튀김과 음료가 같이 나와요.',
+            options: [{ option_id: 'set', label: '네, 세트로 주세요', price: 1900 }, { option_id: 'single', label: '아니요, 버거만 주세요', price: 0 }] },
+          { step_id: 'included_drink', type: 'single_select', priceMode: 'delta', visual: 'drink', condition: { step_id: 'set', option_id: 'set' },
+            title: '세트 음료를 선택하세요', voice_text: '세트에 포함된 음료를 골라주세요.',
+            options: [{ option_id: 'coke', label: '코카콜라', price: 0 }, { option_id: 'sprite', label: '스프라이트', price: 0 }, { option_id: 'ice_americano', label: '아이스 아메리카노', price: 300 }] },
+          { step_id: 'set_size', type: 'binary_choice', priceMode: 'delta', condition: { step_id: 'set', option_id: 'set' },
+            title: '세트 사이즈를 선택하세요', voice_text: '세트를 L사이즈로 업그레이드하시겠어요?',
+            options: [{ option_id: 'basic', label: '기본', price: 0 }, { option_id: 'large', label: 'L사이즈 업그레이드', price: 900 }] },
+        ] },
+        { item_id: 'shanghai', label: '맥스파이시 상하이 버거', base_price: 5200, visual: 'burger', customize_steps: [
+          { step_id: 'set', type: 'binary_choice', priceMode: 'delta', title: '세트로 하시겠어요?', voice_text: '세트로 하시면 감자튀김과 음료가 같이 나와요.',
+            options: [{ option_id: 'set', label: '네, 세트로 주세요', price: 1900 }, { option_id: 'single', label: '아니요, 버거만 주세요', price: 0 }] },
+          { step_id: 'included_drink', type: 'single_select', priceMode: 'delta', visual: 'drink', condition: { step_id: 'set', option_id: 'set' },
+            title: '세트 음료를 선택하세요', voice_text: '세트에 포함된 음료를 골라주세요.',
+            options: [{ option_id: 'coke', label: '코카콜라', price: 0 }, { option_id: 'sprite', label: '스프라이트', price: 0 }, { option_id: 'ice_americano', label: '아이스 아메리카노', price: 300 }] },
+          { step_id: 'set_size', type: 'binary_choice', priceMode: 'delta', condition: { step_id: 'set', option_id: 'set' },
+            title: '세트 사이즈를 선택하세요', voice_text: '세트를 L사이즈로 업그레이드하시겠어요?',
+            options: [{ option_id: 'basic', label: '기본', price: 0 }, { option_id: 'large', label: 'L사이즈 업그레이드', price: 900 }] },
+        ] },
+        { item_id: 'bulgogi', label: '불고기버거', base_price: 3800, visual: 'burger', customize_steps: [
+          { step_id: 'set', type: 'binary_choice', priceMode: 'delta', title: '세트로 하시겠어요?', voice_text: '세트로 하시면 감자튀김과 음료가 같이 나와요.',
+            options: [{ option_id: 'set', label: '네, 세트로 주세요', price: 1900 }, { option_id: 'single', label: '아니요, 버거만 주세요', price: 0 }] },
+          { step_id: 'included_drink', type: 'single_select', priceMode: 'delta', visual: 'drink', condition: { step_id: 'set', option_id: 'set' },
+            title: '세트 음료를 선택하세요', voice_text: '세트에 포함된 음료를 골라주세요.',
+            options: [{ option_id: 'coke', label: '코카콜라', price: 0 }, { option_id: 'sprite', label: '스프라이트', price: 0 }, { option_id: 'ice_americano', label: '아이스 아메리카노', price: 300 }] },
+          { step_id: 'set_size', type: 'binary_choice', priceMode: 'delta', condition: { step_id: 'set', option_id: 'set' },
+            title: '세트 사이즈를 선택하세요', voice_text: '세트를 L사이즈로 업그레이드하시겠어요?',
+            options: [{ option_id: 'basic', label: '기본', price: 0 }, { option_id: 'large', label: 'L사이즈 업그레이드', price: 900 }] },
+        ] },
+      ] },
+      { category_id: 'drinks', label: '음료', items: [
+        { item_id: 'coke_standalone', label: '코카콜라', base_price: 2000, visual: 'drink', customize_steps: [] },
+        { item_id: 'sprite_standalone', label: '스프라이트', base_price: 2000, visual: 'drink', customize_steps: [] },
+        { item_id: 'ice_americano_standalone', label: '아이스 아메리카노', base_price: 2300, visual: 'drink', customize_steps: [] },
+      ] },
+      { category_id: 'mcmorning', label: '맥모닝', items: [
+        { item_id: 'sausage_egg_mcmuffin', label: '소시지에그맥머핀', base_price: 4200, visual: 'burger', customize_steps: [] },
+        { item_id: 'big_breakfast', label: '빅브렉퍼스트', base_price: 6900, visual: 'burger', customize_steps: [] },
+      ] },
+      { category_id: 'sides_desserts', label: '사이드 & 디저트', items: [
+        { item_id: 'mcnuggets_6', label: '맥너겟 6조각', base_price: 4300, visual: 'burger', customize_steps: [] },
+        { item_id: 'hash_brown', label: '해쉬브라운', base_price: 1700, visual: 'burger', customize_steps: [] },
+        { item_id: 'snack_wrap', label: '스낵랩', base_price: 3900, visual: 'burger', customize_steps: [] },
+        { item_id: 'cheese_stick_mc', label: '치즈스틱', base_price: 2500, visual: 'burger', customize_steps: [] },
+        { item_id: 'soft_serve_cone', label: '아이스크림 콘', base_price: 1000, visual: 'drink', customize_steps: [] },
+        { item_id: 'mcflurry_oreo', label: '오레오 맥플러리', base_price: 3500, visual: 'drink', customize_steps: [] },
+        { item_id: 'affogato', label: '아포가토', base_price: 3800, visual: 'drink', customize_steps: [] },
+      ] },
+      { category_id: 'mccafe', label: '맥카페', items: [
+        { item_id: 'americano_mccafe', label: '아메리카노', base_price: 2500, visual: 'drink', customize_steps: [] },
+        { item_id: 'cafe_latte_mccafe', label: '카페라떼', base_price: 3200, visual: 'drink', customize_steps: [] },
+        { item_id: 'cappuccino_mccafe', label: '카푸치노', base_price: 3200, visual: 'drink', customize_steps: [] },
+      ] },
+    ] },
+    order_steps: [
       { step_id: 'confirm_order', type: 'confirm', title: '선택하신 내용을 확인해주세요', voice_text: '지금까지 고르신 내용이 맞는지 확인해주세요.' },
       { step_id: 'payment', type: 'payment_mock', title: '결제 방법을 선택하세요', voice_text: '결제 방법을 선택해주세요.',
         options: [{ option_id: 'card', label: '카드 삽입', icon: 'card' }, { option_id: 'phone', label: '휴대폰 태그', icon: 'phone' }, { option_id: 'cash', label: '현금', icon: 'cash' }] },
-    ] },
+    ],
   },
   lotteria: {
     store: { name: '롯데리아 신촌점', sub: '도보 2분 · 키오스크 주문', icon: Utensils, iconBg: '#D84315' },
-    basePrice: 0,
     device: {
       shape: 'countertop_tablet', orientation: 'landscape',
       theme: { bg: '#FBEFE4', card: '#FFFFFF', accent: '#D84315', text: '#2B211C', mute: '#B08D75' },
     },
-    flow: { flow_id: 'lotteria_default_v1', steps: [
-      { step_id: 'menu', type: 'single_select', priceMode: 'absolute', visual: 'burger', title: '메뉴를 선택하세요', voice_text: '주문하실 버거를 골라주세요.',
-        options: [{ option_id: 'classic_cheese', label: '클래식치즈버거', price: 5700 }, { option_id: 'ria_bulgogi', label: '리아 불고기', price: 5100 }, { option_id: 'ria_shrimp', label: '리아 새우', price: 5100 }] },
-      { step_id: 'set', type: 'binary_choice', priceMode: 'delta', title: '세트로 하시겠어요?', voice_text: '세트로 하시면 감자튀김과 음료가 같이 나와요.',
-        options: [{ option_id: 'set', label: '네, 세트로 주세요', price: 2000 }, { option_id: 'single', label: '아니요, 버거만 주세요', price: 0 }] },
-      { step_id: 'drink', type: 'single_select', priceMode: 'delta', visual: 'drink', condition: { step_id: 'set', option_id: 'set' }, title: '세트 음료를 선택하세요', voice_text: '세트에 포함된 음료를 골라주세요.',
-        options: [{ option_id: 'coke', label: '코카콜라', price: 0 }, { option_id: 'sprite', label: '스프라이트', price: 0 }, { option_id: 'ice_tea', label: '아이스티', price: 300 }] },
+    dining_options: { step_id: 'dining', type: 'binary_choice', title: '매장에서 드실 건가요, 포장하시겠어요?', voice_text: '매장에서 드실지 포장하실지 선택해주세요.',
+      options: [{ option_id: 'dine_in', label: '매장에서 식사', price: 0 }, { option_id: 'takeaway', label: '포장', price: 0 }] },
+    menu: { menu_id: 'lotteria_default_v1', categories: [
+      { category_id: 'burgers', label: '버거', items: [
+        { item_id: 'classic_cheese', label: '클래식치즈버거', base_price: 5700, visual: 'burger', customize_steps: [
+          { step_id: 'set', type: 'binary_choice', priceMode: 'delta', title: '세트로 하시겠어요?', voice_text: '세트로 하시면 감자튀김과 음료가 같이 나와요.',
+            options: [{ option_id: 'set', label: '네, 세트로 주세요', price: 2000 }, { option_id: 'single', label: '아니요, 버거만 주세요', price: 0 }] },
+          { step_id: 'included_side', type: 'single_select', priceMode: 'delta', condition: { step_id: 'set', option_id: 'set' },
+            title: '세트 사이드를 선택하세요', voice_text: '세트에 포함된 사이드를 골라주세요.',
+            options: [{ option_id: 'fries', label: '감자튀김', price: 0 }, { option_id: 'spicy_potato', label: '양념감자', price: 500 }, { option_id: 'ice_cream_swap', label: '아이스크림 교체', price: 800 }] },
+          { step_id: 'included_drink', type: 'single_select', priceMode: 'delta', visual: 'drink', condition: { step_id: 'set', option_id: 'set' },
+            title: '세트 음료를 선택하세요', voice_text: '세트에 포함된 음료를 골라주세요.',
+            options: [{ option_id: 'coke', label: '코카콜라', price: 0 }, { option_id: 'sprite', label: '스프라이트', price: 0 }, { option_id: 'ice_tea', label: '아이스티', price: 300 }] },
+        ] },
+        { item_id: 'ria_bulgogi', label: '리아 불고기', base_price: 5100, visual: 'burger', customize_steps: [
+          { step_id: 'set', type: 'binary_choice', priceMode: 'delta', title: '세트로 하시겠어요?', voice_text: '세트로 하시면 감자튀김과 음료가 같이 나와요.',
+            options: [{ option_id: 'set', label: '네, 세트로 주세요', price: 2000 }, { option_id: 'single', label: '아니요, 버거만 주세요', price: 0 }] },
+          { step_id: 'included_side', type: 'single_select', priceMode: 'delta', condition: { step_id: 'set', option_id: 'set' },
+            title: '세트 사이드를 선택하세요', voice_text: '세트에 포함된 사이드를 골라주세요.',
+            options: [{ option_id: 'fries', label: '감자튀김', price: 0 }, { option_id: 'spicy_potato', label: '양념감자', price: 500 }, { option_id: 'ice_cream_swap', label: '아이스크림 교체', price: 800 }] },
+          { step_id: 'included_drink', type: 'single_select', priceMode: 'delta', visual: 'drink', condition: { step_id: 'set', option_id: 'set' },
+            title: '세트 음료를 선택하세요', voice_text: '세트에 포함된 음료를 골라주세요.',
+            options: [{ option_id: 'coke', label: '코카콜라', price: 0 }, { option_id: 'sprite', label: '스프라이트', price: 0 }, { option_id: 'ice_tea', label: '아이스티', price: 300 }] },
+        ] },
+        { item_id: 'ria_shrimp', label: '리아 새우', base_price: 5100, visual: 'burger', customize_steps: [
+          { step_id: 'set', type: 'binary_choice', priceMode: 'delta', title: '세트로 하시겠어요?', voice_text: '세트로 하시면 감자튀김과 음료가 같이 나와요.',
+            options: [{ option_id: 'set', label: '네, 세트로 주세요', price: 2000 }, { option_id: 'single', label: '아니요, 버거만 주세요', price: 0 }] },
+          { step_id: 'included_side', type: 'single_select', priceMode: 'delta', condition: { step_id: 'set', option_id: 'set' },
+            title: '세트 사이드를 선택하세요', voice_text: '세트에 포함된 사이드를 골라주세요.',
+            options: [{ option_id: 'fries', label: '감자튀김', price: 0 }, { option_id: 'spicy_potato', label: '양념감자', price: 500 }, { option_id: 'ice_cream_swap', label: '아이스크림 교체', price: 800 }] },
+          { step_id: 'included_drink', type: 'single_select', priceMode: 'delta', visual: 'drink', condition: { step_id: 'set', option_id: 'set' },
+            title: '세트 음료를 선택하세요', voice_text: '세트에 포함된 음료를 골라주세요.',
+            options: [{ option_id: 'coke', label: '코카콜라', price: 0 }, { option_id: 'sprite', label: '스프라이트', price: 0 }, { option_id: 'ice_tea', label: '아이스티', price: 300 }] },
+        ] },
+      ] },
+      { category_id: 'chicken', label: '치킨', items: [
+        { item_id: 'chicken_leg', label: '치킨다리', base_price: 3200, customize_steps: [] },
+        { item_id: 'fire_wing', label: '화이어윙', base_price: 3200, customize_steps: [] },
+        { item_id: 'chicken_fillet', label: '치킨휠레', base_price: 3200, customize_steps: [] },
+        { item_id: 'chicken_leg_half_pack_set', label: '치킨다리 하프팩 세트', base_price: 13900, customize_steps: [] },
+        { item_id: 'boneless_chicken_full_pack', label: '순살치킨 풀팩(22조각)', base_price: 24900, customize_steps: [] },
+        { item_id: 'boneless_chicken_half_pack', label: '순살치킨 하프팩(11조각)', base_price: 13900, customize_steps: [] },
+      ] },
+      { category_id: 'drinks', label: '음료', items: [
+        { item_id: 'coke_standalone', label: '코카콜라', base_price: 2000, visual: 'drink', customize_steps: [] },
+        { item_id: 'sprite_standalone', label: '스프라이트', base_price: 2000, visual: 'drink', customize_steps: [] },
+        { item_id: 'ice_tea_standalone', label: '아이스티', base_price: 2300, visual: 'drink', customize_steps: [] },
+      ] },
+    ] },
+    order_steps: [
       { step_id: 'confirm_order', type: 'confirm', title: '선택하신 내용을 확인해주세요', voice_text: '지금까지 고르신 내용이 맞는지 확인해주세요.' },
       { step_id: 'payment', type: 'payment_mock', title: '결제 방법을 선택하세요', voice_text: '결제 방법을 선택해주세요.',
         options: [{ option_id: 'card', label: '카드 삽입', icon: 'card' }, { option_id: 'phone', label: '휴대폰 태그', icon: 'phone' }, { option_id: 'cash', label: '현금', icon: 'cash' }] },
-    ] },
+    ],
   },
   kfc: {
     store: { name: 'KFC 신림점', sub: '도보 6분 · 키오스크 주문', icon: Utensils, iconBg: '#E63946' },
-    basePrice: 0,
     device: {
       shape: 'freestanding_totem', orientation: 'portrait',
       theme: { bg: '#241012', card: '#3A1518', accent: '#E63946', text: '#FFFFFF', mute: '#C9A9A9' },
     },
-    flow: { flow_id: 'kfc_default_v1', steps: [
-      { step_id: 'menu', type: 'single_select', priceMode: 'absolute', visual: 'burger', title: '메뉴를 선택하세요', voice_text: '주문하실 버거를 골라주세요.',
-        options: [{ option_id: 'tower', label: '타워버거', price: 7900 }, { option_id: 'original_chicken', label: '오리지널 치킨버거', price: 4900 }, { option_id: 'zinger', label: '징거버거', price: 6700 }] },
-      { step_id: 'set', type: 'binary_choice', priceMode: 'delta', title: '세트로 하시겠어요?', voice_text: '세트로 하시면 사이드와 음료가 같이 나와요.',
-        options: [{ option_id: 'set', label: '네, 세트로 주세요', price: 2200 }, { option_id: 'single', label: '아니요, 버거만 주세요', price: 0 }] },
-      { step_id: 'drink', type: 'single_select', priceMode: 'delta', visual: 'drink', condition: { step_id: 'set', option_id: 'set' }, title: '세트 음료를 선택하세요', voice_text: '세트에 포함된 음료를 골라주세요.',
-        options: [{ option_id: 'coke', label: '코카콜라', price: 0 }, { option_id: 'sprite', label: '스프라이트', price: 0 }, { option_id: 'ice_americano', label: '아이스 아메리카노', price: 300 }] },
+    dining_options: { step_id: 'dining', type: 'binary_choice', title: '매장에서 드실 건가요, 포장하시겠어요?', voice_text: '매장에서 드실지 포장하실지 선택해주세요.',
+      options: [{ option_id: 'dine_in', label: '매장에서 식사', price: 0 }, { option_id: 'takeaway', label: '포장', price: 0 }] },
+    menu: { menu_id: 'kfc_default_v1', categories: [
+      { category_id: 'chicken', label: '치킨', items: [
+        { item_id: 'chicken_bucket_9', label: '치킨 버킷 9조각', base_price: 17900, customize_steps: [
+          { step_id: 'flavor_mix', type: 'multi_select', priceMode: 'delta', max_selections: 2, title: '맛을 선택하세요 (2개 선택 시 반반 구성)', voice_text: '원하는 치킨 맛을 골라주세요. 두 가지를 고르면 반반으로 구성됩니다.',
+            options: [{ option_id: 'original', label: '오리지널', price: 0 }, { option_id: 'hot_crispy', label: '핫크리스피', price: 0 }, { option_id: 'seasoned', label: '양념', price: 0 }, { option_id: 'black_label', label: '블랙라벨', price: 1000 }] },
+        ] },
+        { item_id: 'chicken_bucket_16', label: '치킨 버킷 16조각', base_price: 31900, customize_steps: [
+          { step_id: 'flavor_mix', type: 'multi_select', priceMode: 'delta', max_selections: 2, title: '맛을 선택하세요 (2개 선택 시 반반 구성)', voice_text: '원하는 치킨 맛을 골라주세요. 두 가지를 고르면 반반으로 구성됩니다.',
+            options: [{ option_id: 'original', label: '오리지널', price: 0 }, { option_id: 'hot_crispy', label: '핫크리스피', price: 0 }, { option_id: 'seasoned', label: '양념', price: 0 }, { option_id: 'black_label', label: '블랙라벨', price: 1000 }] },
+        ] },
+      ] },
+      { category_id: 'burgers', label: '버거', items: [
+        { item_id: 'tower', label: '타워버거', base_price: 7900, visual: 'burger', customize_steps: [
+          { step_id: 'set', type: 'binary_choice', priceMode: 'delta', title: '세트로 하시겠어요?', voice_text: '세트로 하시면 사이드와 음료가 같이 나와요.',
+            options: [{ option_id: 'set', label: '네, 세트로 주세요', price: 2200 }, { option_id: 'single', label: '아니요, 버거만 주세요', price: 0 }] },
+          { step_id: 'included_drink', type: 'single_select', priceMode: 'delta', visual: 'drink', condition: { step_id: 'set', option_id: 'set' },
+            title: '세트 음료를 선택하세요', voice_text: '세트에 포함된 음료를 골라주세요.',
+            options: [{ option_id: 'coke', label: '코카콜라', price: 0 }, { option_id: 'sprite', label: '스프라이트', price: 0 }, { option_id: 'ice_americano', label: '아이스 아메리카노', price: 300 }] },
+        ] },
+        { item_id: 'original_chicken', label: '오리지널 치킨버거', base_price: 4900, visual: 'burger', customize_steps: [
+          { step_id: 'set', type: 'binary_choice', priceMode: 'delta', title: '세트로 하시겠어요?', voice_text: '세트로 하시면 사이드와 음료가 같이 나와요.',
+            options: [{ option_id: 'set', label: '네, 세트로 주세요', price: 2200 }, { option_id: 'single', label: '아니요, 버거만 주세요', price: 0 }] },
+          { step_id: 'included_drink', type: 'single_select', priceMode: 'delta', visual: 'drink', condition: { step_id: 'set', option_id: 'set' },
+            title: '세트 음료를 선택하세요', voice_text: '세트에 포함된 음료를 골라주세요.',
+            options: [{ option_id: 'coke', label: '코카콜라', price: 0 }, { option_id: 'sprite', label: '스프라이트', price: 0 }, { option_id: 'ice_americano', label: '아이스 아메리카노', price: 300 }] },
+        ] },
+        { item_id: 'zinger', label: '징거버거', base_price: 6700, visual: 'burger', customize_steps: [
+          { step_id: 'set', type: 'binary_choice', priceMode: 'delta', title: '세트로 하시겠어요?', voice_text: '세트로 하시면 사이드와 음료가 같이 나와요.',
+            options: [{ option_id: 'set', label: '네, 세트로 주세요', price: 2200 }, { option_id: 'single', label: '아니요, 버거만 주세요', price: 0 }] },
+          { step_id: 'included_drink', type: 'single_select', priceMode: 'delta', visual: 'drink', condition: { step_id: 'set', option_id: 'set' },
+            title: '세트 음료를 선택하세요', voice_text: '세트에 포함된 음료를 골라주세요.',
+            options: [{ option_id: 'coke', label: '코카콜라', price: 0 }, { option_id: 'sprite', label: '스프라이트', price: 0 }, { option_id: 'ice_americano', label: '아이스 아메리카노', price: 300 }] },
+        ] },
+      ] },
+      { category_id: 'drinks', label: '음료', items: [
+        { item_id: 'coke_standalone', label: '코카콜라', base_price: 2000, visual: 'drink', customize_steps: [] },
+        { item_id: 'sprite_standalone', label: '스프라이트', base_price: 2000, visual: 'drink', customize_steps: [] },
+        { item_id: 'ice_americano_standalone', label: '아이스 아메리카노', base_price: 2300, visual: 'drink', customize_steps: [] },
+      ] },
+    ] },
+    order_steps: [
       { step_id: 'confirm_order', type: 'confirm', title: '선택하신 내용을 확인해주세요', voice_text: '지금까지 고르신 내용이 맞는지 확인해주세요.' },
       { step_id: 'payment', type: 'payment_mock', title: '결제 방법을 선택하세요', voice_text: '결제 방법을 선택해주세요.',
         options: [{ option_id: 'card', label: '카드 삽입', icon: 'card' }, { option_id: 'phone', label: '휴대폰 태그', icon: 'phone' }, { option_id: 'cash', label: '현금', icon: 'cash' }] },
-    ] },
+    ],
   },
 };
 
 const PHASES = ['매장선택', '메뉴선택', '주문확인', '결제하기', '결제완료'];
-function phaseIndexForType(type) {
-  if (type === 'confirm') return 2;
-  if (type === 'payment_mock') return 3;
-  return 1;
+function phaseIndexForScreen(screen) {
+  if (screen === 'diningOption') return 0;
+  if (screen === 'category' || screen === 'itemCustomize') return 1;
+  if (screen === 'cartReview') return 2;
+  if (screen === 'payment') return 3;
+  if (screen === 'complete') return 4;
+  return 0;
 }
-function stepVisible(s, sel) {
-  if (!s.condition) return true;
-  const chosen = sel[s.condition.step_id] || [];
-  return chosen.includes(s.condition.option_id);
+
+function getCategories(brandId) {
+  return CONTENT[brandId].menu.categories;
 }
-function visibleSteps(brandId, sel) {
-  return CONTENT[brandId].flow.steps.filter((s) => stepVisible(s, sel));
+function getItem(brandId, categoryId, itemId) {
+  const cat = getCategories(brandId).find((c) => c.category_id === categoryId);
+  return cat.items.find((i) => i.item_id === itemId);
 }
-function computeTotal(brandId, sel) {
-  const b = CONTENT[brandId];
-  let total = b.basePrice || 0;
-  visibleSteps(brandId, sel).forEach((s) => {
-    if (!s.options || s.type === 'payment_mock') return;
-    (sel[s.step_id] || []).forEach((oid) => {
+function itemStepVisible(step, itemSelections) {
+  if (!step.condition) return true;
+  const chosen = itemSelections[step.condition.step_id] || [];
+  return chosen.includes(step.condition.option_id);
+}
+function visibleCustomizeSteps(item, itemSelections) {
+  return item.customize_steps.filter((s) => itemStepVisible(s, itemSelections));
+}
+function isStepAtSelectionCap(step, currentSelection) {
+  return step.max_selections !== undefined && currentSelection.length >= step.max_selections;
+}
+function computeItemUnitPrice(item, itemSelections) {
+  let total = item.base_price || 0;
+  visibleCustomizeSteps(item, itemSelections).forEach((s) => {
+    (itemSelections[s.step_id] || []).forEach((oid) => {
       const opt = s.options.find((o) => o.option_id === oid);
       if (opt?.price) total += opt.price;
     });
   });
   return total;
+}
+function computeCartTotal(cart) {
+  return cart.reduce((sum, line) => sum + line.lineTotal, 0);
+}
+function selectionsEqual(a, b) {
+  const aKeys = Object.keys(a).sort();
+  const bKeys = Object.keys(b).sort();
+  if (aKeys.length !== bKeys.length) return false;
+  return aKeys.every((k, i) => {
+    if (bKeys[i] !== k) return false;
+    const av = a[k] || [];
+    const bv = b[k] || [];
+    return av.length === bv.length && av.every((v, j) => v === bv[j]);
+  });
+}
+function optionLabelsFor(item, itemSelections) {
+  const labels = [];
+  visibleCustomizeSteps(item, itemSelections).forEach((s) => {
+    (itemSelections[s.step_id] || []).forEach((oid) => {
+      const opt = s.options.find((o) => o.option_id === oid);
+      if (opt) labels.push(opt.label);
+    });
+  });
+  return labels;
+}
+function addCartLine(cart, brandId, { categoryId, itemId, customizeSelections }) {
+  const item = getItem(brandId, categoryId, itemId);
+  const unitPrice = computeItemUnitPrice(item, customizeSelections);
+  const optionLabels = optionLabelsFor(item, customizeSelections);
+  const existing = cart.find((l) => l.itemId === itemId && selectionsEqual(l.customizeSelections, customizeSelections));
+  if (existing) {
+    return cart.map((l) => (l === existing ? { ...l, qty: l.qty + 1, lineTotal: unitPrice * (l.qty + 1) } : l));
+  }
+  const cartItemId = `${itemId}_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
+  return [...cart, { cartItemId, categoryId, itemId, label: item.label, customizeSelections, optionLabels, unitPrice, qty: 1, lineTotal: unitPrice }];
+}
+function removeCartLine(cart, cartItemId) {
+  return cart.filter((l) => l.cartItemId !== cartItemId);
+}
+function cartSummaryLine(cart) {
+  return cart.map((l) => {
+    const opts = l.optionLabels.length ? `(${l.optionLabels.join(', ')})` : '';
+    const qty = l.qty > 1 ? ` x${l.qty}` : '';
+    return `${l.label}${opts}${qty}`;
+  }).join(' · ');
+}
+function priceLabel(step, price) {
+  if (step.priceMode === 'absolute') return `${price.toLocaleString()}원`;
+  return `+${price.toLocaleString()}원`;
 }
 
 const APP = {
@@ -240,6 +746,23 @@ function StepTracker({ theme, currentPhase }) {
   );
 }
 
+function CartBar({ theme, app, cart, mode, onReview }) {
+  if (cart.length === 0) return null;
+  const total = computeCartTotal(cart);
+  const barColors = mode === 'practice' ? { bg: theme.card, border: theme.mute + '33', text: theme.text, accent: theme.accent, mute: theme.mute } : { bg: app.surface, border: app.border, text: app.ink, accent: app.realtime, mute: app.inkSoft };
+  return (
+    <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0, background: barColors.bg, borderTop: `1px solid ${barColors.border}`, padding: '12px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
+      <div>
+        <div style={{ fontSize: 11, color: barColors.mute }}>담긴 메뉴 {cart.reduce((n, l) => n + l.qty, 0)}개</div>
+        <div style={{ fontSize: 16, fontWeight: 700, color: barColors.text }}>{total.toLocaleString()}원</div>
+      </div>
+      <button onClick={onReview} style={{ height: 44, padding: '0 18px', borderRadius: 10, background: barColors.accent, color: '#fff', border: 'none', fontSize: 14, fontWeight: 700, cursor: 'pointer' }}>
+        장바구니 보기
+      </button>
+    </div>
+  );
+}
+
 const STORAGE_SETTINGS_KEY = 'easyorder:settings';
 const STORAGE_ORDERS_KEY = 'easyorder:saved_orders';
 
@@ -248,8 +771,12 @@ export default function App() {
   const [screen, setScreen] = useState('home');
   const [brandId, setBrandId] = useState('subway');
   const [mode, setMode] = useState('practice');
-  const [stepIndex, setStepIndex] = useState(0);
-  const [selections, setSelections] = useState({});
+  const [diningOption, setDiningOption] = useState(null);
+  const [cart, setCart] = useState([]);
+  const [activeCategoryId, setActiveCategoryId] = useState(null);
+  const [activeItemId, setActiveItemId] = useState(null);
+  const [itemDraftSelections, setItemDraftSelections] = useState({});
+  const [customizeStepIndex, setCustomizeStepIndex] = useState(0);
   const [calledStaff, setCalledStaff] = useState(false);
   const [nickname, setNickname] = useState('');
   const [savedThisRun, setSavedThisRun] = useState(false);
@@ -283,7 +810,7 @@ export default function App() {
     const brand = CONTENT[brandId];
     const entry = {
       id: `${brandId}_${Date.now()}`, brandId, storeName: brand.store.name,
-      nickname: nickname.trim() || `${brand.store.name} 조합`, selections, createdAt: new Date().toISOString(),
+      nickname: nickname.trim() || `${brand.store.name} 조합`, cart, createdAt: new Date().toISOString(),
     };
     await persistOrders([entry, ...savedOrders]);
     setSavedThisRun(true);
@@ -293,54 +820,92 @@ export default function App() {
   const app = settings.highContrast ? APP_HC : APP;
   const fs = (px) => Math.round(px * settings.fontScale);
   const brand = CONTENT[brandId];
-  const steps = visibleSteps(brandId, selections);
   const device = brand.device;
   const theme = device.theme;
-  const step = steps[stepIndex];
-  const isLast = stepIndex === steps.length - 1;
-  const currentSelection = step ? (selections[step.step_id] || []) : [];
-  const isConfirmStep = step?.type === 'confirm';
-  const isPriceStep = step?.type === 'confirm' || step?.type === 'payment_mock';
-  const canProceed = isConfirmStep || currentSelection.length > 0;
-  const total = computeTotal(brandId, selections);
+  const total = computeCartTotal(cart);
 
-  function toggleOption(optId) {
-    setSelections((prev) => {
-      const cur = prev[step.step_id] || [];
-      if (step.type === 'multi_select') {
-        return { ...prev, [step.step_id]: cur.includes(optId) ? cur.filter((o) => o !== optId) : [...cur, optId] };
+  const activeItem = activeCategoryId && activeItemId ? getItem(brandId, activeCategoryId, activeItemId) : null;
+  const customizeSteps = activeItem ? visibleCustomizeSteps(activeItem, itemDraftSelections) : [];
+  const customizeStep = customizeSteps[customizeStepIndex];
+  const currentCustomizeSelection = customizeStep ? (itemDraftSelections[customizeStep.step_id] || []) : [];
+  const isLastCustomizeStep = customizeStepIndex === customizeSteps.length - 1;
+  const canProceedCustomize = currentCustomizeSelection.length > 0;
+  const itemUnitPricePreview = activeItem ? computeItemUnitPrice(activeItem, itemDraftSelections) : 0;
+
+  const paymentStep = brand.order_steps.find((s) => s.type === 'payment_mock');
+  const confirmStep = brand.order_steps.find((s) => s.type === 'confirm');
+
+  useEffect(() => {
+    if (customizeSteps.length > 0 && customizeStepIndex > customizeSteps.length - 1) {
+      setCustomizeStepIndex(customizeSteps.length - 1);
+    }
+  }, [customizeSteps.length, customizeStepIndex]);
+
+  function toggleCustomizeOption(optId) {
+    setItemDraftSelections((prev) => {
+      const cur = prev[customizeStep.step_id] || [];
+      if (customizeStep.type === 'multi_select') {
+        if (cur.includes(optId)) return { ...prev, [customizeStep.step_id]: cur.filter((o) => o !== optId) };
+        if (isStepAtSelectionCap(customizeStep, cur)) return prev;
+        return { ...prev, [customizeStep.step_id]: [...cur, optId] };
       }
-      return { ...prev, [step.step_id]: [optId] };
+      return { ...prev, [customizeStep.step_id]: [optId] };
     });
   }
-  function goNext() { isLast ? setScreen('complete') : setStepIndex((i) => i + 1); }
-  function goBack() { stepIndex === 0 ? setScreen('mode') : setStepIndex((i) => i - 1); }
-  function startFlow(m) {
-    setMode(m); setStepIndex(0); setSelections({}); setCalledStaff(false);
-    setSavedThisRun(false); setNickname(''); setScreen('flow');
-  }
-  function pickStore(id) { setBrandId(id); setScreen('mode'); }
 
-  function summaryLine(bId, sel) {
-    return visibleSteps(bId, sel).filter((s) => s.options)
-      .map((s) => (sel[s.step_id] || []).map((oid) => s.options.find((o) => o.option_id === oid)?.label).join(', '))
-      .filter(Boolean).join(' · ');
+  function pickMode(m) {
+    setMode(m); setCart([]); setDiningOption(null); setCalledStaff(false); setSavedThisRun(false); setNickname('');
+    setScreen('storePicker');
   }
-  function priceLabel(step, price) {
-    if (step.priceMode === 'absolute') return `${price.toLocaleString()}원`;
-    return `+${price.toLocaleString()}원`;
+  function pickStore(id) { setBrandId(id); setScreen('diningOption'); }
+  function pickDiningOption(optionId) { setDiningOption(optionId); setScreen('category'); }
+
+  function addItemToCart(categoryId, itemId, customizeSelections) {
+    setCart((prev) => addCartLine(prev, brandId, { categoryId, itemId, customizeSelections }));
+  }
+  function openItem(categoryId, itemId) {
+    const item = getItem(brandId, categoryId, itemId);
+    if (!item.customize_steps || item.customize_steps.length === 0) {
+      addItemToCart(categoryId, itemId, {});
+      return;
+    }
+    setActiveCategoryId(categoryId); setActiveItemId(itemId);
+    setItemDraftSelections({}); setCustomizeStepIndex(0);
+    setScreen('itemCustomize');
+  }
+  function goNextCustomizeStep() {
+    if (isLastCustomizeStep) {
+      addItemToCart(activeCategoryId, activeItemId, itemDraftSelections);
+      setActiveCategoryId(null); setActiveItemId(null); setItemDraftSelections({}); setCustomizeStepIndex(0);
+      setScreen('category');
+    } else {
+      setCustomizeStepIndex((i) => i + 1);
+    }
+  }
+  function exitItemCustomize() {
+    setActiveCategoryId(null); setActiveItemId(null); setItemDraftSelections({}); setCustomizeStepIndex(0);
+    setScreen('category');
+  }
+  function removeFromCart(cartItemId) { setCart((prev) => removeCartLine(prev, cartItemId)); }
+  function goToCartReview() { setScreen('cartReview'); }
+  function goToPayment() { setScreen('payment'); }
+  function completeOrder() { setScreen('complete'); }
+
+  function goBack() {
+    if (screen === 'storePicker') { setScreen('home'); return; }
+    if (screen === 'diningOption') { setScreen('storePicker'); return; }
+    if (screen === 'category') { setScreen('diningOption'); return; }
+    if (screen === 'itemCustomize') {
+      if (customizeStepIndex === 0) { exitItemCustomize(); } else { setCustomizeStepIndex((i) => i - 1); }
+      return;
+    }
+    if (screen === 'cartReview') { setScreen('category'); return; }
+    if (screen === 'payment') { setScreen('cartReview'); return; }
   }
 
   const font = { fontFamily: "'Poppins','Pretendard',-apple-system,sans-serif" };
-  const isImmersive = screen === 'flow' && mode === 'practice';
+  const isImmersive = mode === 'practice' && ['diningOption', 'itemCustomize', 'cartReview', 'payment'].includes(screen);
   const showTabs = ['home', 'orders', 'settings'].includes(screen);
-
-  // 방어 코드: condition으로 화면이 늘거나 줄 때 stepIndex가 범위를 벗어나지 않게 보정
-  useEffect(() => {
-    if (steps.length > 0 && stepIndex > steps.length - 1) {
-      setStepIndex(steps.length - 1);
-    }
-  }, [steps.length, stepIndex]);
 
   if (!ready) {
     return (
@@ -358,7 +923,32 @@ export default function App() {
 
           {screen === 'home' && (
             <div style={{ padding: 20 }}>
-              <div style={{ fontSize: fs(20), fontWeight: 600, color: app.ink, marginBottom: 16 }}>안녕하세요</div>
+              <div style={{ fontSize: fs(20), fontWeight: 600, color: app.ink, marginBottom: 4 }}>안녕하세요</div>
+              <div style={{ fontSize: fs(13), color: app.inkSoft, marginBottom: 28 }}>어떻게 도와드릴까요?</div>
+              <div onClick={() => pickMode('practice')} style={{ background: app.practiceSoft, borderRadius: 18, padding: 20, marginBottom: 14, cursor: 'pointer' }}>
+                <div style={{ fontSize: fs(16), fontWeight: 600, color: app.practice, marginBottom: 4 }}>연습하기</div>
+                <div style={{ fontSize: fs(13), color: app.ink }}>화면이 매장 기계와 똑같이 바뀌어요</div>
+              </div>
+              <div onClick={() => pickMode('realtime')} style={{ background: app.realtimeSoft, borderRadius: 18, padding: 20, cursor: 'pointer' }}>
+                <div style={{ fontSize: fs(16), fontWeight: 600, color: app.realtime, marginBottom: 4 }}>지금 매장이에요</div>
+                <div style={{ fontSize: fs(13), color: app.ink }}>키오스크 앞에서 실시간으로 안내받아요</div>
+              </div>
+              {savedOrders.length > 0 && (
+                <>
+                  <div style={{ fontSize: fs(13), color: app.inkSoft, margin: '20px 0 8px' }}>저장된 내 주문</div>
+                  <div onClick={() => setScreen('orders')} style={{ display: 'flex', alignItems: 'center', gap: 10, background: app.bg, borderRadius: 12, padding: 14, cursor: 'pointer', border: settings.highContrast ? '1px solid ' + app.border : 'none' }}>
+                    <Heart style={{ width: 18, height: 18, color: app.highlight }} />
+                    <span style={{ fontSize: fs(14), color: app.ink }}>{savedOrders[0].nickname} 외 {Math.max(savedOrders.length - 1, 0)}개</span>
+                  </div>
+                </>
+              )}
+            </div>
+          )}
+
+          {screen === 'storePicker' && (
+            <div style={{ padding: 20 }}>
+              <ArrowLeft onClick={goBack} style={{ width: 20, height: 20, color: app.inkSoft, cursor: 'pointer', marginBottom: 20 }} />
+              <div style={{ fontSize: fs(20), fontWeight: 600, color: app.ink, marginBottom: 16 }}>매장을 선택하세요</div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, background: app.bg, borderRadius: 12, padding: '12px 14px', marginBottom: 20, border: settings.highContrast ? '1px solid ' + app.border : 'none' }}>
                 <Search style={{ width: 18, height: 18, color: app.inkSoft }} />
                 <span style={{ fontSize: fs(14), color: app.inkSoft }}>매장 이름으로 검색</span>
@@ -380,103 +970,162 @@ export default function App() {
                   </div>
                 );
               })}
-              {savedOrders.length > 0 && (
-                <>
-                  <div style={{ fontSize: fs(13), color: app.inkSoft, margin: '8px 0' }}>저장된 내 주문</div>
-                  <div onClick={() => setScreen('orders')} style={{ display: 'flex', alignItems: 'center', gap: 10, background: app.bg, borderRadius: 12, padding: 14, cursor: 'pointer', border: settings.highContrast ? '1px solid ' + app.border : 'none' }}>
-                    <Heart style={{ width: 18, height: 18, color: app.highlight }} />
-                    <span style={{ fontSize: fs(14), color: app.ink }}>{savedOrders[0].nickname} 외 {Math.max(savedOrders.length - 1, 0)}개</span>
-                  </div>
-                </>
+            </div>
+          )}
+
+          {screen === 'diningOption' && mode === 'practice' && (
+            <div style={{ minHeight: 640, display: 'flex', flexDirection: 'column', background: theme.bg }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 4, paddingTop: 8 }}>
+                <ArrowLeft onClick={goBack} style={{ width: 18, height: 18, color: theme.mute, cursor: 'pointer', flexShrink: 0, marginLeft: 10 }} />
+                <div style={{ flex: 1 }}><StepTracker theme={theme} currentPhase={phaseIndexForScreen(screen)} /></div>
+              </div>
+              <div style={{ padding: '4px 20px 20px', flex: 1 }}>
+                <div style={{ fontSize: fs(19), fontWeight: 600, color: theme.text, marginBottom: 16 }}>{brand.dining_options.title}</div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                  {brand.dining_options.options.map((opt) => (
+                    <div key={opt.option_id} onClick={() => pickDiningOption(opt.option_id)}
+                      style={{ background: theme.card, borderRadius: 12, padding: '14px 16px', cursor: 'pointer', border: `1px solid ${theme.mute}44` }}>
+                      <span style={{ fontSize: fs(15), fontWeight: 500, color: theme.text }}>{opt.label}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              {settings.voiceOn && (
+                <div style={{ margin: '0 16px 16px', background: 'rgba(0,0,0,0.62)', color: '#fff', borderRadius: 12, padding: '10px 12px', display: 'flex', alignItems: 'center', gap: 8, fontSize: fs(12) }}>
+                  <Volume2 style={{ width: 15, height: 15, flexShrink: 0 }} />
+                  {brand.dining_options.voice_text}
+                </div>
               )}
             </div>
           )}
 
-          {screen === 'mode' && (
+          {screen === 'diningOption' && mode === 'realtime' && (
             <div style={{ padding: 20 }}>
-              <ArrowLeft onClick={() => setScreen('home')} style={{ width: 20, height: 20, color: app.inkSoft, cursor: 'pointer', marginBottom: 20 }} />
-              <div style={{ fontSize: fs(19), fontWeight: 600, color: app.ink, marginBottom: 4 }}>{brand.store.name}</div>
-              <div style={{ fontSize: fs(13), color: app.inkSoft, marginBottom: 28 }}>어떻게 도와드릴까요?</div>
-              <div onClick={() => startFlow('practice')} style={{ background: app.practiceSoft, borderRadius: 18, padding: 20, marginBottom: 14, cursor: 'pointer' }}>
-                <div style={{ fontSize: fs(16), fontWeight: 600, color: app.practice, marginBottom: 4 }}>연습하기</div>
-                <div style={{ fontSize: fs(13), color: app.ink }}>화면이 이 매장 기계와 똑같이 바뀌어요</div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14 }}>
+                <ArrowLeft onClick={goBack} style={{ width: 18, height: 18, color: app.inkSoft, cursor: 'pointer' }} />
+                <span style={{ fontSize: 11, fontWeight: 600, padding: '3px 9px', borderRadius: 6, background: app.realtimeSoft, color: app.realtime }}>실시간 안내</span>
               </div>
-              <div onClick={() => startFlow('realtime')} style={{ background: app.realtimeSoft, borderRadius: 18, padding: 20, cursor: 'pointer' }}>
-                <div style={{ fontSize: fs(16), fontWeight: 600, color: app.realtime, marginBottom: 4 }}>지금 매장이에요</div>
-                <div style={{ fontSize: fs(13), color: app.ink }}>키오스크 앞에서 실시간으로 안내받아요</div>
+              <div style={{ fontSize: fs(17), fontWeight: 600, color: app.ink, marginBottom: 16 }}>{brand.dining_options.title}</div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 14 }}>
+                {brand.dining_options.options.map((opt) => (
+                  <div key={opt.option_id} onClick={() => pickDiningOption(opt.option_id)}
+                    style={{ minHeight: 52, borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '8px 4px', fontSize: fs(14), fontWeight: 500, cursor: 'pointer',
+                      background: app.bg, border: '1px solid ' + app.border, color: app.ink }}>
+                    <span>{opt.label}</span>
+                  </div>
+                ))}
               </div>
+              {settings.voiceOn && (
+                <div style={{ background: app.bg, borderRadius: 12, padding: 12, display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <Volume2 style={{ width: 18, height: 18, color: app.realtime, flexShrink: 0 }} />
+                  <div style={{ fontSize: fs(12), color: app.inkSoft }}>{brand.dining_options.voice_text}</div>
+                </div>
+              )}
             </div>
           )}
 
-          {isImmersive && step && (
+          {screen === 'category' && mode === 'practice' && (
+            <div style={{ minHeight: 640, display: 'flex', flexDirection: 'column', background: theme.bg }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 4, paddingTop: 8 }}>
+                <ArrowLeft onClick={goBack} style={{ width: 18, height: 18, color: theme.mute, cursor: 'pointer', flexShrink: 0, marginLeft: 10 }} />
+                <div style={{ flex: 1 }}><StepTracker theme={theme} currentPhase={phaseIndexForScreen(screen)} /></div>
+              </div>
+              <div style={{ padding: '4px 20px 100px', flex: 1 }}>
+                <div style={{ fontSize: fs(19), fontWeight: 600, color: theme.text, marginBottom: 16 }}>{brand.store.name}</div>
+                {getCategories(brandId).map((cat) => (
+                  <div key={cat.category_id} style={{ marginBottom: 20 }}>
+                    <div style={{ fontSize: fs(14), fontWeight: 600, color: theme.text, marginBottom: 10 }}>{cat.label}</div>
+                    <div style={{ display: 'grid', gridTemplateColumns: device.orientation === 'landscape' ? '1fr 1fr 1fr' : '1fr 1fr', gap: 10 }}>
+                      {cat.items.map((item) => (
+                        <div key={item.item_id} onClick={() => openItem(cat.category_id, item.item_id)}
+                          style={{ background: theme.card, borderRadius: 12, padding: 10, textAlign: 'center', cursor: 'pointer', border: `1px solid ${theme.mute}33` }}>
+                          <div style={{ width: '100%', aspectRatio: '1/1', borderRadius: 8, marginBottom: 8, background: theme.mute + '18', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            <FoodIcon visual={item.visual} style={{ width: 26, height: 26, color: theme.mute }} />
+                          </div>
+                          <div style={{ fontSize: fs(12), fontWeight: 600, color: theme.text }}>{item.label}</div>
+                          <div style={{ fontSize: fs(10), color: theme.mute, marginTop: 2 }}>{item.base_price.toLocaleString()}원</div>
+                          {item.customize_steps.length === 0 && (
+                            <div style={{ marginTop: 6, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 4, color: theme.accent, fontSize: fs(10), fontWeight: 700 }}>
+                              <Plus style={{ width: 11, height: 11 }} /> 담기
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <CartBar theme={theme} app={app} cart={cart} mode={mode} onReview={goToCartReview} />
+            </div>
+          )}
+
+          {screen === 'category' && mode === 'realtime' && (
+            <div style={{ padding: 20 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14 }}>
+                <ArrowLeft onClick={goBack} style={{ width: 18, height: 18, color: app.inkSoft, cursor: 'pointer' }} />
+                <span style={{ fontSize: 11, fontWeight: 600, padding: '3px 9px', borderRadius: 6, background: app.realtimeSoft, color: app.realtime }}>실시간 안내</span>
+              </div>
+              <div style={{ fontSize: fs(17), fontWeight: 600, color: app.ink, marginBottom: 4 }}>{brand.store.name}</div>
+              <div style={{ fontSize: fs(12), color: app.inkSoft, marginBottom: 16 }}>지금 눈앞의 기계에서 메뉴를 고르고, 여기서도 같이 담아주세요</div>
+              {getCategories(brandId).map((cat) => (
+                <div key={cat.category_id} style={{ marginBottom: 16 }}>
+                  <div style={{ fontSize: fs(13), fontWeight: 600, color: app.ink, marginBottom: 8 }}>{cat.label}</div>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                    {cat.items.map((item) => (
+                      <div key={item.item_id} onClick={() => openItem(cat.category_id, item.item_id)}
+                        style={{ minWidth: '47%', flex: 1, borderRadius: 12, padding: '10px 12px', background: app.bg, border: '1px solid ' + app.border, cursor: 'pointer' }}>
+                        <div style={{ fontSize: fs(13), fontWeight: 500, color: app.ink }}>{item.label}</div>
+                        <div style={{ fontSize: fs(11), color: app.inkSoft }}>{item.base_price.toLocaleString()}원</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+              <div style={{ height: cart.length > 0 ? 70 : 0 }} />
+              <CartBar theme={theme} app={app} cart={cart} mode={mode} onReview={goToCartReview} />
+            </div>
+          )}
+
+          {screen === 'itemCustomize' && mode === 'practice' && activeItem && customizeStep && (
             <div style={{ minHeight: 640, display: 'flex', flexDirection: 'column' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 4, paddingTop: 8 }}>
-                <ArrowLeft onClick={() => setScreen('mode')} style={{ width: 18, height: 18, color: theme.mute, cursor: 'pointer', flexShrink: 0, marginLeft: 10 }} />
-                <div style={{ flex: 1 }}><StepTracker theme={theme} currentPhase={phaseIndexForType(step.type)} /></div>
+                <ArrowLeft onClick={exitItemCustomize} style={{ width: 18, height: 18, color: theme.mute, cursor: 'pointer', flexShrink: 0, marginLeft: 10 }} />
+                <div style={{ flex: 1 }}><StepTracker theme={theme} currentPhase={phaseIndexForScreen(screen)} /></div>
               </div>
 
               <div style={{ padding: '4px 20px 190px', flex: 1 }}>
-                <div style={{ fontSize: fs(19), fontWeight: 600, color: theme.text, marginBottom: 16 }}>{step.title}</div>
+                <div style={{ fontSize: fs(13), color: theme.mute, marginBottom: 4 }}>{activeItem.label}</div>
+                <div style={{ fontSize: fs(19), fontWeight: 600, color: theme.text, marginBottom: 4 }}>{customizeStep.title}</div>
+                {customizeStep.max_selections !== undefined && (
+                  <div style={{ fontSize: fs(12), color: theme.mute, marginBottom: 12 }}>{currentCustomizeSelection.length}/{customizeStep.max_selections} 선택</div>
+                )}
 
-                {step.type === 'confirm' ? (
-                  <div style={{ background: theme.card, borderRadius: 14, padding: 16, display: 'flex', flexDirection: 'column', gap: 10 }}>
-                    {steps.filter((s) => s.options && s.step_id !== step.step_id).map((s) => {
-                      const ids = selections[s.step_id] || [];
-                      if (ids.length === 0) return null;
-                      return ids.map((oid) => {
-                        const opt = s.options.find((o) => o.option_id === oid);
-                        if (!opt) return null;
-                        return (
-                          <div key={s.step_id + oid} style={{ display: 'flex', justifyContent: 'space-between', gap: 12 }}>
-                            <span style={{ fontSize: fs(14), color: theme.text }}>{opt.label}</span>
-                            <span style={{ fontSize: fs(13), color: theme.mute }}>{priceLabel(s, opt.price || 0)}</span>
-                          </div>
-                        );
-                      });
-                    })}
-                  </div>
-                ) : step.type === 'payment_mock' ? (
-                  <>
-                    <div style={{ fontSize: fs(13), color: theme.mute, marginBottom: 14 }}>결제 금액 <b style={{ color: theme.text }}>{total.toLocaleString()}원</b></div>
-                    <div style={{ display: 'grid', gridTemplateColumns: device.orientation === 'landscape' ? '1fr 1fr' : '1fr', gap: 10 }}>
-                      {step.options.map((opt) => {
-                        const selected = currentSelection.includes(opt.option_id);
-                        return (
-                          <div key={opt.option_id} onClick={() => toggleOption(opt.option_id)}
-                            style={{ background: selected ? theme.accent : theme.card, borderRadius: 12, padding: '14px 16px', display: 'flex', alignItems: 'center', gap: 12, cursor: 'pointer', border: selected ? 'none' : `1px solid ${theme.mute}44` }}>
-                            <span style={{ color: selected ? '#fff' : theme.text }}><PaymentIcon icon={opt.icon} style={{ width: 20, height: 20 }} /></span>
-                            <span style={{ fontSize: fs(15), fontWeight: selected ? 600 : 500, color: selected ? '#fff' : theme.text }}>{opt.label}</span>
-                          </div>
-                        );
-                      })}
-                    </div>
-                    <div style={{ marginTop: 12, fontSize: fs(11), color: theme.mute }}>연습 모드입니다. 실제 결제는 진행되지 않아요.</div>
-                  </>
-                ) : step.type === 'binary_choice' ? (
+                {customizeStep.type === 'binary_choice' ? (
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-                    {step.options.map((opt) => {
-                      const selected = currentSelection.includes(opt.option_id);
+                    {customizeStep.options.map((opt) => {
+                      const selected = currentCustomizeSelection.includes(opt.option_id);
                       return (
-                        <div key={opt.option_id} onClick={() => toggleOption(opt.option_id)}
+                        <div key={opt.option_id} onClick={() => toggleCustomizeOption(opt.option_id)}
                           style={{ background: selected ? theme.accent : theme.card, borderRadius: 12, padding: '14px 16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer', border: selected ? 'none' : `1px solid ${theme.mute}44` }}>
                           <span style={{ fontSize: fs(15), fontWeight: selected ? 600 : 500, color: selected ? '#fff' : theme.text }}>{opt.label}</span>
-                          {opt.price > 0 && <span style={{ fontSize: fs(12), color: selected ? '#fff' : theme.mute }}>{priceLabel(step, opt.price)}</span>}
+                          {opt.price > 0 && <span style={{ fontSize: fs(12), color: selected ? '#fff' : theme.mute }}>{priceLabel(customizeStep, opt.price)}</span>}
                         </div>
                       );
                     })}
                   </div>
                 ) : (
-                  <div style={{ display: 'grid', gridTemplateColumns: device.orientation === 'landscape' ? '1fr 1fr 1fr' : (step.options.length > 3 ? '1fr 1fr' : '1fr 1fr 1fr'), gap: 10 }}>
-                    {step.options.map((opt) => {
-                      const selected = currentSelection.includes(opt.option_id);
+                  <div style={{ display: 'grid', gridTemplateColumns: device.orientation === 'landscape' ? '1fr 1fr 1fr' : (customizeStep.options.length > 3 ? '1fr 1fr' : '1fr 1fr 1fr'), gap: 10 }}>
+                    {customizeStep.options.map((opt) => {
+                      const selected = currentCustomizeSelection.includes(opt.option_id);
+                      const disabledByCap = !selected && isStepAtSelectionCap(customizeStep, currentCustomizeSelection);
                       return (
-                        <div key={opt.option_id} onClick={() => toggleOption(opt.option_id)}
-                          style={{ background: theme.card, borderRadius: 12, padding: 10, textAlign: 'center', cursor: 'pointer', border: selected ? `2px solid ${theme.accent}` : `1px solid ${theme.mute}33` }}>
+                        <div key={opt.option_id} onClick={() => !disabledByCap && toggleCustomizeOption(opt.option_id)}
+                          style={{ background: theme.card, borderRadius: 12, padding: 10, textAlign: 'center', cursor: disabledByCap ? 'not-allowed' : 'pointer', opacity: disabledByCap ? 0.4 : 1, border: selected ? `2px solid ${theme.accent}` : `1px solid ${theme.mute}33` }}>
                           <div style={{ width: '100%', aspectRatio: '1/1', borderRadius: 8, marginBottom: 8, background: selected ? theme.accent + '22' : theme.mute + '18', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                            <FoodIcon visual={step.visual} style={{ width: 26, height: 26, color: selected ? theme.accent : theme.mute }} />
+                            <FoodIcon visual={customizeStep.visual} style={{ width: 26, height: 26, color: selected ? theme.accent : theme.mute }} />
                           </div>
                           <div style={{ fontSize: fs(12), fontWeight: selected ? 700 : 500, color: theme.text }}>{opt.label}</div>
-                          <div style={{ fontSize: fs(10), color: selected ? theme.accent : theme.mute, marginTop: 2 }}>{priceLabel(step, opt.price || 0)}</div>
+                          <div style={{ fontSize: fs(10), color: selected ? theme.accent : theme.mute, marginTop: 2 }}>{priceLabel(customizeStep, opt.price || 0)}</div>
                         </div>
                       );
                     })}
@@ -485,87 +1134,70 @@ export default function App() {
               </div>
 
               {settings.voiceOn && (
-                <div style={{ position: 'absolute', left: 16, right: 16, bottom: isPriceStep ? 158 : 118, background: 'rgba(0,0,0,0.62)', color: '#fff', borderRadius: 12, padding: '10px 12px', display: 'flex', alignItems: 'center', gap: 8, fontSize: fs(12) }}>
+                <div style={{ position: 'absolute', left: 16, right: 16, bottom: 118, background: 'rgba(0,0,0,0.62)', color: '#fff', borderRadius: 12, padding: '10px 12px', display: 'flex', alignItems: 'center', gap: 8, fontSize: fs(12) }}>
                   <Volume2 style={{ width: 15, height: 15, flexShrink: 0 }} />
-                  {step.voice_text}
+                  {customizeStep.voice_text}
                 </div>
               )}
 
               <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0 }}>
-                {isPriceStep && (
-                  <div style={{ background: theme.card, borderTop: `1px solid ${theme.mute}33`, padding: '10px 16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <span style={{ fontSize: fs(11), color: theme.mute }}>주문 금액 · 수량 1</span>
-                    <span style={{ fontSize: fs(17), fontWeight: 700, color: theme.text }}>{total.toLocaleString()}원</span>
-                  </div>
-                )}
+                <div style={{ background: theme.card, borderTop: `1px solid ${theme.mute}33`, padding: '10px 16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span style={{ fontSize: fs(11), color: theme.mute }}>이 메뉴 가격</span>
+                  <span style={{ fontSize: fs(17), fontWeight: 700, color: theme.text }}>{itemUnitPricePreview.toLocaleString()}원</span>
+                </div>
                 <div style={{ display: 'flex' }}>
-                  <button onClick={() => { setStepIndex(0); setSelections({}); }}
+                  <button onClick={() => { setCustomizeStepIndex(0); setItemDraftSelections({}); }}
                     style={{ flex: 1, height: 58, background: theme.mute + '22', color: theme.text, border: 'none', fontSize: fs(13), fontWeight: 600, cursor: 'pointer' }}>취소</button>
-                  <button onClick={() => setStepIndex((i) => Math.max(0, i - 1))} disabled={stepIndex === 0}
-                    style={{ flex: 1, height: 58, background: 'transparent', color: theme.text, border: 'none', borderLeft: `1px solid ${theme.mute}33`, fontSize: fs(13), fontWeight: 600, cursor: stepIndex === 0 ? 'not-allowed' : 'pointer', opacity: stepIndex === 0 ? 0.4 : 1 }}>이전</button>
-                  <button onClick={goNext} disabled={!canProceed}
-                    style={{ flex: 2, height: 58, background: canProceed ? theme.accent : theme.mute, color: '#fff', border: 'none', fontSize: fs(16), fontWeight: 700, cursor: canProceed ? 'pointer' : 'not-allowed' }}>
-                    {isLast ? '연습 완료' : (isConfirmStep ? '결제하러 가기' : '다음')}
+                  <button onClick={() => setCustomizeStepIndex((i) => Math.max(0, i - 1))} disabled={customizeStepIndex === 0}
+                    style={{ flex: 1, height: 58, background: 'transparent', color: theme.text, border: 'none', borderLeft: `1px solid ${theme.mute}33`, fontSize: fs(13), fontWeight: 600, cursor: customizeStepIndex === 0 ? 'not-allowed' : 'pointer', opacity: customizeStepIndex === 0 ? 0.4 : 1 }}>이전</button>
+                  <button onClick={goNextCustomizeStep} disabled={!canProceedCustomize}
+                    style={{ flex: 2, height: 58, background: canProceedCustomize ? theme.accent : theme.mute, color: '#fff', border: 'none', fontSize: fs(16), fontWeight: 700, cursor: canProceedCustomize ? 'pointer' : 'not-allowed' }}>
+                    {isLastCustomizeStep ? '장바구니에 담기' : '다음'}
                   </button>
                 </div>
               </div>
             </div>
           )}
 
-          {screen === 'flow' && mode === 'realtime' && step && (
+          {screen === 'itemCustomize' && mode === 'realtime' && activeItem && customizeStep && (
             <div style={{ padding: 20 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14 }}>
                 <ArrowLeft onClick={goBack} style={{ width: 18, height: 18, color: app.inkSoft, cursor: 'pointer' }} />
                 <span style={{ fontSize: 11, fontWeight: 600, padding: '3px 9px', borderRadius: 6, background: app.realtimeSoft, color: app.realtime }}>실시간 안내</span>
                 <div style={{ flex: 1, height: 6, background: app.bg, borderRadius: 3, overflow: 'hidden' }}>
-                  <div style={{ width: `${((stepIndex + 1) / steps.length) * 100}%`, height: '100%', background: app.realtime }} />
+                  <div style={{ width: `${((customizeStepIndex + 1) / customizeSteps.length) * 100}%`, height: '100%', background: app.realtime }} />
                 </div>
-                <span style={{ fontSize: 11, color: app.inkSoft }}>{stepIndex + 1}/{steps.length}</span>
+                <span style={{ fontSize: 11, color: app.inkSoft }}>{customizeStepIndex + 1}/{customizeSteps.length}</span>
               </div>
 
               <div style={{ marginBottom: 16 }}>
-                <div style={{ fontSize: fs(17), fontWeight: 600, color: app.ink, marginBottom: 4 }}>{step.title}</div>
-                {step.type === 'confirm' ? (
-                  <div style={{ background: app.bg, borderRadius: 12, padding: 14, display: 'flex', flexDirection: 'column', gap: 8, marginTop: 10 }}>
-                    {steps.filter((s) => s.options && s.step_id !== step.step_id).flatMap((s) => (selections[s.step_id] || []).map((oid) => {
-                      const opt = s.options.find((o) => o.option_id === oid);
-                      if (!opt) return null;
-                      return (
-                        <div key={s.step_id + oid} style={{ display: 'flex', justifyContent: 'space-between', fontSize: fs(13) }}>
-                          <span style={{ color: app.ink, fontWeight: 500 }}>{opt.label}</span>
-                          <span style={{ color: app.inkSoft }}>{priceLabel(s, opt.price || 0)}</span>
-                        </div>
-                      );
-                    }))}
-                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: fs(14), fontWeight: 700, borderTop: '1px solid ' + app.border, paddingTop: 8, marginTop: 2 }}>
-                      <span style={{ color: app.ink }}>합계</span><span style={{ color: app.ink }}>{total.toLocaleString()}원</span>
-                    </div>
-                  </div>
-                ) : (
-                  <>
-                    <div style={{ fontSize: fs(12), color: app.inkSoft, margin: '4px 0 14px' }}>지금 눈앞의 기계 화면에서 골라주세요</div>
-                    <div style={{ display: 'grid', gridTemplateColumns: step.type === 'binary_choice' ? '1fr' : '1fr 1fr', gap: 10 }}>
-                      {step.options.map((opt) => {
-                        const selected = currentSelection.includes(opt.option_id);
-                        return (
-                          <div key={opt.option_id} onClick={() => toggleOption(opt.option_id)}
-                            style={{ minHeight: 52, borderRadius: 12, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '8px 4px', fontSize: fs(14), fontWeight: 500, cursor: 'pointer',
-                              background: selected ? app.realtimeSoft : app.bg, border: selected ? '2px solid ' + app.realtime : '1px solid ' + app.border,
-                              color: selected ? app.realtime : app.ink }}>
-                            <span>{opt.label}</span>
-                            {(opt.price || 0) > 0 && <span style={{ fontSize: fs(10), opacity: 0.8 }}>{priceLabel(step, opt.price)}</span>}
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </>
+                <div style={{ fontSize: fs(13), color: app.inkSoft, marginBottom: 2 }}>{activeItem.label}</div>
+                <div style={{ fontSize: fs(17), fontWeight: 600, color: app.ink, marginBottom: 4 }}>{customizeStep.title}</div>
+                <div style={{ fontSize: fs(12), color: app.inkSoft, margin: '4px 0 4px' }}>지금 눈앞의 기계 화면에서 골라주세요</div>
+                {customizeStep.max_selections !== undefined && (
+                  <div style={{ fontSize: fs(12), color: app.inkSoft, marginBottom: 10 }}>{currentCustomizeSelection.length}/{customizeStep.max_selections} 선택</div>
                 )}
+                <div style={{ display: 'grid', gridTemplateColumns: customizeStep.type === 'binary_choice' ? '1fr' : '1fr 1fr', gap: 10 }}>
+                  {customizeStep.options.map((opt) => {
+                    const selected = currentCustomizeSelection.includes(opt.option_id);
+                    const disabledByCap = !selected && isStepAtSelectionCap(customizeStep, currentCustomizeSelection);
+                    return (
+                      <div key={opt.option_id} onClick={() => !disabledByCap && toggleCustomizeOption(opt.option_id)}
+                        style={{ minHeight: 52, borderRadius: 12, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '8px 4px', fontSize: fs(14), fontWeight: 500, cursor: disabledByCap ? 'not-allowed' : 'pointer', opacity: disabledByCap ? 0.4 : 1,
+                          background: selected ? app.realtimeSoft : app.bg, border: selected ? '2px solid ' + app.realtime : '1px solid ' + app.border,
+                          color: selected ? app.realtime : app.ink }}>
+                        <span>{opt.label}</span>
+                        {(opt.price || 0) > 0 && <span style={{ fontSize: fs(10), opacity: 0.8 }}>{priceLabel(customizeStep, opt.price)}</span>}
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
 
               {settings.voiceOn && (
                 <div style={{ background: app.bg, borderRadius: 12, padding: 12, display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
                   <Volume2 style={{ width: 18, height: 18, color: app.realtime, flexShrink: 0 }} />
-                  <div style={{ fontSize: fs(12), color: app.inkSoft }}>{step.voice_text}</div>
+                  <div style={{ fontSize: fs(12), color: app.inkSoft }}>{customizeStep.voice_text}</div>
                 </div>
               )}
 
@@ -583,9 +1215,166 @@ export default function App() {
                 </div>
               )}
 
-              <Button app={app} variant="realtime" disabled={!canProceed} onClick={goNext} style={{ width: '100%' }}>
-                {isLast ? '완료' : (isConfirmStep ? '결제하러 가기' : '다음')}
+              <Button app={app} variant="realtime" disabled={!canProceedCustomize} onClick={goNextCustomizeStep} style={{ width: '100%' }}>
+                {isLastCustomizeStep ? '장바구니에 담기' : '다음'}
               </Button>
+            </div>
+          )}
+
+          {screen === 'cartReview' && mode === 'practice' && (
+            <div style={{ minHeight: 640, display: 'flex', flexDirection: 'column', background: theme.bg }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 4, paddingTop: 8 }}>
+                <ArrowLeft onClick={goBack} style={{ width: 18, height: 18, color: theme.mute, cursor: 'pointer', flexShrink: 0, marginLeft: 10 }} />
+                <div style={{ flex: 1 }}><StepTracker theme={theme} currentPhase={phaseIndexForScreen(screen)} /></div>
+              </div>
+              <div style={{ padding: '4px 20px 190px', flex: 1 }}>
+                <div style={{ fontSize: fs(19), fontWeight: 600, color: theme.text, marginBottom: 16 }}>{confirmStep.title}</div>
+                {cart.length === 0 ? (
+                  <div style={{ fontSize: fs(13), color: theme.mute, textAlign: 'center', padding: '40px 0' }}>담긴 메뉴가 없어요.</div>
+                ) : (
+                  <div style={{ background: theme.card, borderRadius: 14, padding: 16, display: 'flex', flexDirection: 'column', gap: 14 }}>
+                    {cart.map((line) => (
+                      <div key={line.cartItemId} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 10 }}>
+                        <div style={{ flex: 1 }}>
+                          <div style={{ fontSize: fs(14), fontWeight: 600, color: theme.text }}>{line.label}{line.qty > 1 ? ` x${line.qty}` : ''}</div>
+                          {line.optionLabels.length > 0 && <div style={{ fontSize: fs(12), color: theme.mute }}>{line.optionLabels.join(', ')}</div>}
+                        </div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                          <span style={{ fontSize: fs(13), color: theme.text }}>{line.lineTotal.toLocaleString()}원</span>
+                          <Trash2 onClick={() => removeFromCart(line.cartItemId)} style={{ width: 16, height: 16, color: theme.mute, cursor: 'pointer' }} />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+              {settings.voiceOn && (
+                <div style={{ position: 'absolute', left: 16, right: 16, bottom: 158, background: 'rgba(0,0,0,0.62)', color: '#fff', borderRadius: 12, padding: '10px 12px', display: 'flex', alignItems: 'center', gap: 8, fontSize: fs(12) }}>
+                  <Volume2 style={{ width: 15, height: 15, flexShrink: 0 }} />
+                  {confirmStep.voice_text}
+                </div>
+              )}
+              <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0 }}>
+                <div style={{ background: theme.card, borderTop: `1px solid ${theme.mute}33`, padding: '10px 16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span style={{ fontSize: fs(11), color: theme.mute }}>주문 금액</span>
+                  <span style={{ fontSize: fs(17), fontWeight: 700, color: theme.text }}>{total.toLocaleString()}원</span>
+                </div>
+                <div style={{ display: 'flex' }}>
+                  <button onClick={() => setScreen('category')}
+                    style={{ flex: 1, height: 58, background: theme.mute + '22', color: theme.text, border: 'none', fontSize: fs(13), fontWeight: 600, cursor: 'pointer' }}>메뉴 더 담기</button>
+                  <button onClick={goToPayment} disabled={cart.length === 0}
+                    style={{ flex: 2, height: 58, background: cart.length === 0 ? theme.mute : theme.accent, color: '#fff', border: 'none', fontSize: fs(16), fontWeight: 700, cursor: cart.length === 0 ? 'not-allowed' : 'pointer' }}>
+                    결제하러 가기
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {screen === 'cartReview' && mode === 'realtime' && (
+            <div style={{ padding: 20 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14 }}>
+                <ArrowLeft onClick={goBack} style={{ width: 18, height: 18, color: app.inkSoft, cursor: 'pointer' }} />
+                <span style={{ fontSize: 11, fontWeight: 600, padding: '3px 9px', borderRadius: 6, background: app.realtimeSoft, color: app.realtime }}>실시간 안내</span>
+              </div>
+              <div style={{ fontSize: fs(17), fontWeight: 600, color: app.ink, marginBottom: 12 }}>{confirmStep.title}</div>
+              {cart.length === 0 ? (
+                <div style={{ fontSize: fs(13), color: app.inkSoft, textAlign: 'center', padding: '30px 0' }}>담긴 메뉴가 없어요.</div>
+              ) : (
+                <div style={{ background: app.bg, borderRadius: 12, padding: 14, display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 14 }}>
+                  {cart.map((line) => (
+                    <div key={line.cartItemId} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                      <div>
+                        <div style={{ fontSize: fs(13), fontWeight: 500, color: app.ink }}>{line.label}{line.qty > 1 ? ` x${line.qty}` : ''}</div>
+                        {line.optionLabels.length > 0 && <div style={{ fontSize: fs(11), color: app.inkSoft }}>{line.optionLabels.join(', ')}</div>}
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                        <span style={{ fontSize: fs(13), color: app.inkSoft }}>{line.lineTotal.toLocaleString()}원</span>
+                        <Trash2 onClick={() => removeFromCart(line.cartItemId)} style={{ width: 15, height: 15, color: app.inkSoft, cursor: 'pointer' }} />
+                      </div>
+                    </div>
+                  ))}
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: fs(14), fontWeight: 700, borderTop: '1px solid ' + app.border, paddingTop: 8, marginTop: 2 }}>
+                    <span style={{ color: app.ink }}>합계</span><span style={{ color: app.ink }}>{total.toLocaleString()}원</span>
+                  </div>
+                </div>
+              )}
+              <div style={{ display: 'flex', gap: 8 }}>
+                <Button app={app} variant="ghost" style={{ flex: 1, border: '1px solid ' + app.border }} onClick={() => setScreen('category')}>
+                  메뉴 더 담기
+                </Button>
+                <Button app={app} variant="realtime" disabled={cart.length === 0} style={{ flex: 2 }} onClick={goToPayment}>
+                  결제하러 가기
+                </Button>
+              </div>
+            </div>
+          )}
+
+          {screen === 'payment' && mode === 'practice' && paymentStep && (
+            <div style={{ minHeight: 640, display: 'flex', flexDirection: 'column' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 4, paddingTop: 8 }}>
+                <ArrowLeft onClick={goBack} style={{ width: 18, height: 18, color: theme.mute, cursor: 'pointer', flexShrink: 0, marginLeft: 10 }} />
+                <div style={{ flex: 1 }}><StepTracker theme={theme} currentPhase={phaseIndexForScreen(screen)} /></div>
+              </div>
+              <div style={{ padding: '4px 20px 100px', flex: 1 }}>
+                <div style={{ fontSize: fs(19), fontWeight: 600, color: theme.text, marginBottom: 16 }}>{paymentStep.title}</div>
+                <div style={{ fontSize: fs(13), color: theme.mute, marginBottom: 14 }}>결제 금액 <b style={{ color: theme.text }}>{total.toLocaleString()}원</b></div>
+                <div style={{ display: 'grid', gridTemplateColumns: device.orientation === 'landscape' ? '1fr 1fr' : '1fr', gap: 10 }}>
+                  {paymentStep.options.map((opt) => (
+                    <div key={opt.option_id} onClick={completeOrder}
+                      style={{ background: theme.card, borderRadius: 12, padding: '14px 16px', display: 'flex', alignItems: 'center', gap: 12, cursor: 'pointer', border: `1px solid ${theme.mute}44` }}>
+                      <span style={{ color: theme.text }}><PaymentIcon icon={opt.icon} style={{ width: 20, height: 20 }} /></span>
+                      <span style={{ fontSize: fs(15), fontWeight: 500, color: theme.text }}>{opt.label}</span>
+                    </div>
+                  ))}
+                </div>
+                <div style={{ marginTop: 12, fontSize: fs(11), color: theme.mute }}>연습 모드입니다. 실제 결제는 진행되지 않아요.</div>
+              </div>
+              {settings.voiceOn && (
+                <div style={{ position: 'absolute', left: 16, right: 16, bottom: 16, background: 'rgba(0,0,0,0.62)', color: '#fff', borderRadius: 12, padding: '10px 12px', display: 'flex', alignItems: 'center', gap: 8, fontSize: fs(12) }}>
+                  <Volume2 style={{ width: 15, height: 15, flexShrink: 0 }} />
+                  {paymentStep.voice_text}
+                </div>
+              )}
+            </div>
+          )}
+
+          {screen === 'payment' && mode === 'realtime' && paymentStep && (
+            <div style={{ padding: 20 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14 }}>
+                <ArrowLeft onClick={goBack} style={{ width: 18, height: 18, color: app.inkSoft, cursor: 'pointer' }} />
+                <span style={{ fontSize: 11, fontWeight: 600, padding: '3px 9px', borderRadius: 6, background: app.realtimeSoft, color: app.realtime }}>실시간 안내</span>
+              </div>
+              <div style={{ fontSize: fs(17), fontWeight: 600, color: app.ink, marginBottom: 4 }}>{paymentStep.title}</div>
+              <div style={{ fontSize: fs(12), color: app.inkSoft, margin: '4px 0 14px' }}>지금 눈앞의 기계에서 결제를 진행해주세요. 합계 {total.toLocaleString()}원</div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 14 }}>
+                {paymentStep.options.map((opt) => (
+                  <div key={opt.option_id} style={{ minHeight: 52, borderRadius: 12, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 4, background: app.bg, border: '1px solid ' + app.border }}>
+                    <PaymentIcon icon={opt.icon} style={{ width: 18, height: 18, color: app.ink }} />
+                    <span style={{ fontSize: fs(13), color: app.ink }}>{opt.label}</span>
+                  </div>
+                ))}
+              </div>
+              {settings.voiceOn && (
+                <div style={{ background: app.bg, borderRadius: 12, padding: 12, display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
+                  <Volume2 style={{ width: 18, height: 18, color: app.realtime, flexShrink: 0 }} />
+                  <div style={{ fontSize: fs(12), color: app.inkSoft }}>{paymentStep.voice_text}</div>
+                </div>
+              )}
+              <div style={{ display: 'flex', gap: 8, marginBottom: 10 }}>
+                <Button app={app} variant="ghost" style={{ flex: 1, border: '1px solid ' + app.border }} onClick={() => {}}>
+                  <RotateCcw style={{ width: 15, height: 15 }} /> 다시 설명해줘
+                </Button>
+                <Button app={app} variant="outlineRealtime" style={{ flex: 1 }} onClick={() => setCalledStaff(true)}>
+                  <User style={{ width: 15, height: 15 }} /> 직원 호출
+                </Button>
+              </div>
+              {calledStaff && (
+                <div style={{ fontSize: fs(12), color: app.realtime, background: app.realtimeSoft, borderRadius: 8, padding: '8px 10px', marginBottom: 10 }}>
+                  직원을 호출했어요. 잠시만 기다려주세요.
+                </div>
+              )}
+              <Button app={app} variant="realtime" onClick={completeOrder} style={{ width: '100%' }}>완료</Button>
             </div>
           )}
 
@@ -598,7 +1387,7 @@ export default function App() {
                 {mode === 'practice' ? '연습을 완료했어요' : '주문을 완료했어요'}
               </div>
               <div style={{ fontSize: fs(13), color: app.inkSoft, marginBottom: 8, lineHeight: 1.6 }}>
-                {summaryLine(brandId, selections)}
+                {cartSummaryLine(cart)}
               </div>
               <div style={{ fontSize: fs(15), color: app.ink, fontWeight: 700, marginBottom: 20 }}>총 {total.toLocaleString()}원</div>
               {!savedThisRun ? (
@@ -635,7 +1424,7 @@ export default function App() {
                   <ClipboardCheck style={{ width: 18, height: 18, color: app.practice, flexShrink: 0 }} />
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ fontSize: fs(14), fontWeight: 600, color: app.ink }}>{o.nickname}</div>
-                    <div style={{ fontSize: fs(11), color: app.inkSoft, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{o.storeName} · {summaryLine(o.brandId, o.selections)}</div>
+                    <div style={{ fontSize: fs(11), color: app.inkSoft, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{o.storeName} · {cartSummaryLine(o.cart)}</div>
                   </div>
                   <Trash2 onClick={() => deleteOrder(o.id)} style={{ width: 17, height: 17, color: app.inkSoft, cursor: 'pointer', flexShrink: 0 }} />
                 </div>

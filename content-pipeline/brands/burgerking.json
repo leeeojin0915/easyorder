@@ -17,83 +17,974 @@
       "mute": "#B9ACA5"
     }
   },
-  "flow": {
-    "flow_id": "burgerking_default_v1",
-    "base_price": 0,
-    "steps": [
+  "dining_options": {
+    "step_id": "dining",
+    "type": "binary_choice",
+    "title": "매장에서 드실 건가요, 포장하시겠어요?",
+    "voice_text": "매장에서 드실지 포장하실지 선택해주세요.",
+    "options": [
       {
-        "step_id": "menu",
-        "type": "single_select",
-        "priceMode": "absolute",
-        "title": "메뉴를 선택하세요",
-        "voice_text": "주문하실 버거를 골라주세요.",
-        "options": [
-          {
-            "option_id": "whopper",
-            "label": "와퍼",
-            "price": 7900
-          },
-          {
-            "option_id": "cheese",
-            "label": "치즈버거",
-            "price": 6900
-          },
-          {
-            "option_id": "chicken",
-            "label": "치킨버거",
-            "price": 7500
-          }
-        ],
-        "visual": "burger"
+        "option_id": "dine_in",
+        "label": "매장에서 식사",
+        "price": 0
       },
       {
-        "step_id": "set",
-        "type": "binary_choice",
-        "priceMode": "delta",
-        "title": "세트로 하시겠어요?",
-        "voice_text": "단품과 세트 중 골라주세요.",
-        "options": [
+        "option_id": "takeaway",
+        "label": "포장",
+        "price": 0
+      }
+    ]
+  },
+  "menu": {
+    "menu_id": "burgerking_default_v1",
+    "categories": [
+      {
+        "category_id": "burgers",
+        "label": "버거",
+        "items": [
           {
-            "option_id": "set",
-            "label": "네, 세트로 주세요",
-            "price": 2000
+            "item_id": "whopper",
+            "label": "와퍼",
+            "base_price": 7900,
+            "visual": "burger",
+            "customize_steps": [
+              {
+                "step_id": "set",
+                "type": "binary_choice",
+                "priceMode": "delta",
+                "title": "세트로 하시겠어요?",
+                "voice_text": "단품과 세트 중 골라주세요.",
+                "options": [
+                  {
+                    "option_id": "set",
+                    "label": "네, 세트로 주세요",
+                    "price": 2000
+                  },
+                  {
+                    "option_id": "single",
+                    "label": "아니요, 단품으로",
+                    "price": 0
+                  }
+                ]
+              },
+              {
+                "step_id": "included_side",
+                "type": "single_select",
+                "priceMode": "delta",
+                "condition": {
+                  "step_id": "set",
+                  "option_id": "set"
+                },
+                "title": "세트 사이드를 선택하세요",
+                "voice_text": "세트에 포함된 사이드를 골라주세요.",
+                "options": [
+                  {
+                    "option_id": "fries",
+                    "label": "프렌치프라이",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "cheese_sticks",
+                    "label": "치즈스틱",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "nugget_king_3",
+                    "label": "너겟킹 3조각",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "corn_salad",
+                    "label": "콘샐러드",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "coleslaw",
+                    "label": "코울슬로",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "onion_rings",
+                    "label": "어니언링",
+                    "price": 300
+                  },
+                  {
+                    "option_id": "nugget_king_4",
+                    "label": "너겟킹 4조각",
+                    "price": 300
+                  },
+                  {
+                    "option_id": "cheese_fries",
+                    "label": "치즈프라이",
+                    "price": 900
+                  },
+                  {
+                    "option_id": "fries_large",
+                    "label": "프렌치프라이(L)",
+                    "price": 500
+                  }
+                ]
+              },
+              {
+                "step_id": "included_drink",
+                "type": "single_select",
+                "priceMode": "delta",
+                "visual": "drink",
+                "condition": {
+                  "step_id": "set",
+                  "option_id": "set"
+                },
+                "title": "세트 음료를 선택하세요",
+                "voice_text": "세트에 포함된 음료를 골라주세요.",
+                "options": [
+                  {
+                    "option_id": "coke",
+                    "label": "코카콜라",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "americano",
+                    "label": "아메리카노",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "choco",
+                    "label": "초코",
+                    "price": 300
+                  },
+                  {
+                    "option_id": "zero_toktok",
+                    "label": "제로톡톡",
+                    "price": 300
+                  },
+                  {
+                    "option_id": "minute_maid",
+                    "label": "미닛메이드",
+                    "price": 900
+                  }
+                ]
+              },
+              {
+                "step_id": "set_size",
+                "type": "binary_choice",
+                "priceMode": "delta",
+                "condition": {
+                  "step_id": "set",
+                  "option_id": "set"
+                },
+                "title": "세트 사이즈를 선택하세요",
+                "voice_text": "세트를 라지로 업그레이드하시겠어요?",
+                "options": [
+                  {
+                    "option_id": "basic",
+                    "label": "기본",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "large",
+                    "label": "라지 업그레이드",
+                    "price": 700
+                  }
+                ]
+              }
+            ]
           },
           {
-            "option_id": "single",
-            "label": "아니요, 단품으로",
-            "price": 0
+            "item_id": "cheese",
+            "label": "치즈버거",
+            "base_price": 6900,
+            "visual": "burger",
+            "customize_steps": [
+              {
+                "step_id": "set",
+                "type": "binary_choice",
+                "priceMode": "delta",
+                "title": "세트로 하시겠어요?",
+                "voice_text": "단품과 세트 중 골라주세요.",
+                "options": [
+                  {
+                    "option_id": "set",
+                    "label": "네, 세트로 주세요",
+                    "price": 2000
+                  },
+                  {
+                    "option_id": "single",
+                    "label": "아니요, 단품으로",
+                    "price": 0
+                  }
+                ]
+              },
+              {
+                "step_id": "included_side",
+                "type": "single_select",
+                "priceMode": "delta",
+                "condition": {
+                  "step_id": "set",
+                  "option_id": "set"
+                },
+                "title": "세트 사이드를 선택하세요",
+                "voice_text": "세트에 포함된 사이드를 골라주세요.",
+                "options": [
+                  {
+                    "option_id": "fries",
+                    "label": "프렌치프라이",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "cheese_sticks",
+                    "label": "치즈스틱",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "nugget_king_3",
+                    "label": "너겟킹 3조각",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "corn_salad",
+                    "label": "콘샐러드",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "coleslaw",
+                    "label": "코울슬로",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "onion_rings",
+                    "label": "어니언링",
+                    "price": 300
+                  },
+                  {
+                    "option_id": "nugget_king_4",
+                    "label": "너겟킹 4조각",
+                    "price": 300
+                  },
+                  {
+                    "option_id": "cheese_fries",
+                    "label": "치즈프라이",
+                    "price": 900
+                  },
+                  {
+                    "option_id": "fries_large",
+                    "label": "프렌치프라이(L)",
+                    "price": 500
+                  }
+                ]
+              },
+              {
+                "step_id": "included_drink",
+                "type": "single_select",
+                "priceMode": "delta",
+                "visual": "drink",
+                "condition": {
+                  "step_id": "set",
+                  "option_id": "set"
+                },
+                "title": "세트 음료를 선택하세요",
+                "voice_text": "세트에 포함된 음료를 골라주세요.",
+                "options": [
+                  {
+                    "option_id": "coke",
+                    "label": "코카콜라",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "americano",
+                    "label": "아메리카노",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "choco",
+                    "label": "초코",
+                    "price": 300
+                  },
+                  {
+                    "option_id": "zero_toktok",
+                    "label": "제로톡톡",
+                    "price": 300
+                  },
+                  {
+                    "option_id": "minute_maid",
+                    "label": "미닛메이드",
+                    "price": 900
+                  }
+                ]
+              },
+              {
+                "step_id": "set_size",
+                "type": "binary_choice",
+                "priceMode": "delta",
+                "condition": {
+                  "step_id": "set",
+                  "option_id": "set"
+                },
+                "title": "세트 사이즈를 선택하세요",
+                "voice_text": "세트를 라지로 업그레이드하시겠어요?",
+                "options": [
+                  {
+                    "option_id": "basic",
+                    "label": "기본",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "large",
+                    "label": "라지 업그레이드",
+                    "price": 700
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "item_id": "chicken",
+            "label": "치킨버거",
+            "base_price": 7500,
+            "visual": "burger",
+            "customize_steps": [
+              {
+                "step_id": "set",
+                "type": "binary_choice",
+                "priceMode": "delta",
+                "title": "세트로 하시겠어요?",
+                "voice_text": "단품과 세트 중 골라주세요.",
+                "options": [
+                  {
+                    "option_id": "set",
+                    "label": "네, 세트로 주세요",
+                    "price": 2000
+                  },
+                  {
+                    "option_id": "single",
+                    "label": "아니요, 단품으로",
+                    "price": 0
+                  }
+                ]
+              },
+              {
+                "step_id": "included_side",
+                "type": "single_select",
+                "priceMode": "delta",
+                "condition": {
+                  "step_id": "set",
+                  "option_id": "set"
+                },
+                "title": "세트 사이드를 선택하세요",
+                "voice_text": "세트에 포함된 사이드를 골라주세요.",
+                "options": [
+                  {
+                    "option_id": "fries",
+                    "label": "프렌치프라이",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "cheese_sticks",
+                    "label": "치즈스틱",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "nugget_king_3",
+                    "label": "너겟킹 3조각",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "corn_salad",
+                    "label": "콘샐러드",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "coleslaw",
+                    "label": "코울슬로",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "onion_rings",
+                    "label": "어니언링",
+                    "price": 300
+                  },
+                  {
+                    "option_id": "nugget_king_4",
+                    "label": "너겟킹 4조각",
+                    "price": 300
+                  },
+                  {
+                    "option_id": "cheese_fries",
+                    "label": "치즈프라이",
+                    "price": 900
+                  },
+                  {
+                    "option_id": "fries_large",
+                    "label": "프렌치프라이(L)",
+                    "price": 500
+                  }
+                ]
+              },
+              {
+                "step_id": "included_drink",
+                "type": "single_select",
+                "priceMode": "delta",
+                "visual": "drink",
+                "condition": {
+                  "step_id": "set",
+                  "option_id": "set"
+                },
+                "title": "세트 음료를 선택하세요",
+                "voice_text": "세트에 포함된 음료를 골라주세요.",
+                "options": [
+                  {
+                    "option_id": "coke",
+                    "label": "코카콜라",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "americano",
+                    "label": "아메리카노",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "choco",
+                    "label": "초코",
+                    "price": 300
+                  },
+                  {
+                    "option_id": "zero_toktok",
+                    "label": "제로톡톡",
+                    "price": 300
+                  },
+                  {
+                    "option_id": "minute_maid",
+                    "label": "미닛메이드",
+                    "price": 900
+                  }
+                ]
+              },
+              {
+                "step_id": "set_size",
+                "type": "binary_choice",
+                "priceMode": "delta",
+                "condition": {
+                  "step_id": "set",
+                  "option_id": "set"
+                },
+                "title": "세트 사이즈를 선택하세요",
+                "voice_text": "세트를 라지로 업그레이드하시겠어요?",
+                "options": [
+                  {
+                    "option_id": "basic",
+                    "label": "기본",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "large",
+                    "label": "라지 업그레이드",
+                    "price": 700
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "item_id": "shrimp_whopper",
+            "label": "통새우와퍼",
+            "base_price": 8900,
+            "visual": "burger",
+            "customize_steps": [
+              {
+                "step_id": "set",
+                "type": "binary_choice",
+                "priceMode": "delta",
+                "title": "세트로 하시겠어요?",
+                "voice_text": "단품과 세트 중 골라주세요.",
+                "options": [
+                  {
+                    "option_id": "set",
+                    "label": "네, 세트로 주세요",
+                    "price": 2000
+                  },
+                  {
+                    "option_id": "single",
+                    "label": "아니요, 단품으로",
+                    "price": 0
+                  }
+                ]
+              },
+              {
+                "step_id": "included_side",
+                "type": "single_select",
+                "priceMode": "delta",
+                "condition": {
+                  "step_id": "set",
+                  "option_id": "set"
+                },
+                "title": "세트 사이드를 선택하세요",
+                "voice_text": "세트에 포함된 사이드를 골라주세요.",
+                "options": [
+                  {
+                    "option_id": "fries",
+                    "label": "프렌치프라이",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "cheese_sticks",
+                    "label": "치즈스틱",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "nugget_king_3",
+                    "label": "너겟킹 3조각",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "corn_salad",
+                    "label": "콘샐러드",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "coleslaw",
+                    "label": "코울슬로",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "onion_rings",
+                    "label": "어니언링",
+                    "price": 300
+                  },
+                  {
+                    "option_id": "nugget_king_4",
+                    "label": "너겟킹 4조각",
+                    "price": 300
+                  },
+                  {
+                    "option_id": "cheese_fries",
+                    "label": "치즈프라이",
+                    "price": 900
+                  },
+                  {
+                    "option_id": "fries_large",
+                    "label": "프렌치프라이(L)",
+                    "price": 500
+                  }
+                ]
+              },
+              {
+                "step_id": "included_drink",
+                "type": "single_select",
+                "priceMode": "delta",
+                "visual": "drink",
+                "condition": {
+                  "step_id": "set",
+                  "option_id": "set"
+                },
+                "title": "세트 음료를 선택하세요",
+                "voice_text": "세트에 포함된 음료를 골라주세요.",
+                "options": [
+                  {
+                    "option_id": "coke",
+                    "label": "코카콜라",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "americano",
+                    "label": "아메리카노",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "choco",
+                    "label": "초코",
+                    "price": 300
+                  },
+                  {
+                    "option_id": "zero_toktok",
+                    "label": "제로톡톡",
+                    "price": 300
+                  },
+                  {
+                    "option_id": "minute_maid",
+                    "label": "미닛메이드",
+                    "price": 900
+                  }
+                ]
+              },
+              {
+                "step_id": "set_size",
+                "type": "binary_choice",
+                "priceMode": "delta",
+                "condition": {
+                  "step_id": "set",
+                  "option_id": "set"
+                },
+                "title": "세트 사이즈를 선택하세요",
+                "voice_text": "세트를 라지로 업그레이드하시겠어요?",
+                "options": [
+                  {
+                    "option_id": "basic",
+                    "label": "기본",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "large",
+                    "label": "라지 업그레이드",
+                    "price": 700
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "item_id": "bulgogi_whopper",
+            "label": "불고기와퍼",
+            "base_price": 7200,
+            "visual": "burger",
+            "customize_steps": [
+              {
+                "step_id": "set",
+                "type": "binary_choice",
+                "priceMode": "delta",
+                "title": "세트로 하시겠어요?",
+                "voice_text": "단품과 세트 중 골라주세요.",
+                "options": [
+                  {
+                    "option_id": "set",
+                    "label": "네, 세트로 주세요",
+                    "price": 2000
+                  },
+                  {
+                    "option_id": "single",
+                    "label": "아니요, 단품으로",
+                    "price": 0
+                  }
+                ]
+              },
+              {
+                "step_id": "included_side",
+                "type": "single_select",
+                "priceMode": "delta",
+                "condition": {
+                  "step_id": "set",
+                  "option_id": "set"
+                },
+                "title": "세트 사이드를 선택하세요",
+                "voice_text": "세트에 포함된 사이드를 골라주세요.",
+                "options": [
+                  {
+                    "option_id": "fries",
+                    "label": "프렌치프라이",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "cheese_sticks",
+                    "label": "치즈스틱",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "nugget_king_3",
+                    "label": "너겟킹 3조각",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "corn_salad",
+                    "label": "콘샐러드",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "coleslaw",
+                    "label": "코울슬로",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "onion_rings",
+                    "label": "어니언링",
+                    "price": 300
+                  },
+                  {
+                    "option_id": "nugget_king_4",
+                    "label": "너겟킹 4조각",
+                    "price": 300
+                  },
+                  {
+                    "option_id": "cheese_fries",
+                    "label": "치즈프라이",
+                    "price": 900
+                  },
+                  {
+                    "option_id": "fries_large",
+                    "label": "프렌치프라이(L)",
+                    "price": 500
+                  }
+                ]
+              },
+              {
+                "step_id": "included_drink",
+                "type": "single_select",
+                "priceMode": "delta",
+                "visual": "drink",
+                "condition": {
+                  "step_id": "set",
+                  "option_id": "set"
+                },
+                "title": "세트 음료를 선택하세요",
+                "voice_text": "세트에 포함된 음료를 골라주세요.",
+                "options": [
+                  {
+                    "option_id": "coke",
+                    "label": "코카콜라",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "americano",
+                    "label": "아메리카노",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "choco",
+                    "label": "초코",
+                    "price": 300
+                  },
+                  {
+                    "option_id": "zero_toktok",
+                    "label": "제로톡톡",
+                    "price": 300
+                  },
+                  {
+                    "option_id": "minute_maid",
+                    "label": "미닛메이드",
+                    "price": 900
+                  }
+                ]
+              },
+              {
+                "step_id": "set_size",
+                "type": "binary_choice",
+                "priceMode": "delta",
+                "condition": {
+                  "step_id": "set",
+                  "option_id": "set"
+                },
+                "title": "세트 사이즈를 선택하세요",
+                "voice_text": "세트를 라지로 업그레이드하시겠어요?",
+                "options": [
+                  {
+                    "option_id": "basic",
+                    "label": "기본",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "large",
+                    "label": "라지 업그레이드",
+                    "price": 700
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "item_id": "whopper_jr",
+            "label": "와퍼주니어",
+            "base_price": 5200,
+            "visual": "burger",
+            "customize_steps": [
+              {
+                "step_id": "set",
+                "type": "binary_choice",
+                "priceMode": "delta",
+                "title": "세트로 하시겠어요?",
+                "voice_text": "단품과 세트 중 골라주세요.",
+                "options": [
+                  {
+                    "option_id": "set",
+                    "label": "네, 세트로 주세요",
+                    "price": 2000
+                  },
+                  {
+                    "option_id": "single",
+                    "label": "아니요, 단품으로",
+                    "price": 0
+                  }
+                ]
+              },
+              {
+                "step_id": "included_side",
+                "type": "single_select",
+                "priceMode": "delta",
+                "condition": {
+                  "step_id": "set",
+                  "option_id": "set"
+                },
+                "title": "세트 사이드를 선택하세요",
+                "voice_text": "세트에 포함된 사이드를 골라주세요.",
+                "options": [
+                  {
+                    "option_id": "fries",
+                    "label": "프렌치프라이",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "cheese_sticks",
+                    "label": "치즈스틱",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "nugget_king_3",
+                    "label": "너겟킹 3조각",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "corn_salad",
+                    "label": "콘샐러드",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "coleslaw",
+                    "label": "코울슬로",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "onion_rings",
+                    "label": "어니언링",
+                    "price": 300
+                  },
+                  {
+                    "option_id": "nugget_king_4",
+                    "label": "너겟킹 4조각",
+                    "price": 300
+                  },
+                  {
+                    "option_id": "cheese_fries",
+                    "label": "치즈프라이",
+                    "price": 900
+                  },
+                  {
+                    "option_id": "fries_large",
+                    "label": "프렌치프라이(L)",
+                    "price": 500
+                  }
+                ]
+              },
+              {
+                "step_id": "included_drink",
+                "type": "single_select",
+                "priceMode": "delta",
+                "visual": "drink",
+                "condition": {
+                  "step_id": "set",
+                  "option_id": "set"
+                },
+                "title": "세트 음료를 선택하세요",
+                "voice_text": "세트에 포함된 음료를 골라주세요.",
+                "options": [
+                  {
+                    "option_id": "coke",
+                    "label": "코카콜라",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "americano",
+                    "label": "아메리카노",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "choco",
+                    "label": "초코",
+                    "price": 300
+                  },
+                  {
+                    "option_id": "zero_toktok",
+                    "label": "제로톡톡",
+                    "price": 300
+                  },
+                  {
+                    "option_id": "minute_maid",
+                    "label": "미닛메이드",
+                    "price": 900
+                  }
+                ]
+              },
+              {
+                "step_id": "set_size",
+                "type": "binary_choice",
+                "priceMode": "delta",
+                "condition": {
+                  "step_id": "set",
+                  "option_id": "set"
+                },
+                "title": "세트 사이즈를 선택하세요",
+                "voice_text": "세트를 라지로 업그레이드하시겠어요?",
+                "options": [
+                  {
+                    "option_id": "basic",
+                    "label": "기본",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "large",
+                    "label": "라지 업그레이드",
+                    "price": 700
+                  }
+                ]
+              }
+            ]
           }
         ]
       },
       {
-        "step_id": "confirm_order",
-        "type": "confirm",
-        "title": "선택하신 내용을 확인해주세요",
-        "voice_text": "지금까지 고르신 내용이 맞는지 확인해주세요."
-      },
-      {
-        "step_id": "payment",
-        "type": "payment_mock",
-        "title": "결제 방법을 선택하세요",
-        "voice_text": "결제 방법을 선택해주세요.",
-        "options": [
+        "category_id": "drinks",
+        "label": "음료",
+        "items": [
           {
-            "option_id": "card",
-            "label": "카드 삽입",
-            "icon": "card"
+            "item_id": "coke_standalone",
+            "label": "코카콜라",
+            "base_price": 2200,
+            "visual": "drink",
+            "customize_steps": []
           },
           {
-            "option_id": "phone",
-            "label": "휴대폰 태그",
-            "icon": "phone"
+            "item_id": "sprite_standalone",
+            "label": "스프라이트",
+            "base_price": 2200,
+            "visual": "drink",
+            "customize_steps": []
           },
           {
-            "option_id": "cash",
-            "label": "현금",
-            "icon": "cash"
+            "item_id": "ice_americano_standalone",
+            "label": "아이스 아메리카노",
+            "base_price": 2500,
+            "visual": "drink",
+            "customize_steps": []
           }
         ]
       }
     ]
-  }
+  },
+  "order_steps": [
+    {
+      "step_id": "confirm_order",
+      "type": "confirm",
+      "title": "선택하신 내용을 확인해주세요",
+      "voice_text": "지금까지 고르신 내용이 맞는지 확인해주세요."
+    },
+    {
+      "step_id": "payment",
+      "type": "payment_mock",
+      "title": "결제 방법을 선택하세요",
+      "voice_text": "결제 방법을 선택해주세요.",
+      "options": [
+        {
+          "option_id": "card",
+          "label": "카드 삽입",
+          "icon": "card"
+        },
+        {
+          "option_id": "phone",
+          "label": "휴대폰 태그",
+          "icon": "phone"
+        },
+        {
+          "option_id": "cash",
+          "label": "현금",
+          "icon": "cash"
+        }
+      ]
+    }
+  ],
+  "_source_notes": "와퍼 7,900원/치즈버거 6,900원/치킨버거 7,500원은 기존 조사값 유지. 통새우와퍼 8,900원/불고기와퍼 7,200원/와퍼주니어 5,200원은 버거킹 대표 메뉴 가격대 참고 추정치, 세트 추가금(+2,000원)과 세트 포함 음료 구조는 맥도날드/롯데리아/KFC와 동일 패턴으로 통일. 단독 음료가(2,200~2,500원)는 추정치로 현장 확인 필요."
 }

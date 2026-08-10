@@ -4,17 +4,109 @@
  * 사용법: node validate.js brands/subway.json [brands/other.json ...]
  * 인자를 안 주면 brands/ 폴더 안의 모든 *.json(단, _template.json 제외)을 검사한다.
  */
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const ALLOWED_SHAPES = ['freestanding_totem', 'countertop_tablet', 'table_order', 'wall_mounted'];
 const ALLOWED_ORIENTATIONS = ['portrait', 'landscape'];
-const ALLOWED_STEP_TYPES = ['single_select', 'multi_select', 'binary_choice', 'confirm', 'payment_mock'];
+const ALLOWED_CUSTOMIZE_STEP_TYPES = ['single_select', 'multi_select', 'binary_choice'];
+const ALLOWED_ORDER_STEP_TYPES = ['confirm', 'payment_mock'];
 const ALLOWED_VISUALS = ['bread', 'burger', 'drink', 'vegetable'];
 const ALLOWED_CATEGORIES = ['fastfood_cafe', 'dessert_cafe', 'restaurant'];
 const HEX_RE = /^#([0-9A-Fa-f]{6})$/;
 
 function fail(errors, msg) { errors.push(msg); }
+
+function validateOptions(step, loc, errors) {
+  if (step.type === 'confirm') return;
+  if (!Array.isArray(step.options) || step.options.length === 0) {
+    fail(errors, `${loc}: options 가 없거나 비어있음 (confirm 타입이 아니면 필수)`);
+    return;
+  }
+  const seenOptIds = new Set();
+  step.options.forEach((opt, j) => {
+    const oloc = `${loc}.options[${j}]`;
+    if (!opt.option_id) fail(errors, `${oloc}: option_id 없음`);
+    else if (seenOptIds.has(opt.option_id)) fail(errors, `${oloc}: option_id 중복`);
+    else seenOptIds.add(opt.option_id);
+    if (!opt.label) fail(errors, `${oloc}: label 없음`);
+    if (opt.price !== undefined && typeof opt.price !== 'number') fail(errors, `${oloc}: price 는 숫자여야 함`);
+    if (step.type === 'payment_mock' && !['card', 'phone', 'cash'].includes(opt.icon)) {
+      fail(errors, `${oloc}: payment_mock 옵션은 icon(card|phone|cash) 필요`);
+    }
+  });
+}
+
+function validateCustomizeSteps(item, loc, errors) {
+  if (!Array.isArray(item.customize_steps)) {
+    fail(errors, `${loc}: customize_steps 는 배열이어야 함 (비어있어도 됨)`);
+    return;
+  }
+  const seenStepIds = new Set();
+  const stepById = {};
+  item.customize_steps.forEach((s) => { if (s.step_id) stepById[s.step_id] = s; });
+
+  item.customize_steps.forEach((step, i) => {
+    const sloc = `${loc}.customize_steps[${i}](${step.step_id || '?'})`;
+    if (!step.step_id) fail(errors, `${sloc}: step_id 없음`);
+    else if (seenStepIds.has(step.step_id)) fail(errors, `${sloc}: step_id 중복`);
+    else seenStepIds.add(step.step_id);
+
+    if (!ALLOWED_CUSTOMIZE_STEP_TYPES.includes(step.type)) {
+      fail(errors, `${sloc}: type 값이 허용 목록에 없음: "${step.type}" (customize_steps는 confirm/payment_mock 사용 불가)`);
+    }
+    if (!step.title) fail(errors, `${sloc}: title 없음`);
+    if (!step.voice_text) fail(errors, `${sloc}: voice_text 없음`);
+    if (step.visual !== undefined && !ALLOWED_VISUALS.includes(step.visual)) {
+      fail(errors, `${sloc}: visual 값이 허용 목록에 없음: "${step.visual}"`);
+    }
+
+    if (step.max_selections !== undefined) {
+      if (step.type !== 'multi_select') {
+        fail(errors, `${sloc}: max_selections 는 multi_select 타입에서만 사용 가능`);
+      } else if (!Number.isInteger(step.max_selections) || step.max_selections < 1 || step.max_selections > (step.options?.length || 0)) {
+        fail(errors, `${sloc}: max_selections 는 1 이상 options.length 이하의 정수여야 함 (현재: ${step.max_selections})`);
+      }
+    }
+
+    if (step.condition !== undefined) {
+      const c = step.condition;
+      if (!c || typeof c !== 'object' || !c.step_id || !c.option_id) {
+        fail(errors, `${sloc}: condition은 {step_id, option_id} 형태여야 함`);
+      } else {
+        const refStep = stepById[c.step_id];
+        if (!refStep) {
+          fail(errors, `${sloc}: condition.step_id "${c.step_id}" 가 이 아이템의 customize_steps 안에 없음`);
+        } else if (!refStep.options || !refStep.options.some((o) => o.option_id === c.option_id)) {
+          fail(errors, `${sloc}: condition.option_id "${c.option_id}" 가 step "${c.step_id}"의 옵션에 없음`);
+        }
+      }
+    }
+
+    validateOptions(step, sloc, errors);
+  });
+}
+
+function validateDiningOptions(data, errors) {
+  if (!data.dining_options || typeof data.dining_options !== 'object') {
+    fail(errors, 'dining_options 가 없음');
+    return;
+  }
+  const d = data.dining_options;
+  const loc = 'dining_options';
+  if (!d.step_id) fail(errors, `${loc}: step_id 없음`);
+  if (d.type !== 'binary_choice') fail(errors, `${loc}: type 은 binary_choice 여야 함 (현재: "${d.type}")`);
+  if (!d.title) fail(errors, `${loc}: title 없음`);
+  if (!d.voice_text) fail(errors, `${loc}: voice_text 없음`);
+  if (!Array.isArray(d.options) || d.options.length < 2) {
+    fail(errors, `${loc}: options 는 2개 이상이어야 함`);
+  } else {
+    validateOptions(d, loc, errors);
+  }
+}
 
 function validateBrand(data, errors) {
   if (!data.brand_id || typeof data.brand_id !== 'string') fail(errors, 'brand_id 없음/형식 오류');
@@ -33,62 +125,62 @@ function validateBrand(data, errors) {
     });
   }
 
-  if (!data.flow || !Array.isArray(data.flow.steps) || data.flow.steps.length === 0) {
-    fail(errors, 'flow.steps 가 없거나 비어있음');
-    return;
-  }
-  if (!data.flow.flow_id) fail(errors, 'flow.flow_id 없음');
+  if (!data.menu || !Array.isArray(data.menu.categories) || data.menu.categories.length === 0) {
+    fail(errors, 'menu.categories 가 없거나 비어있음');
+  } else {
+    if (!data.menu.menu_id) fail(errors, 'menu.menu_id 없음');
 
-  const seenStepIds = new Set();
-  const stepById = {};
-  data.flow.steps.forEach((s) => { if (s.step_id) stepById[s.step_id] = s; });
+    const seenCategoryIds = new Set();
+    const seenItemIds = new Set();
 
-  data.flow.steps.forEach((step, i) => {
-    const loc = `steps[${i}](${step.step_id || '?'})`;
-    if (!step.step_id) fail(errors, `${loc}: step_id 없음`);
-    else if (seenStepIds.has(step.step_id)) fail(errors, `${loc}: step_id 중복`);
-    else seenStepIds.add(step.step_id);
+    data.menu.categories.forEach((cat, ci) => {
+      const cloc = `menu.categories[${ci}](${cat.category_id || '?'})`;
+      if (!cat.category_id) fail(errors, `${cloc}: category_id 없음`);
+      else if (seenCategoryIds.has(cat.category_id)) fail(errors, `${cloc}: category_id 중복`);
+      else seenCategoryIds.add(cat.category_id);
 
-    if (!ALLOWED_STEP_TYPES.includes(step.type)) fail(errors, `${loc}: type 값이 허용 목록에 없음: "${step.type}"`);
-    if (!step.title) fail(errors, `${loc}: title 없음`);
-    if (!step.voice_text) fail(errors, `${loc}: voice_text 없음`);
-    if (step.visual !== undefined && !ALLOWED_VISUALS.includes(step.visual)) {
-      fail(errors, `${loc}: visual 값이 허용 목록에 없음: "${step.visual}" (허용: ${ALLOWED_VISUALS.join(', ')})`);
-    }
+      if (!cat.label) fail(errors, `${cloc}: label 없음`);
 
-    if (step.condition !== undefined) {
-      const c = step.condition;
-      if (!c || typeof c !== 'object' || !c.step_id || !c.option_id) {
-        fail(errors, `${loc}: condition은 {step_id, option_id} 형태여야 함`);
-      } else {
-        const refStep = stepById[c.step_id];
-        if (!refStep) {
-          fail(errors, `${loc}: condition.step_id "${c.step_id}" 가 이 flow 안에 없음`);
-        } else if (!refStep.options || !refStep.options.some((o) => o.option_id === c.option_id)) {
-          fail(errors, `${loc}: condition.option_id "${c.option_id}" 가 step "${c.step_id}"의 옵션에 없음`);
+      if (!Array.isArray(cat.items) || cat.items.length === 0) {
+        fail(errors, `${cloc}: items 가 없거나 비어있음`);
+        return;
+      }
+
+      cat.items.forEach((item, ii) => {
+        const iloc = `${cloc}.items[${ii}](${item.item_id || '?'})`;
+        if (!item.item_id) fail(errors, `${iloc}: item_id 없음`);
+        else if (seenItemIds.has(item.item_id)) fail(errors, `${iloc}: item_id 중복 (브랜드 전체에서 고유해야 함)`);
+        else seenItemIds.add(item.item_id);
+
+        if (!item.label) fail(errors, `${iloc}: label 없음`);
+        if (typeof item.base_price !== 'number') fail(errors, `${iloc}: base_price 는 숫자여야 함`);
+        if (item.visual !== undefined && !ALLOWED_VISUALS.includes(item.visual)) {
+          fail(errors, `${iloc}: visual 값이 허용 목록에 없음: "${item.visual}"`);
         }
-      }
-    }
 
-    if (step.type !== 'confirm') {
-      if (!Array.isArray(step.options) || step.options.length === 0) {
-        fail(errors, `${loc}: options 가 없거나 비어있음 (confirm 타입이 아니면 필수)`);
-      } else {
-        const seenOptIds = new Set();
-        step.options.forEach((opt, j) => {
-          const oloc = `${loc}.options[${j}]`;
-          if (!opt.option_id) fail(errors, `${oloc}: option_id 없음`);
-          else if (seenOptIds.has(opt.option_id)) fail(errors, `${oloc}: option_id 중복`);
-          else seenOptIds.add(opt.option_id);
-          if (!opt.label) fail(errors, `${oloc}: label 없음`);
-          if (opt.price !== undefined && typeof opt.price !== 'number') fail(errors, `${oloc}: price 는 숫자여야 함`);
-          if (step.type === 'payment_mock' && !['card', 'phone', 'cash'].includes(opt.icon)) {
-            fail(errors, `${oloc}: payment_mock 옵션은 icon(card|phone|cash) 필요`);
-          }
-        });
-      }
+        validateCustomizeSteps(item, iloc, errors);
+      });
+    });
+  }
+
+  if (!Array.isArray(data.order_steps) || data.order_steps.length === 0) {
+    fail(errors, 'order_steps 가 없거나 비어있음');
+  } else {
+    const types = data.order_steps.map((s) => s.type);
+    if (types.length !== 2 || types[0] !== 'confirm' || types[1] !== 'payment_mock') {
+      fail(errors, `order_steps 는 confirm 1개 다음 payment_mock 1개 순서여야 함 (현재: ${types.join(' -> ')})`);
     }
-  });
+    data.order_steps.forEach((step, i) => {
+      const oloc = `order_steps[${i}](${step.step_id || '?'})`;
+      if (!step.step_id) fail(errors, `${oloc}: step_id 없음`);
+      if (!ALLOWED_ORDER_STEP_TYPES.includes(step.type)) fail(errors, `${oloc}: type 값이 허용 목록에 없음: "${step.type}"`);
+      if (!step.title) fail(errors, `${oloc}: title 없음`);
+      if (!step.voice_text) fail(errors, `${oloc}: voice_text 없음`);
+      validateOptions(step, oloc, errors);
+    });
+  }
+
+  validateDiningOptions(data, errors);
 }
 
 function run(filePaths) {

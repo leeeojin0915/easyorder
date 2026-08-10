@@ -17,113 +17,2186 @@
       "mute": "#8A9089"
     }
   },
-  "flow": {
-    "flow_id": "subway_default_v1",
-    "base_price": 7900,
-    "steps": [
+  "dining_options": {
+    "step_id": "dining",
+    "type": "binary_choice",
+    "title": "매장에서 드실 건가요, 포장하시겠어요?",
+    "voice_text": "매장에서 드실지 포장하실지 선택해주세요.",
+    "options": [
       {
-        "step_id": "bread",
-        "type": "single_select",
-        "priceMode": "delta",
-        "title": "빵 종류를 선택하세요",
-        "voice_text": "먼저 빵 종류를 골라주세요.",
-        "options": [
-          {
-            "option_id": "white",
-            "label": "화이트빵",
-            "price": 0
-          },
-          {
-            "option_id": "wheat",
-            "label": "위트빵",
-            "price": 0
-          },
-          {
-            "option_id": "italian",
-            "label": "이탈리안 빵",
-            "price": 0
-          }
-        ],
-        "visual": "bread"
+        "option_id": "dine_in",
+        "label": "매장에서 식사",
+        "price": 0
       },
       {
-        "step_id": "toast",
-        "type": "binary_choice",
-        "priceMode": "delta",
-        "title": "빵을 데워드릴까요?",
-        "voice_text": "빵을 따뜻하게 데워드릴지 선택해주세요.",
-        "options": [
+        "option_id": "takeaway",
+        "label": "포장",
+        "price": 0
+      }
+    ]
+  },
+  "menu": {
+    "menu_id": "subway_default_v1",
+    "categories": [
+      {
+        "category_id": "sandwiches",
+        "label": "샌드위치",
+        "items": [
           {
-            "option_id": "yes",
-            "label": "네, 데워주세요",
-            "price": 0
+            "item_id": "egg_mayo",
+            "label": "에그마요",
+            "base_price": 6900,
+            "visual": "bread",
+            "customize_steps": [
+              {
+                "step_id": "bread",
+                "type": "single_select",
+                "priceMode": "delta",
+                "visual": "bread",
+                "title": "빵 종류를 선택하세요",
+                "voice_text": "먼저 빵 종류를 골라주세요.",
+                "options": [
+                  {
+                    "option_id": "white",
+                    "label": "화이트빵",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "wheat",
+                    "label": "위트빵",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "parmesan_oregano",
+                    "label": "파마산오레가노",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "honey_oat",
+                    "label": "허니오트빵",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "grain",
+                    "label": "그레인빵",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "flatbread",
+                    "label": "플랫브레드",
+                    "price": 0
+                  }
+                ]
+              },
+              {
+                "step_id": "bread_length",
+                "type": "binary_choice",
+                "priceMode": "delta",
+                "title": "빵 길이를 선택하세요",
+                "voice_text": "15센티인지 30센티인지 선택해주세요.",
+                "options": [
+                  {
+                    "option_id": "15cm",
+                    "label": "15cm",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "30cm",
+                    "label": "30cm",
+                    "price": 4000
+                  }
+                ]
+              },
+              {
+                "step_id": "cheese",
+                "type": "single_select",
+                "priceMode": "delta",
+                "title": "치즈를 선택하세요",
+                "voice_text": "치즈를 추가할지 선택해주세요.",
+                "options": [
+                  {
+                    "option_id": "none",
+                    "label": "없음",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "american",
+                    "label": "아메리칸 치즈",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "shredded",
+                    "label": "슈레드 치즈",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "mozzarella",
+                    "label": "모차렐라 치즈",
+                    "price": 0
+                  }
+                ]
+              },
+              {
+                "step_id": "extra_toppings",
+                "type": "multi_select",
+                "priceMode": "delta",
+                "title": "추가 토핑을 선택하세요",
+                "voice_text": "추가하고 싶은 토핑이 있으면 골라주세요. 추가 요금이 있어요.",
+                "options": [
+                  {
+                    "option_id": "extra_meat",
+                    "label": "미트 추가",
+                    "price": 1500
+                  },
+                  {
+                    "option_id": "egg_mayo_topping",
+                    "label": "에그마요 추가",
+                    "price": 1000
+                  },
+                  {
+                    "option_id": "omelette",
+                    "label": "오믈렛 추가",
+                    "price": 1500
+                  }
+                ]
+              },
+              {
+                "step_id": "toast",
+                "type": "binary_choice",
+                "priceMode": "delta",
+                "title": "빵을 데워드릴까요?",
+                "voice_text": "빵을 따뜻하게 데워드릴지 선택해주세요.",
+                "options": [
+                  {
+                    "option_id": "yes",
+                    "label": "네, 데워주세요",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "no",
+                    "label": "아니요",
+                    "price": 0
+                  }
+                ]
+              },
+              {
+                "step_id": "vegetables",
+                "type": "multi_select",
+                "priceMode": "delta",
+                "visual": "vegetable",
+                "title": "야채를 선택하세요",
+                "voice_text": "원하는 야채를 모두 골라주세요.",
+                "options": [
+                  {
+                    "option_id": "lettuce",
+                    "label": "양상추",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "tomato",
+                    "label": "토마토",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "cucumber",
+                    "label": "오이",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "bell_pepper",
+                    "label": "피망/파프리카",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "onion",
+                    "label": "양파",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "pickle",
+                    "label": "피클",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "olive",
+                    "label": "올리브",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "jalapeno",
+                    "label": "할라피뇨",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "avocado",
+                    "label": "아보카도",
+                    "price": 0
+                  }
+                ]
+              },
+              {
+                "step_id": "sauce",
+                "type": "multi_select",
+                "priceMode": "delta",
+                "max_selections": 3,
+                "title": "소스를 선택하세요 (최대 3개 무료)",
+                "voice_text": "원하는 소스를 최대 3개까지 골라주세요.",
+                "options": [
+                  {
+                    "option_id": "sweet_onion",
+                    "label": "스위트어니언",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "mayo",
+                    "label": "마요네즈",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "mustard",
+                    "label": "허니 머스타드",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "sweet_chili",
+                    "label": "스위트칠리",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "ranch",
+                    "label": "랜치",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "onion_mayo",
+                    "label": "어니언마요",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "hot_chili",
+                    "label": "핫칠리",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "plain_mustard",
+                    "label": "플레인 머스타드",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "ketchup",
+                    "label": "케찹",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "sw_chipotle",
+                    "label": "사우스웨스트 치폴레",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "oil_vinegar",
+                    "label": "오일&비네거",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "bbq",
+                    "label": "바베큐",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "italian",
+                    "label": "이탈리안",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "sriracha",
+                    "label": "스리라차",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "garlic",
+                    "label": "갈릭",
+                    "price": 0
+                  }
+                ]
+              },
+              {
+                "step_id": "set",
+                "type": "binary_choice",
+                "priceMode": "delta",
+                "title": "단품으로 드릴까요, 세트로 드릴까요?",
+                "voice_text": "단품인지 세트인지 선택해주세요.",
+                "options": [
+                  {
+                    "option_id": "single",
+                    "label": "단품",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "set",
+                    "label": "세트",
+                    "price": 0
+                  }
+                ]
+              },
+              {
+                "step_id": "included_side",
+                "type": "single_select",
+                "priceMode": "delta",
+                "condition": {
+                  "step_id": "set",
+                  "option_id": "set"
+                },
+                "title": "세트 사이드를 선택하세요",
+                "voice_text": "세트에 포함될 사이드를 선택해주세요.",
+                "options": [
+                  {
+                    "option_id": "cookie_chip",
+                    "label": "쿠키/칩",
+                    "price": 2500
+                  },
+                  {
+                    "option_id": "wedge_potato",
+                    "label": "웨지포테이토",
+                    "price": 3100
+                  }
+                ]
+              },
+              {
+                "step_id": "included_drink",
+                "type": "single_select",
+                "priceMode": "delta",
+                "condition": {
+                  "step_id": "set",
+                  "option_id": "set"
+                },
+                "title": "세트 음료를 선택하세요",
+                "voice_text": "세트에 포함될 음료를 선택해주세요.",
+                "options": [
+                  {
+                    "option_id": "coke",
+                    "label": "코카콜라",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "sprite",
+                    "label": "스프라이트",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "ice_tea",
+                    "label": "아이스티",
+                    "price": 300
+                  }
+                ]
+              }
+            ]
           },
           {
-            "option_id": "no",
-            "label": "아니요",
-            "price": 0
+            "item_id": "tuna",
+            "label": "참치",
+            "base_price": 7900,
+            "visual": "bread",
+            "customize_steps": [
+              {
+                "step_id": "bread",
+                "type": "single_select",
+                "priceMode": "delta",
+                "visual": "bread",
+                "title": "빵 종류를 선택하세요",
+                "voice_text": "먼저 빵 종류를 골라주세요.",
+                "options": [
+                  {
+                    "option_id": "white",
+                    "label": "화이트빵",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "wheat",
+                    "label": "위트빵",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "parmesan_oregano",
+                    "label": "파마산오레가노",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "honey_oat",
+                    "label": "허니오트빵",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "grain",
+                    "label": "그레인빵",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "flatbread",
+                    "label": "플랫브레드",
+                    "price": 0
+                  }
+                ]
+              },
+              {
+                "step_id": "bread_length",
+                "type": "binary_choice",
+                "priceMode": "delta",
+                "title": "빵 길이를 선택하세요",
+                "voice_text": "15센티인지 30센티인지 선택해주세요.",
+                "options": [
+                  {
+                    "option_id": "15cm",
+                    "label": "15cm",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "30cm",
+                    "label": "30cm",
+                    "price": 4000
+                  }
+                ]
+              },
+              {
+                "step_id": "cheese",
+                "type": "single_select",
+                "priceMode": "delta",
+                "title": "치즈를 선택하세요",
+                "voice_text": "치즈를 추가할지 선택해주세요.",
+                "options": [
+                  {
+                    "option_id": "none",
+                    "label": "없음",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "american",
+                    "label": "아메리칸 치즈",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "shredded",
+                    "label": "슈레드 치즈",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "mozzarella",
+                    "label": "모차렐라 치즈",
+                    "price": 0
+                  }
+                ]
+              },
+              {
+                "step_id": "extra_toppings",
+                "type": "multi_select",
+                "priceMode": "delta",
+                "title": "추가 토핑을 선택하세요",
+                "voice_text": "추가하고 싶은 토핑이 있으면 골라주세요. 추가 요금이 있어요.",
+                "options": [
+                  {
+                    "option_id": "extra_meat",
+                    "label": "미트 추가",
+                    "price": 1500
+                  },
+                  {
+                    "option_id": "egg_mayo_topping",
+                    "label": "에그마요 추가",
+                    "price": 1000
+                  },
+                  {
+                    "option_id": "omelette",
+                    "label": "오믈렛 추가",
+                    "price": 1500
+                  }
+                ]
+              },
+              {
+                "step_id": "toast",
+                "type": "binary_choice",
+                "priceMode": "delta",
+                "title": "빵을 데워드릴까요?",
+                "voice_text": "빵을 따뜻하게 데워드릴지 선택해주세요.",
+                "options": [
+                  {
+                    "option_id": "yes",
+                    "label": "네, 데워주세요",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "no",
+                    "label": "아니요",
+                    "price": 0
+                  }
+                ]
+              },
+              {
+                "step_id": "vegetables",
+                "type": "multi_select",
+                "priceMode": "delta",
+                "visual": "vegetable",
+                "title": "야채를 선택하세요",
+                "voice_text": "원하는 야채를 모두 골라주세요.",
+                "options": [
+                  {
+                    "option_id": "lettuce",
+                    "label": "양상추",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "tomato",
+                    "label": "토마토",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "cucumber",
+                    "label": "오이",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "bell_pepper",
+                    "label": "피망/파프리카",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "onion",
+                    "label": "양파",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "pickle",
+                    "label": "피클",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "olive",
+                    "label": "올리브",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "jalapeno",
+                    "label": "할라피뇨",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "avocado",
+                    "label": "아보카도",
+                    "price": 0
+                  }
+                ]
+              },
+              {
+                "step_id": "sauce",
+                "type": "multi_select",
+                "priceMode": "delta",
+                "max_selections": 3,
+                "title": "소스를 선택하세요 (최대 3개 무료)",
+                "voice_text": "원하는 소스를 최대 3개까지 골라주세요.",
+                "options": [
+                  {
+                    "option_id": "sweet_onion",
+                    "label": "스위트어니언",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "mayo",
+                    "label": "마요네즈",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "mustard",
+                    "label": "허니 머스타드",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "sweet_chili",
+                    "label": "스위트칠리",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "ranch",
+                    "label": "랜치",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "onion_mayo",
+                    "label": "어니언마요",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "hot_chili",
+                    "label": "핫칠리",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "plain_mustard",
+                    "label": "플레인 머스타드",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "ketchup",
+                    "label": "케찹",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "sw_chipotle",
+                    "label": "사우스웨스트 치폴레",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "oil_vinegar",
+                    "label": "오일&비네거",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "bbq",
+                    "label": "바베큐",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "italian",
+                    "label": "이탈리안",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "sriracha",
+                    "label": "스리라차",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "garlic",
+                    "label": "갈릭",
+                    "price": 0
+                  }
+                ]
+              },
+              {
+                "step_id": "set",
+                "type": "binary_choice",
+                "priceMode": "delta",
+                "title": "단품으로 드릴까요, 세트로 드릴까요?",
+                "voice_text": "단품인지 세트인지 선택해주세요.",
+                "options": [
+                  {
+                    "option_id": "single",
+                    "label": "단품",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "set",
+                    "label": "세트",
+                    "price": 0
+                  }
+                ]
+              },
+              {
+                "step_id": "included_side",
+                "type": "single_select",
+                "priceMode": "delta",
+                "condition": {
+                  "step_id": "set",
+                  "option_id": "set"
+                },
+                "title": "세트 사이드를 선택하세요",
+                "voice_text": "세트에 포함될 사이드를 선택해주세요.",
+                "options": [
+                  {
+                    "option_id": "cookie_chip",
+                    "label": "쿠키/칩",
+                    "price": 2500
+                  },
+                  {
+                    "option_id": "wedge_potato",
+                    "label": "웨지포테이토",
+                    "price": 3100
+                  }
+                ]
+              },
+              {
+                "step_id": "included_drink",
+                "type": "single_select",
+                "priceMode": "delta",
+                "condition": {
+                  "step_id": "set",
+                  "option_id": "set"
+                },
+                "title": "세트 음료를 선택하세요",
+                "voice_text": "세트에 포함될 음료를 선택해주세요.",
+                "options": [
+                  {
+                    "option_id": "coke",
+                    "label": "코카콜라",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "sprite",
+                    "label": "스프라이트",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "ice_tea",
+                    "label": "아이스티",
+                    "price": 300
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "item_id": "meatball_marinara",
+            "label": "미트볼 마리나라",
+            "base_price": 7900,
+            "visual": "bread",
+            "customize_steps": [
+              {
+                "step_id": "bread",
+                "type": "single_select",
+                "priceMode": "delta",
+                "visual": "bread",
+                "title": "빵 종류를 선택하세요",
+                "voice_text": "먼저 빵 종류를 골라주세요.",
+                "options": [
+                  {
+                    "option_id": "white",
+                    "label": "화이트빵",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "wheat",
+                    "label": "위트빵",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "parmesan_oregano",
+                    "label": "파마산오레가노",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "honey_oat",
+                    "label": "허니오트빵",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "grain",
+                    "label": "그레인빵",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "flatbread",
+                    "label": "플랫브레드",
+                    "price": 0
+                  }
+                ]
+              },
+              {
+                "step_id": "bread_length",
+                "type": "binary_choice",
+                "priceMode": "delta",
+                "title": "빵 길이를 선택하세요",
+                "voice_text": "15센티인지 30센티인지 선택해주세요.",
+                "options": [
+                  {
+                    "option_id": "15cm",
+                    "label": "15cm",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "30cm",
+                    "label": "30cm",
+                    "price": 4000
+                  }
+                ]
+              },
+              {
+                "step_id": "cheese",
+                "type": "single_select",
+                "priceMode": "delta",
+                "title": "치즈를 선택하세요",
+                "voice_text": "치즈를 추가할지 선택해주세요.",
+                "options": [
+                  {
+                    "option_id": "none",
+                    "label": "없음",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "american",
+                    "label": "아메리칸 치즈",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "shredded",
+                    "label": "슈레드 치즈",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "mozzarella",
+                    "label": "모차렐라 치즈",
+                    "price": 0
+                  }
+                ]
+              },
+              {
+                "step_id": "extra_toppings",
+                "type": "multi_select",
+                "priceMode": "delta",
+                "title": "추가 토핑을 선택하세요",
+                "voice_text": "추가하고 싶은 토핑이 있으면 골라주세요. 추가 요금이 있어요.",
+                "options": [
+                  {
+                    "option_id": "extra_meat",
+                    "label": "미트 추가",
+                    "price": 1500
+                  },
+                  {
+                    "option_id": "egg_mayo_topping",
+                    "label": "에그마요 추가",
+                    "price": 1000
+                  },
+                  {
+                    "option_id": "omelette",
+                    "label": "오믈렛 추가",
+                    "price": 1500
+                  }
+                ]
+              },
+              {
+                "step_id": "toast",
+                "type": "binary_choice",
+                "priceMode": "delta",
+                "title": "빵을 데워드릴까요?",
+                "voice_text": "빵을 따뜻하게 데워드릴지 선택해주세요.",
+                "options": [
+                  {
+                    "option_id": "yes",
+                    "label": "네, 데워주세요",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "no",
+                    "label": "아니요",
+                    "price": 0
+                  }
+                ]
+              },
+              {
+                "step_id": "vegetables",
+                "type": "multi_select",
+                "priceMode": "delta",
+                "visual": "vegetable",
+                "title": "야채를 선택하세요",
+                "voice_text": "원하는 야채를 모두 골라주세요.",
+                "options": [
+                  {
+                    "option_id": "lettuce",
+                    "label": "양상추",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "tomato",
+                    "label": "토마토",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "cucumber",
+                    "label": "오이",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "bell_pepper",
+                    "label": "피망/파프리카",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "onion",
+                    "label": "양파",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "pickle",
+                    "label": "피클",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "olive",
+                    "label": "올리브",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "jalapeno",
+                    "label": "할라피뇨",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "avocado",
+                    "label": "아보카도",
+                    "price": 0
+                  }
+                ]
+              },
+              {
+                "step_id": "sauce",
+                "type": "multi_select",
+                "priceMode": "delta",
+                "max_selections": 3,
+                "title": "소스를 선택하세요 (최대 3개 무료)",
+                "voice_text": "원하는 소스를 최대 3개까지 골라주세요.",
+                "options": [
+                  {
+                    "option_id": "sweet_onion",
+                    "label": "스위트어니언",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "mayo",
+                    "label": "마요네즈",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "mustard",
+                    "label": "허니 머스타드",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "sweet_chili",
+                    "label": "스위트칠리",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "ranch",
+                    "label": "랜치",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "onion_mayo",
+                    "label": "어니언마요",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "hot_chili",
+                    "label": "핫칠리",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "plain_mustard",
+                    "label": "플레인 머스타드",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "ketchup",
+                    "label": "케찹",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "sw_chipotle",
+                    "label": "사우스웨스트 치폴레",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "oil_vinegar",
+                    "label": "오일&비네거",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "bbq",
+                    "label": "바베큐",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "italian",
+                    "label": "이탈리안",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "sriracha",
+                    "label": "스리라차",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "garlic",
+                    "label": "갈릭",
+                    "price": 0
+                  }
+                ]
+              },
+              {
+                "step_id": "set",
+                "type": "binary_choice",
+                "priceMode": "delta",
+                "title": "단품으로 드릴까요, 세트로 드릴까요?",
+                "voice_text": "단품인지 세트인지 선택해주세요.",
+                "options": [
+                  {
+                    "option_id": "single",
+                    "label": "단품",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "set",
+                    "label": "세트",
+                    "price": 0
+                  }
+                ]
+              },
+              {
+                "step_id": "included_side",
+                "type": "single_select",
+                "priceMode": "delta",
+                "condition": {
+                  "step_id": "set",
+                  "option_id": "set"
+                },
+                "title": "세트 사이드를 선택하세요",
+                "voice_text": "세트에 포함될 사이드를 선택해주세요.",
+                "options": [
+                  {
+                    "option_id": "cookie_chip",
+                    "label": "쿠키/칩",
+                    "price": 2500
+                  },
+                  {
+                    "option_id": "wedge_potato",
+                    "label": "웨지포테이토",
+                    "price": 3100
+                  }
+                ]
+              },
+              {
+                "step_id": "included_drink",
+                "type": "single_select",
+                "priceMode": "delta",
+                "condition": {
+                  "step_id": "set",
+                  "option_id": "set"
+                },
+                "title": "세트 음료를 선택하세요",
+                "voice_text": "세트에 포함될 음료를 선택해주세요.",
+                "options": [
+                  {
+                    "option_id": "coke",
+                    "label": "코카콜라",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "sprite",
+                    "label": "스프라이트",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "ice_tea",
+                    "label": "아이스티",
+                    "price": 300
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "item_id": "turkey_breast",
+            "label": "터키 브레스트",
+            "base_price": 7900,
+            "visual": "bread",
+            "customize_steps": [
+              {
+                "step_id": "bread",
+                "type": "single_select",
+                "priceMode": "delta",
+                "visual": "bread",
+                "title": "빵 종류를 선택하세요",
+                "voice_text": "먼저 빵 종류를 골라주세요.",
+                "options": [
+                  {
+                    "option_id": "white",
+                    "label": "화이트빵",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "wheat",
+                    "label": "위트빵",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "parmesan_oregano",
+                    "label": "파마산오레가노",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "honey_oat",
+                    "label": "허니오트빵",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "grain",
+                    "label": "그레인빵",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "flatbread",
+                    "label": "플랫브레드",
+                    "price": 0
+                  }
+                ]
+              },
+              {
+                "step_id": "bread_length",
+                "type": "binary_choice",
+                "priceMode": "delta",
+                "title": "빵 길이를 선택하세요",
+                "voice_text": "15센티인지 30센티인지 선택해주세요.",
+                "options": [
+                  {
+                    "option_id": "15cm",
+                    "label": "15cm",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "30cm",
+                    "label": "30cm",
+                    "price": 4000
+                  }
+                ]
+              },
+              {
+                "step_id": "cheese",
+                "type": "single_select",
+                "priceMode": "delta",
+                "title": "치즈를 선택하세요",
+                "voice_text": "치즈를 추가할지 선택해주세요.",
+                "options": [
+                  {
+                    "option_id": "none",
+                    "label": "없음",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "american",
+                    "label": "아메리칸 치즈",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "shredded",
+                    "label": "슈레드 치즈",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "mozzarella",
+                    "label": "모차렐라 치즈",
+                    "price": 0
+                  }
+                ]
+              },
+              {
+                "step_id": "extra_toppings",
+                "type": "multi_select",
+                "priceMode": "delta",
+                "title": "추가 토핑을 선택하세요",
+                "voice_text": "추가하고 싶은 토핑이 있으면 골라주세요. 추가 요금이 있어요.",
+                "options": [
+                  {
+                    "option_id": "extra_meat",
+                    "label": "미트 추가",
+                    "price": 1500
+                  },
+                  {
+                    "option_id": "egg_mayo_topping",
+                    "label": "에그마요 추가",
+                    "price": 1000
+                  },
+                  {
+                    "option_id": "omelette",
+                    "label": "오믈렛 추가",
+                    "price": 1500
+                  }
+                ]
+              },
+              {
+                "step_id": "toast",
+                "type": "binary_choice",
+                "priceMode": "delta",
+                "title": "빵을 데워드릴까요?",
+                "voice_text": "빵을 따뜻하게 데워드릴지 선택해주세요.",
+                "options": [
+                  {
+                    "option_id": "yes",
+                    "label": "네, 데워주세요",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "no",
+                    "label": "아니요",
+                    "price": 0
+                  }
+                ]
+              },
+              {
+                "step_id": "vegetables",
+                "type": "multi_select",
+                "priceMode": "delta",
+                "visual": "vegetable",
+                "title": "야채를 선택하세요",
+                "voice_text": "원하는 야채를 모두 골라주세요.",
+                "options": [
+                  {
+                    "option_id": "lettuce",
+                    "label": "양상추",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "tomato",
+                    "label": "토마토",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "cucumber",
+                    "label": "오이",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "bell_pepper",
+                    "label": "피망/파프리카",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "onion",
+                    "label": "양파",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "pickle",
+                    "label": "피클",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "olive",
+                    "label": "올리브",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "jalapeno",
+                    "label": "할라피뇨",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "avocado",
+                    "label": "아보카도",
+                    "price": 0
+                  }
+                ]
+              },
+              {
+                "step_id": "sauce",
+                "type": "multi_select",
+                "priceMode": "delta",
+                "max_selections": 3,
+                "title": "소스를 선택하세요 (최대 3개 무료)",
+                "voice_text": "원하는 소스를 최대 3개까지 골라주세요.",
+                "options": [
+                  {
+                    "option_id": "sweet_onion",
+                    "label": "스위트어니언",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "mayo",
+                    "label": "마요네즈",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "mustard",
+                    "label": "허니 머스타드",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "sweet_chili",
+                    "label": "스위트칠리",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "ranch",
+                    "label": "랜치",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "onion_mayo",
+                    "label": "어니언마요",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "hot_chili",
+                    "label": "핫칠리",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "plain_mustard",
+                    "label": "플레인 머스타드",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "ketchup",
+                    "label": "케찹",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "sw_chipotle",
+                    "label": "사우스웨스트 치폴레",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "oil_vinegar",
+                    "label": "오일&비네거",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "bbq",
+                    "label": "바베큐",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "italian",
+                    "label": "이탈리안",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "sriracha",
+                    "label": "스리라차",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "garlic",
+                    "label": "갈릭",
+                    "price": 0
+                  }
+                ]
+              },
+              {
+                "step_id": "set",
+                "type": "binary_choice",
+                "priceMode": "delta",
+                "title": "단품으로 드릴까요, 세트로 드릴까요?",
+                "voice_text": "단품인지 세트인지 선택해주세요.",
+                "options": [
+                  {
+                    "option_id": "single",
+                    "label": "단품",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "set",
+                    "label": "세트",
+                    "price": 0
+                  }
+                ]
+              },
+              {
+                "step_id": "included_side",
+                "type": "single_select",
+                "priceMode": "delta",
+                "condition": {
+                  "step_id": "set",
+                  "option_id": "set"
+                },
+                "title": "세트 사이드를 선택하세요",
+                "voice_text": "세트에 포함될 사이드를 선택해주세요.",
+                "options": [
+                  {
+                    "option_id": "cookie_chip",
+                    "label": "쿠키/칩",
+                    "price": 2500
+                  },
+                  {
+                    "option_id": "wedge_potato",
+                    "label": "웨지포테이토",
+                    "price": 3100
+                  }
+                ]
+              },
+              {
+                "step_id": "included_drink",
+                "type": "single_select",
+                "priceMode": "delta",
+                "condition": {
+                  "step_id": "set",
+                  "option_id": "set"
+                },
+                "title": "세트 음료를 선택하세요",
+                "voice_text": "세트에 포함될 음료를 선택해주세요.",
+                "options": [
+                  {
+                    "option_id": "coke",
+                    "label": "코카콜라",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "sprite",
+                    "label": "스프라이트",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "ice_tea",
+                    "label": "아이스티",
+                    "price": 300
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "item_id": "italian_bmt",
+            "label": "이탈리안 비엠티",
+            "base_price": 8900,
+            "visual": "bread",
+            "customize_steps": [
+              {
+                "step_id": "bread",
+                "type": "single_select",
+                "priceMode": "delta",
+                "visual": "bread",
+                "title": "빵 종류를 선택하세요",
+                "voice_text": "먼저 빵 종류를 골라주세요.",
+                "options": [
+                  {
+                    "option_id": "white",
+                    "label": "화이트빵",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "wheat",
+                    "label": "위트빵",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "parmesan_oregano",
+                    "label": "파마산오레가노",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "honey_oat",
+                    "label": "허니오트빵",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "grain",
+                    "label": "그레인빵",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "flatbread",
+                    "label": "플랫브레드",
+                    "price": 0
+                  }
+                ]
+              },
+              {
+                "step_id": "bread_length",
+                "type": "binary_choice",
+                "priceMode": "delta",
+                "title": "빵 길이를 선택하세요",
+                "voice_text": "15센티인지 30센티인지 선택해주세요.",
+                "options": [
+                  {
+                    "option_id": "15cm",
+                    "label": "15cm",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "30cm",
+                    "label": "30cm",
+                    "price": 4000
+                  }
+                ]
+              },
+              {
+                "step_id": "cheese",
+                "type": "single_select",
+                "priceMode": "delta",
+                "title": "치즈를 선택하세요",
+                "voice_text": "치즈를 추가할지 선택해주세요.",
+                "options": [
+                  {
+                    "option_id": "none",
+                    "label": "없음",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "american",
+                    "label": "아메리칸 치즈",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "shredded",
+                    "label": "슈레드 치즈",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "mozzarella",
+                    "label": "모차렐라 치즈",
+                    "price": 0
+                  }
+                ]
+              },
+              {
+                "step_id": "extra_toppings",
+                "type": "multi_select",
+                "priceMode": "delta",
+                "title": "추가 토핑을 선택하세요",
+                "voice_text": "추가하고 싶은 토핑이 있으면 골라주세요. 추가 요금이 있어요.",
+                "options": [
+                  {
+                    "option_id": "extra_meat",
+                    "label": "미트 추가",
+                    "price": 1500
+                  },
+                  {
+                    "option_id": "egg_mayo_topping",
+                    "label": "에그마요 추가",
+                    "price": 1000
+                  },
+                  {
+                    "option_id": "omelette",
+                    "label": "오믈렛 추가",
+                    "price": 1500
+                  }
+                ]
+              },
+              {
+                "step_id": "toast",
+                "type": "binary_choice",
+                "priceMode": "delta",
+                "title": "빵을 데워드릴까요?",
+                "voice_text": "빵을 따뜻하게 데워드릴지 선택해주세요.",
+                "options": [
+                  {
+                    "option_id": "yes",
+                    "label": "네, 데워주세요",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "no",
+                    "label": "아니요",
+                    "price": 0
+                  }
+                ]
+              },
+              {
+                "step_id": "vegetables",
+                "type": "multi_select",
+                "priceMode": "delta",
+                "visual": "vegetable",
+                "title": "야채를 선택하세요",
+                "voice_text": "원하는 야채를 모두 골라주세요.",
+                "options": [
+                  {
+                    "option_id": "lettuce",
+                    "label": "양상추",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "tomato",
+                    "label": "토마토",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "cucumber",
+                    "label": "오이",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "bell_pepper",
+                    "label": "피망/파프리카",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "onion",
+                    "label": "양파",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "pickle",
+                    "label": "피클",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "olive",
+                    "label": "올리브",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "jalapeno",
+                    "label": "할라피뇨",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "avocado",
+                    "label": "아보카도",
+                    "price": 0
+                  }
+                ]
+              },
+              {
+                "step_id": "sauce",
+                "type": "multi_select",
+                "priceMode": "delta",
+                "max_selections": 3,
+                "title": "소스를 선택하세요 (최대 3개 무료)",
+                "voice_text": "원하는 소스를 최대 3개까지 골라주세요.",
+                "options": [
+                  {
+                    "option_id": "sweet_onion",
+                    "label": "스위트어니언",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "mayo",
+                    "label": "마요네즈",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "mustard",
+                    "label": "허니 머스타드",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "sweet_chili",
+                    "label": "스위트칠리",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "ranch",
+                    "label": "랜치",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "onion_mayo",
+                    "label": "어니언마요",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "hot_chili",
+                    "label": "핫칠리",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "plain_mustard",
+                    "label": "플레인 머스타드",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "ketchup",
+                    "label": "케찹",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "sw_chipotle",
+                    "label": "사우스웨스트 치폴레",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "oil_vinegar",
+                    "label": "오일&비네거",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "bbq",
+                    "label": "바베큐",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "italian",
+                    "label": "이탈리안",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "sriracha",
+                    "label": "스리라차",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "garlic",
+                    "label": "갈릭",
+                    "price": 0
+                  }
+                ]
+              },
+              {
+                "step_id": "set",
+                "type": "binary_choice",
+                "priceMode": "delta",
+                "title": "단품으로 드릴까요, 세트로 드릴까요?",
+                "voice_text": "단품인지 세트인지 선택해주세요.",
+                "options": [
+                  {
+                    "option_id": "single",
+                    "label": "단품",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "set",
+                    "label": "세트",
+                    "price": 0
+                  }
+                ]
+              },
+              {
+                "step_id": "included_side",
+                "type": "single_select",
+                "priceMode": "delta",
+                "condition": {
+                  "step_id": "set",
+                  "option_id": "set"
+                },
+                "title": "세트 사이드를 선택하세요",
+                "voice_text": "세트에 포함될 사이드를 선택해주세요.",
+                "options": [
+                  {
+                    "option_id": "cookie_chip",
+                    "label": "쿠키/칩",
+                    "price": 2500
+                  },
+                  {
+                    "option_id": "wedge_potato",
+                    "label": "웨지포테이토",
+                    "price": 3100
+                  }
+                ]
+              },
+              {
+                "step_id": "included_drink",
+                "type": "single_select",
+                "priceMode": "delta",
+                "condition": {
+                  "step_id": "set",
+                  "option_id": "set"
+                },
+                "title": "세트 음료를 선택하세요",
+                "voice_text": "세트에 포함될 음료를 선택해주세요.",
+                "options": [
+                  {
+                    "option_id": "coke",
+                    "label": "코카콜라",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "sprite",
+                    "label": "스프라이트",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "ice_tea",
+                    "label": "아이스티",
+                    "price": 300
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "item_id": "subway_club",
+            "label": "서브웨이 클럽",
+            "base_price": 8900,
+            "visual": "bread",
+            "customize_steps": [
+              {
+                "step_id": "bread",
+                "type": "single_select",
+                "priceMode": "delta",
+                "visual": "bread",
+                "title": "빵 종류를 선택하세요",
+                "voice_text": "먼저 빵 종류를 골라주세요.",
+                "options": [
+                  {
+                    "option_id": "white",
+                    "label": "화이트빵",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "wheat",
+                    "label": "위트빵",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "parmesan_oregano",
+                    "label": "파마산오레가노",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "honey_oat",
+                    "label": "허니오트빵",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "grain",
+                    "label": "그레인빵",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "flatbread",
+                    "label": "플랫브레드",
+                    "price": 0
+                  }
+                ]
+              },
+              {
+                "step_id": "bread_length",
+                "type": "binary_choice",
+                "priceMode": "delta",
+                "title": "빵 길이를 선택하세요",
+                "voice_text": "15센티인지 30센티인지 선택해주세요.",
+                "options": [
+                  {
+                    "option_id": "15cm",
+                    "label": "15cm",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "30cm",
+                    "label": "30cm",
+                    "price": 4000
+                  }
+                ]
+              },
+              {
+                "step_id": "cheese",
+                "type": "single_select",
+                "priceMode": "delta",
+                "title": "치즈를 선택하세요",
+                "voice_text": "치즈를 추가할지 선택해주세요.",
+                "options": [
+                  {
+                    "option_id": "none",
+                    "label": "없음",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "american",
+                    "label": "아메리칸 치즈",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "shredded",
+                    "label": "슈레드 치즈",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "mozzarella",
+                    "label": "모차렐라 치즈",
+                    "price": 0
+                  }
+                ]
+              },
+              {
+                "step_id": "extra_toppings",
+                "type": "multi_select",
+                "priceMode": "delta",
+                "title": "추가 토핑을 선택하세요",
+                "voice_text": "추가하고 싶은 토핑이 있으면 골라주세요. 추가 요금이 있어요.",
+                "options": [
+                  {
+                    "option_id": "extra_meat",
+                    "label": "미트 추가",
+                    "price": 1500
+                  },
+                  {
+                    "option_id": "egg_mayo_topping",
+                    "label": "에그마요 추가",
+                    "price": 1000
+                  },
+                  {
+                    "option_id": "omelette",
+                    "label": "오믈렛 추가",
+                    "price": 1500
+                  }
+                ]
+              },
+              {
+                "step_id": "toast",
+                "type": "binary_choice",
+                "priceMode": "delta",
+                "title": "빵을 데워드릴까요?",
+                "voice_text": "빵을 따뜻하게 데워드릴지 선택해주세요.",
+                "options": [
+                  {
+                    "option_id": "yes",
+                    "label": "네, 데워주세요",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "no",
+                    "label": "아니요",
+                    "price": 0
+                  }
+                ]
+              },
+              {
+                "step_id": "vegetables",
+                "type": "multi_select",
+                "priceMode": "delta",
+                "visual": "vegetable",
+                "title": "야채를 선택하세요",
+                "voice_text": "원하는 야채를 모두 골라주세요.",
+                "options": [
+                  {
+                    "option_id": "lettuce",
+                    "label": "양상추",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "tomato",
+                    "label": "토마토",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "cucumber",
+                    "label": "오이",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "bell_pepper",
+                    "label": "피망/파프리카",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "onion",
+                    "label": "양파",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "pickle",
+                    "label": "피클",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "olive",
+                    "label": "올리브",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "jalapeno",
+                    "label": "할라피뇨",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "avocado",
+                    "label": "아보카도",
+                    "price": 0
+                  }
+                ]
+              },
+              {
+                "step_id": "sauce",
+                "type": "multi_select",
+                "priceMode": "delta",
+                "max_selections": 3,
+                "title": "소스를 선택하세요 (최대 3개 무료)",
+                "voice_text": "원하는 소스를 최대 3개까지 골라주세요.",
+                "options": [
+                  {
+                    "option_id": "sweet_onion",
+                    "label": "스위트어니언",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "mayo",
+                    "label": "마요네즈",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "mustard",
+                    "label": "허니 머스타드",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "sweet_chili",
+                    "label": "스위트칠리",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "ranch",
+                    "label": "랜치",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "onion_mayo",
+                    "label": "어니언마요",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "hot_chili",
+                    "label": "핫칠리",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "plain_mustard",
+                    "label": "플레인 머스타드",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "ketchup",
+                    "label": "케찹",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "sw_chipotle",
+                    "label": "사우스웨스트 치폴레",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "oil_vinegar",
+                    "label": "오일&비네거",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "bbq",
+                    "label": "바베큐",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "italian",
+                    "label": "이탈리안",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "sriracha",
+                    "label": "스리라차",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "garlic",
+                    "label": "갈릭",
+                    "price": 0
+                  }
+                ]
+              },
+              {
+                "step_id": "set",
+                "type": "binary_choice",
+                "priceMode": "delta",
+                "title": "단품으로 드릴까요, 세트로 드릴까요?",
+                "voice_text": "단품인지 세트인지 선택해주세요.",
+                "options": [
+                  {
+                    "option_id": "single",
+                    "label": "단품",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "set",
+                    "label": "세트",
+                    "price": 0
+                  }
+                ]
+              },
+              {
+                "step_id": "included_side",
+                "type": "single_select",
+                "priceMode": "delta",
+                "condition": {
+                  "step_id": "set",
+                  "option_id": "set"
+                },
+                "title": "세트 사이드를 선택하세요",
+                "voice_text": "세트에 포함될 사이드를 선택해주세요.",
+                "options": [
+                  {
+                    "option_id": "cookie_chip",
+                    "label": "쿠키/칩",
+                    "price": 2500
+                  },
+                  {
+                    "option_id": "wedge_potato",
+                    "label": "웨지포테이토",
+                    "price": 3100
+                  }
+                ]
+              },
+              {
+                "step_id": "included_drink",
+                "type": "single_select",
+                "priceMode": "delta",
+                "condition": {
+                  "step_id": "set",
+                  "option_id": "set"
+                },
+                "title": "세트 음료를 선택하세요",
+                "voice_text": "세트에 포함될 음료를 선택해주세요.",
+                "options": [
+                  {
+                    "option_id": "coke",
+                    "label": "코카콜라",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "sprite",
+                    "label": "스프라이트",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "ice_tea",
+                    "label": "아이스티",
+                    "price": 300
+                  }
+                ]
+              }
+            ]
           }
         ]
       },
       {
-        "step_id": "vegetables",
-        "type": "multi_select",
-        "priceMode": "delta",
-        "title": "야채를 선택하세요",
-        "voice_text": "원하는 야채를 모두 골라주세요.",
-        "options": [
+        "category_id": "drinks",
+        "label": "음료",
+        "items": [
           {
-            "option_id": "lettuce",
-            "label": "양상추",
-            "price": 0
+            "item_id": "coke_standalone",
+            "label": "코카콜라",
+            "base_price": 2500,
+            "visual": "drink",
+            "customize_steps": []
           },
           {
-            "option_id": "tomato",
-            "label": "토마토",
-            "price": 0
+            "item_id": "sprite_standalone",
+            "label": "스프라이트",
+            "base_price": 2500,
+            "visual": "drink",
+            "customize_steps": []
           },
           {
-            "option_id": "onion",
-            "label": "양파",
-            "price": 0
-          },
-          {
-            "option_id": "pickle",
-            "label": "피클",
-            "price": 0
-          }
-        ],
-        "visual": "vegetable"
-      },
-      {
-        "step_id": "confirm_order",
-        "type": "confirm",
-        "title": "선택하신 내용을 확인해주세요",
-        "voice_text": "지금까지 고르신 내용이 맞는지 확인해주세요."
-      },
-      {
-        "step_id": "payment",
-        "type": "payment_mock",
-        "title": "결제 방법을 선택하세요",
-        "voice_text": "결제 방법을 선택해주세요.",
-        "options": [
-          {
-            "option_id": "card",
-            "label": "카드 삽입",
-            "icon": "card"
-          },
-          {
-            "option_id": "phone",
-            "label": "휴대폰 태그",
-            "icon": "phone"
-          },
-          {
-            "option_id": "cash",
-            "label": "현금",
-            "icon": "cash"
+            "item_id": "ice_tea_standalone",
+            "label": "아이스티",
+            "base_price": 2800,
+            "visual": "drink",
+            "customize_steps": []
           }
         ]
       }
     ]
-  }
+  },
+  "order_steps": [
+    {
+      "step_id": "confirm_order",
+      "type": "confirm",
+      "title": "선택하신 내용을 확인해주세요",
+      "voice_text": "지금까지 고르신 내용이 맞는지 확인해주세요."
+    },
+    {
+      "step_id": "payment",
+      "type": "payment_mock",
+      "title": "결제 방법을 선택하세요",
+      "voice_text": "결제 방법을 선택해주세요.",
+      "options": [
+        {
+          "option_id": "card",
+          "label": "카드 삽입",
+          "icon": "card"
+        },
+        {
+          "option_id": "phone",
+          "label": "휴대폰 태그",
+          "icon": "phone"
+        },
+        {
+          "option_id": "cash",
+          "label": "현금",
+          "icon": "cash"
+        }
+      ]
+    }
+  ],
+  "_source_notes": "6종 샌드위치(6인치 기준) 가격은 서브웨이 공식 앱/매장 가격대를 참고한 근사치 — 에그마요 6,900원(최저가), 참치·미트볼마리나라·터키브레스트 7,900원, 이탈리안비엠티·서브웨이클럽 8,900원(프리미엄). 30cm 업그레이드(+4,000원), 치즈 추가(무료), 추가토핑(미트+1,500원/에그마요+1,000원/오믈렛+1,500원), 세트 사이드(쿠키칩+2,500원/웨지포테이토+3,100원), 세트 음료(콜라/스프라이트 무료, 아이스티+300원)는 전부 추정치로 현장 확인 필요. 야채 9종/소스 15종은 서브웨이 공식 메뉴 구성을 참고해 확장."
 }
