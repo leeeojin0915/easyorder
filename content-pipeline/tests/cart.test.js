@@ -68,6 +68,9 @@ function removeCartLine(cart, cartItemId) {
 function isStepAtSelectionCap(step, currentSelection) {
   return step.max_selections !== undefined && currentSelection.length >= step.max_selections;
 }
+function canProceedCustomize(step, currentSelection) {
+  return step.required === false || currentSelection.length > 0;
+}
 function toggleOption(step, currentSelection, optId) {
   if (step.type !== 'multi_select') return [optId];
   if (currentSelection.includes(optId)) return currentSelection.filter((o) => o !== optId);
@@ -240,6 +243,27 @@ function assertEqual(label, actual, expected) {
   let sel = [];
   flavorStep.options.slice(0, 3).forEach((opt) => { sel = toggleOption(flavorStep, sel, opt.option_id); });
   assertEqual(`[${brandId}] flavor_mix 3번째 선택 시도 시 max_selections=2 캡 차단`, sel.length, 2);
+});
+
+// subway: required:false 스텝(추가토핑/야채/소스)은 0개 선택으로도 진행 가능, KFC flavor_mix는 여전히 필수
+['subway'].forEach((brandId) => {
+  const brand = loadBrand(brandId);
+  const firstItem = brand.menu.categories[0].items[0];
+  ['extra_toppings', 'vegetables', 'sauce'].forEach((stepId) => {
+    const step = firstItem.customize_steps.find((s) => s.step_id === stepId);
+    assertEqual(`[${brandId}] ${stepId} required:false 명시됨`, step.required, false);
+    assertEqual(`[${brandId}] ${stepId} 0개 선택 상태에서도 진행 가능(canProceedCustomize)`, canProceedCustomize(step, []), true);
+  });
+  const breadStep = firstItem.customize_steps.find((s) => s.step_id === 'bread');
+  assertEqual(`[${brandId}] bread(필수 단계)는 required 필드 없음(기본값 true로 동작)`, breadStep.required, undefined);
+  assertEqual(`[${brandId}] bread 0개 선택 상태에서는 진행 불가`, canProceedCustomize(breadStep, []), false);
+});
+['kfc'].forEach((brandId) => {
+  const brand = loadBrand(brandId);
+  const bucketItem = getItem(brand, 'chicken', 'chicken_bucket_9');
+  const flavorStep = bucketItem.customize_steps.find((s) => s.step_id === 'flavor_mix');
+  assertEqual(`[${brandId}] flavor_mix는 required:false 없음(맛 최소 1개는 필수)`, flavorStep.required, undefined);
+  assertEqual(`[${brandId}] flavor_mix 0개 선택 상태에서는 진행 불가`, canProceedCustomize(flavorStep, []), false);
 });
 
 // all brands: dining_options 구조 검증

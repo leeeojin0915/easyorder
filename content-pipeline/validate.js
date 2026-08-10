@@ -72,6 +72,14 @@ function validateCustomizeSteps(item, loc, errors) {
       }
     }
 
+    if (step.required !== undefined) {
+      if (typeof step.required !== 'boolean') {
+        fail(errors, `${sloc}: required 는 boolean 이어야 함`);
+      } else if (step.required === false && step.type !== 'multi_select') {
+        fail(errors, `${sloc}: required:false 는 multi_select 타입에서만 사용 가능 (single_select/binary_choice는 항상 하나를 선택해야 함)`);
+      }
+    }
+
     if (step.condition !== undefined) {
       const c = step.condition;
       if (!c || typeof c !== 'object' || !c.step_id || !c.option_id) {

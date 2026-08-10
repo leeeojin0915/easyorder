@@ -158,7 +158,8 @@
                     "label": "오믈렛 추가",
                     "price": 1500
                   }
-                ]
+                ],
+                "required": false
               },
               {
                 "step_id": "toast",
@@ -232,7 +233,8 @@
                     "label": "아보카도",
                     "price": 0
                   }
-                ]
+                ],
+                "required": false
               },
               {
                 "step_id": "sauce",
@@ -317,7 +319,8 @@
                     "label": "갈릭",
                     "price": 0
                   }
-                ]
+                ],
+                "required": false
               },
               {
                 "step_id": "set",
@@ -507,7 +510,8 @@
                     "label": "오믈렛 추가",
                     "price": 1500
                   }
-                ]
+                ],
+                "required": false
               },
               {
                 "step_id": "toast",
@@ -581,7 +585,8 @@
                     "label": "아보카도",
                     "price": 0
                   }
-                ]
+                ],
+                "required": false
               },
               {
                 "step_id": "sauce",
@@ -666,7 +671,8 @@
                     "label": "갈릭",
                     "price": 0
                   }
-                ]
+                ],
+                "required": false
               },
               {
                 "step_id": "set",
@@ -856,7 +862,8 @@
                     "label": "오믈렛 추가",
                     "price": 1500
                   }
-                ]
+                ],
+                "required": false
               },
               {
                 "step_id": "toast",
@@ -930,7 +937,8 @@
                     "label": "아보카도",
                     "price": 0
                   }
-                ]
+                ],
+                "required": false
               },
               {
                 "step_id": "sauce",
@@ -1015,7 +1023,8 @@
                     "label": "갈릭",
                     "price": 0
                   }
-                ]
+                ],
+                "required": false
               },
               {
                 "step_id": "set",
@@ -1205,7 +1214,8 @@
                     "label": "오믈렛 추가",
                     "price": 1500
                   }
-                ]
+                ],
+                "required": false
               },
               {
                 "step_id": "toast",
@@ -1279,7 +1289,8 @@
                     "label": "아보카도",
                     "price": 0
                   }
-                ]
+                ],
+                "required": false
               },
               {
                 "step_id": "sauce",
@@ -1364,7 +1375,8 @@
                     "label": "갈릭",
                     "price": 0
                   }
-                ]
+                ],
+                "required": false
               },
               {
                 "step_id": "set",
@@ -1554,7 +1566,8 @@
                     "label": "오믈렛 추가",
                     "price": 1500
                   }
-                ]
+                ],
+                "required": false
               },
               {
                 "step_id": "toast",
@@ -1628,7 +1641,8 @@
                     "label": "아보카도",
                     "price": 0
                   }
-                ]
+                ],
+                "required": false
               },
               {
                 "step_id": "sauce",
@@ -1713,7 +1727,8 @@
                     "label": "갈릭",
                     "price": 0
                   }
-                ]
+                ],
+                "required": false
               },
               {
                 "step_id": "set",
@@ -1903,7 +1918,8 @@
                     "label": "오믈렛 추가",
                     "price": 1500
                   }
-                ]
+                ],
+                "required": false
               },
               {
                 "step_id": "toast",
@@ -1977,7 +1993,8 @@
                     "label": "아보카도",
                     "price": 0
                   }
-                ]
+                ],
+                "required": false
               },
               {
                 "step_id": "sauce",
@@ -2062,7 +2079,8 @@
                     "label": "갈릭",
                     "price": 0
                   }
-                ]
+                ],
+                "required": false
               },
               {
                 "step_id": "set",

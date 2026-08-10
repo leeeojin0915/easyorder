@@ -48,6 +48,7 @@
                 "voice_text": "REQUIRED_음성 안내 문구",
                 "condition": "OPTIONAL_{step_id, option_id} 형태. 같은 아이템의 customize_steps 안의 다른 step_id만 참조 가능",
                 "max_selections": "OPTIONAL_int, type이 multi_select일 때만 사용. 1~options.length. 지정하면 그 개수까지만 선택 가능",
+                "required": "OPTIONAL_boolean, type이 multi_select일 때만 사용. 기본값 true(1개 이상 선택해야 다음으로 진행). false로 지정하면 0개 선택도 허용(예: 추가토핑 안함, 야채 다 빼기)",
                 "visual": "OPTIONAL_one_of: bread | burger | drink | vegetable",
                 "options": [
                   {

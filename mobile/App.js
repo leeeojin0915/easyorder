@@ -87,7 +87,7 @@ export default function App() {
   const customizeStep = customizeSteps[customizeStepIndex];
   const currentCustomizeSelection = customizeStep ? (itemDraftSelections[customizeStep.step_id] || []) : [];
   const isLastCustomizeStep = customizeStepIndex === customizeSteps.length - 1;
-  const canProceedCustomize = currentCustomizeSelection.length > 0;
+  const canProceedCustomize = customizeStep?.required === false || currentCustomizeSelection.length > 0;
   const itemUnitPricePreview = activeItem ? computeItemUnitPrice(activeItem, itemDraftSelections) : 0;
 
   const paymentStep = brand.order_steps.find((s) => s.type === 'payment_mock');
