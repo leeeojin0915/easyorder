@@ -935,14 +935,54 @@
             "label": "코카콜라",
             "base_price": 2200,
             "visual": "drink",
-            "customize_steps": []
+            "customize_steps": [
+              {
+                "step_id": "size",
+                "type": "binary_choice",
+                "priceMode": "delta",
+                "title": "사이즈를 선택하세요",
+                "voice_text": "음료 사이즈를 선택해주세요.",
+                "options": [
+                  {
+                    "option_id": "r",
+                    "label": "R",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "l",
+                    "label": "L",
+                    "price": 200
+                  }
+                ]
+              }
+            ]
           },
           {
             "item_id": "sprite_standalone",
             "label": "스프라이트",
             "base_price": 2200,
             "visual": "drink",
-            "customize_steps": []
+            "customize_steps": [
+              {
+                "step_id": "size",
+                "type": "binary_choice",
+                "priceMode": "delta",
+                "title": "사이즈를 선택하세요",
+                "voice_text": "음료 사이즈를 선택해주세요.",
+                "options": [
+                  {
+                    "option_id": "r",
+                    "label": "R",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "l",
+                    "label": "L",
+                    "price": 200
+                  }
+                ]
+              }
+            ]
           },
           {
             "item_id": "ice_americano_standalone",
@@ -986,5 +1026,5 @@
       ]
     }
   ],
-  "_source_notes": "와퍼 7,900원/치즈버거 6,900원/치킨버거 7,500원은 기존 조사값 유지. 통새우와퍼 8,900원/불고기와퍼 7,200원/와퍼주니어 5,200원은 버거킹 대표 메뉴 가격대 참고 추정치, 세트 추가금(+2,000원)과 세트 포함 음료 구조는 맥도날드/롯데리아/KFC와 동일 패턴으로 통일. 단독 음료가(2,200~2,500원)는 추정치로 현장 확인 필요."
+  "_source_notes": "와퍼 7,900원/치즈버거 6,900원/치킨버거 7,500원은 기존 조사값 유지. 통새우와퍼 8,900원/불고기와퍼 7,200원/와퍼주니어 5,200원은 버거킹 대표 메뉴 가격대 참고 추정치, 세트 추가금(+2,000원)과 세트 포함 음료 구조는 맥도날드/롯데리아/KFC와 동일 패턴으로 통일. 단독 음료가(2,200~2,500원)는 추정치로 현장 확인 필요. 코카콜라·스프라이트 단독구매 R/L 사이즈(+200원, v1.3.2)는 리뷰 블로그 근거 추정치로 현장 확인 필요(아이스아메리카노는 사이즈 구분 없음)."
 }

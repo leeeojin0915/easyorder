@@ -352,8 +352,14 @@ const CONTENT = {
         ] },
       ] },
       { category_id: 'drinks', label: '음료', items: [
-        { item_id: 'coke_standalone', label: '코카콜라', base_price: 2200, visual: 'drink', customize_steps: [] },
-        { item_id: 'sprite_standalone', label: '스프라이트', base_price: 2200, visual: 'drink', customize_steps: [] },
+        { item_id: 'coke_standalone', label: '코카콜라', base_price: 2200, visual: 'drink', customize_steps: [
+          { step_id: 'size', type: 'binary_choice', priceMode: 'delta', title: '사이즈를 선택하세요', voice_text: '음료 사이즈를 선택해주세요.',
+            options: [{ option_id: 'r', label: 'R', price: 0 }, { option_id: 'l', label: 'L', price: 200 }] },
+        ] },
+        { item_id: 'sprite_standalone', label: '스프라이트', base_price: 2200, visual: 'drink', customize_steps: [
+          { step_id: 'size', type: 'binary_choice', priceMode: 'delta', title: '사이즈를 선택하세요', voice_text: '음료 사이즈를 선택해주세요.',
+            options: [{ option_id: 'r', label: 'R', price: 0 }, { option_id: 'l', label: 'L', price: 200 }] },
+        ] },
         { item_id: 'ice_americano_standalone', label: '아이스 아메리카노', base_price: 2500, visual: 'drink', customize_steps: [] },
       ] },
     ] },
@@ -405,9 +411,18 @@ const CONTENT = {
         ] },
       ] },
       { category_id: 'drinks', label: '음료', items: [
-        { item_id: 'coke_standalone', label: '코카콜라', base_price: 2000, visual: 'drink', customize_steps: [] },
-        { item_id: 'sprite_standalone', label: '스프라이트', base_price: 2000, visual: 'drink', customize_steps: [] },
-        { item_id: 'ice_americano_standalone', label: '아이스 아메리카노', base_price: 2300, visual: 'drink', customize_steps: [] },
+        { item_id: 'coke_standalone', label: '코카콜라', base_price: 2000, visual: 'drink', customize_steps: [
+          { step_id: 'size', type: 'binary_choice', priceMode: 'delta', title: '사이즈를 선택하세요', voice_text: '음료 사이즈를 선택해주세요.',
+            options: [{ option_id: 'm', label: 'M', price: 0 }, { option_id: 'l', label: 'L', price: 400 }] },
+        ] },
+        { item_id: 'sprite_standalone', label: '스프라이트', base_price: 2000, visual: 'drink', customize_steps: [
+          { step_id: 'size', type: 'binary_choice', priceMode: 'delta', title: '사이즈를 선택하세요', voice_text: '음료 사이즈를 선택해주세요.',
+            options: [{ option_id: 'm', label: 'M', price: 0 }, { option_id: 'l', label: 'L', price: 400 }] },
+        ] },
+        { item_id: 'ice_americano_standalone', label: '아이스 아메리카노', base_price: 2300, visual: 'drink', customize_steps: [
+          { step_id: 'size', type: 'binary_choice', priceMode: 'delta', title: '사이즈를 선택하세요', voice_text: '음료 사이즈를 선택해주세요.',
+            options: [{ option_id: 'm', label: 'M', price: 0 }, { option_id: 'l', label: 'L', price: 400 }] },
+        ] },
       ] },
       { category_id: 'mcmorning', label: '맥모닝', items: [
         { item_id: 'sausage_egg_mcmuffin', label: '소시지에그맥머핀', base_price: 4200, visual: 'burger', customize_steps: [] },
@@ -423,9 +438,18 @@ const CONTENT = {
         { item_id: 'affogato', label: '아포가토', base_price: 3800, visual: 'drink', customize_steps: [] },
       ] },
       { category_id: 'mccafe', label: '맥카페', items: [
-        { item_id: 'americano_mccafe', label: '아메리카노', base_price: 2500, visual: 'drink', customize_steps: [] },
-        { item_id: 'cafe_latte_mccafe', label: '카페라떼', base_price: 3200, visual: 'drink', customize_steps: [] },
-        { item_id: 'cappuccino_mccafe', label: '카푸치노', base_price: 3200, visual: 'drink', customize_steps: [] },
+        { item_id: 'americano_mccafe', label: '아메리카노', base_price: 2500, visual: 'drink', customize_steps: [
+          { step_id: 'size', type: 'binary_choice', priceMode: 'delta', title: '사이즈를 선택하세요', voice_text: '음료 사이즈를 선택해주세요.',
+            options: [{ option_id: 'm', label: 'M', price: 0 }, { option_id: 'l', label: 'L', price: 400 }] },
+        ] },
+        { item_id: 'cafe_latte_mccafe', label: '카페라떼', base_price: 3200, visual: 'drink', customize_steps: [
+          { step_id: 'size', type: 'binary_choice', priceMode: 'delta', title: '사이즈를 선택하세요', voice_text: '음료 사이즈를 선택해주세요.',
+            options: [{ option_id: 'm', label: 'M', price: 0 }, { option_id: 'l', label: 'L', price: 400 }] },
+        ] },
+        { item_id: 'cappuccino_mccafe', label: '카푸치노', base_price: 3200, visual: 'drink', customize_steps: [
+          { step_id: 'size', type: 'binary_choice', priceMode: 'delta', title: '사이즈를 선택하세요', voice_text: '음료 사이즈를 선택해주세요.',
+            options: [{ option_id: 'm', label: 'M', price: 0 }, { option_id: 'l', label: 'L', price: 400 }] },
+        ] },
       ] },
     ] },
     order_steps: [
@@ -484,9 +508,18 @@ const CONTENT = {
         { item_id: 'boneless_chicken_half_pack', label: '순살치킨 하프팩(11조각)', base_price: 13900, customize_steps: [] },
       ] },
       { category_id: 'drinks', label: '음료', items: [
-        { item_id: 'coke_standalone', label: '코카콜라', base_price: 2000, visual: 'drink', customize_steps: [] },
-        { item_id: 'sprite_standalone', label: '스프라이트', base_price: 2000, visual: 'drink', customize_steps: [] },
-        { item_id: 'ice_tea_standalone', label: '아이스티', base_price: 2300, visual: 'drink', customize_steps: [] },
+        { item_id: 'coke_standalone', label: '코카콜라', base_price: 2000, visual: 'drink', customize_steps: [
+          { step_id: 'size', type: 'binary_choice', priceMode: 'delta', title: '사이즈를 선택하세요', voice_text: '음료 사이즈를 선택해주세요.',
+            options: [{ option_id: 'r', label: 'R', price: 0 }, { option_id: 'l', label: 'L', price: 200 }] },
+        ] },
+        { item_id: 'sprite_standalone', label: '스프라이트', base_price: 2000, visual: 'drink', customize_steps: [
+          { step_id: 'size', type: 'binary_choice', priceMode: 'delta', title: '사이즈를 선택하세요', voice_text: '음료 사이즈를 선택해주세요.',
+            options: [{ option_id: 'r', label: 'R', price: 0 }, { option_id: 'l', label: 'L', price: 200 }] },
+        ] },
+        { item_id: 'ice_tea_standalone', label: '아이스티', base_price: 2300, visual: 'drink', customize_steps: [
+          { step_id: 'size', type: 'binary_choice', priceMode: 'delta', title: '사이즈를 선택하세요', voice_text: '음료 사이즈를 선택해주세요.',
+            options: [{ option_id: 'r', label: 'R', price: 0 }, { option_id: 'l', label: 'L', price: 300 }] },
+        ] },
       ] },
     ] },
     order_steps: [
@@ -538,9 +571,18 @@ const CONTENT = {
         ] },
       ] },
       { category_id: 'drinks', label: '음료', items: [
-        { item_id: 'coke_standalone', label: '코카콜라', base_price: 2000, visual: 'drink', customize_steps: [] },
-        { item_id: 'sprite_standalone', label: '스프라이트', base_price: 2000, visual: 'drink', customize_steps: [] },
-        { item_id: 'ice_americano_standalone', label: '아이스 아메리카노', base_price: 2300, visual: 'drink', customize_steps: [] },
+        { item_id: 'coke_standalone', label: '코카콜라', base_price: 2000, visual: 'drink', customize_steps: [
+          { step_id: 'size', type: 'binary_choice', priceMode: 'delta', title: '사이즈를 선택하세요', voice_text: '음료 사이즈를 선택해주세요.',
+            options: [{ option_id: 'm', label: 'M', price: 0 }, { option_id: 'l', label: 'L', price: 400 }] },
+        ] },
+        { item_id: 'sprite_standalone', label: '스프라이트', base_price: 2000, visual: 'drink', customize_steps: [
+          { step_id: 'size', type: 'binary_choice', priceMode: 'delta', title: '사이즈를 선택하세요', voice_text: '음료 사이즈를 선택해주세요.',
+            options: [{ option_id: 'm', label: 'M', price: 0 }, { option_id: 'l', label: 'L', price: 400 }] },
+        ] },
+        { item_id: 'ice_americano_standalone', label: '아이스 아메리카노', base_price: 2300, visual: 'drink', customize_steps: [
+          { step_id: 'size', type: 'binary_choice', priceMode: 'delta', title: '사이즈를 선택하세요', voice_text: '음료 사이즈를 선택해주세요.',
+            options: [{ option_id: 'm', label: 'M', price: 0 }, { option_id: 'l', label: 'L', price: 400 }] },
+        ] },
       ] },
     ] },
     order_steps: [

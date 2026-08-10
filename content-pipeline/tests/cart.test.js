@@ -266,6 +266,44 @@ function assertEqual(label, actual, expected) {
   assertEqual(`[${brandId}] flavor_mix 0개 선택 상태에서는 진행 불가`, canProceedCustomize(flavorStep, []), false);
 });
 
+// 단독 음료(drinks/mccafe 카테고리) 사이즈 선택 검증 (v1.3.2)
+[
+  { brandId: 'burgerking', hasSize: ['coke_standalone', 'sprite_standalone'], noSize: ['ice_americano_standalone'] },
+  { brandId: 'mcdonalds', hasSize: ['coke_standalone', 'sprite_standalone', 'ice_americano_standalone'], noSize: [] },
+  { brandId: 'lotteria', hasSize: ['coke_standalone', 'sprite_standalone', 'ice_tea_standalone'], noSize: [] },
+  { brandId: 'kfc', hasSize: ['coke_standalone', 'sprite_standalone', 'ice_americano_standalone'], noSize: [] },
+].forEach(({ brandId, hasSize, noSize }) => {
+  const brand = loadBrand(brandId);
+  const drinksCat = brand.menu.categories.find((c) => c.category_id === 'drinks');
+  hasSize.forEach((itemId) => {
+    const item = drinksCat.items.find((i) => i.item_id === itemId);
+    const sizeStep = item.customize_steps.find((s) => s.step_id === 'size');
+    assertEqual(`[${brandId}] ${itemId} 사이즈 선택 단계 존재`, !!sizeStep, true);
+    assertEqual(`[${brandId}] ${itemId} L사이즈 선택 시 가격 증가`, sizeStep.options.find((o) => o.option_id === 'l').price > 0, true);
+  });
+  noSize.forEach((itemId) => {
+    const item = drinksCat.items.find((i) => i.item_id === itemId);
+    assertEqual(`[${brandId}] ${itemId} 사이즈 선택 단계 없음(단일가 유지)`, item.customize_steps.length, 0);
+  });
+});
+
+// 맥도날드 맥카페 3종 사이즈 선택 검증
+['mcdonalds'].forEach((brandId) => {
+  const brand = loadBrand(brandId);
+  const mccafeCat = brand.menu.categories.find((c) => c.category_id === 'mccafe');
+  mccafeCat.items.forEach((item) => {
+    const sizeStep = item.customize_steps.find((s) => s.step_id === 'size');
+    assertEqual(`[${brandId}] mccafe ${item.item_id} 사이즈 선택 단계 존재`, !!sizeStep, true);
+  });
+
+  // 사이즈 선택에 따른 단가 계산 회귀
+  const drinksCat = brand.menu.categories.find((c) => c.category_id === 'drinks');
+  const coke = drinksCat.items.find((i) => i.item_id === 'coke_standalone');
+  const lPrice = coke.customize_steps.find((s) => s.step_id === 'size').options.find((o) => o.option_id === 'l').price;
+  assertEqual(`[${brandId}] 코카콜라 M 선택 시 base_price 그대로`, computeItemUnitPrice(coke, { size: ['m'] }), coke.base_price);
+  assertEqual(`[${brandId}] 코카콜라 L 선택 시 base_price+사이즈업 가격`, computeItemUnitPrice(coke, { size: ['l'] }), coke.base_price + lPrice);
+});
+
 // all brands: dining_options 구조 검증
 ['subway', 'burgerking', 'mcdonalds', 'lotteria', 'kfc'].forEach((brandId) => {
   const brand = loadBrand(brandId);

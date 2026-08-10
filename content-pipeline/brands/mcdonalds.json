@@ -290,21 +290,81 @@
             "label": "코카콜라",
             "base_price": 2000,
             "visual": "drink",
-            "customize_steps": []
+            "customize_steps": [
+              {
+                "step_id": "size",
+                "type": "binary_choice",
+                "priceMode": "delta",
+                "title": "사이즈를 선택하세요",
+                "voice_text": "음료 사이즈를 선택해주세요.",
+                "options": [
+                  {
+                    "option_id": "m",
+                    "label": "M",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "l",
+                    "label": "L",
+                    "price": 400
+                  }
+                ]
+              }
+            ]
           },
           {
             "item_id": "sprite_standalone",
             "label": "스프라이트",
             "base_price": 2000,
             "visual": "drink",
-            "customize_steps": []
+            "customize_steps": [
+              {
+                "step_id": "size",
+                "type": "binary_choice",
+                "priceMode": "delta",
+                "title": "사이즈를 선택하세요",
+                "voice_text": "음료 사이즈를 선택해주세요.",
+                "options": [
+                  {
+                    "option_id": "m",
+                    "label": "M",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "l",
+                    "label": "L",
+                    "price": 400
+                  }
+                ]
+              }
+            ]
           },
           {
             "item_id": "ice_americano_standalone",
             "label": "아이스 아메리카노",
             "base_price": 2300,
             "visual": "drink",
-            "customize_steps": []
+            "customize_steps": [
+              {
+                "step_id": "size",
+                "type": "binary_choice",
+                "priceMode": "delta",
+                "title": "사이즈를 선택하세요",
+                "voice_text": "음료 사이즈를 선택해주세요.",
+                "options": [
+                  {
+                    "option_id": "m",
+                    "label": "M",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "l",
+                    "label": "L",
+                    "price": 400
+                  }
+                ]
+              }
+            ]
           }
         ]
       },
@@ -392,21 +452,81 @@
             "label": "아메리카노",
             "base_price": 2500,
             "visual": "drink",
-            "customize_steps": []
+            "customize_steps": [
+              {
+                "step_id": "size",
+                "type": "binary_choice",
+                "priceMode": "delta",
+                "title": "사이즈를 선택하세요",
+                "voice_text": "음료 사이즈를 선택해주세요.",
+                "options": [
+                  {
+                    "option_id": "m",
+                    "label": "M",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "l",
+                    "label": "L",
+                    "price": 400
+                  }
+                ]
+              }
+            ]
           },
           {
             "item_id": "cafe_latte_mccafe",
             "label": "카페라떼",
             "base_price": 3200,
             "visual": "drink",
-            "customize_steps": []
+            "customize_steps": [
+              {
+                "step_id": "size",
+                "type": "binary_choice",
+                "priceMode": "delta",
+                "title": "사이즈를 선택하세요",
+                "voice_text": "음료 사이즈를 선택해주세요.",
+                "options": [
+                  {
+                    "option_id": "m",
+                    "label": "M",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "l",
+                    "label": "L",
+                    "price": 400
+                  }
+                ]
+              }
+            ]
           },
           {
             "item_id": "cappuccino_mccafe",
             "label": "카푸치노",
             "base_price": 3200,
             "visual": "drink",
-            "customize_steps": []
+            "customize_steps": [
+              {
+                "step_id": "size",
+                "type": "binary_choice",
+                "priceMode": "delta",
+                "title": "사이즈를 선택하세요",
+                "voice_text": "음료 사이즈를 선택해주세요.",
+                "options": [
+                  {
+                    "option_id": "m",
+                    "label": "M",
+                    "price": 0
+                  },
+                  {
+                    "option_id": "l",
+                    "label": "L",
+                    "price": 400
+                  }
+                ]
+              }
+            ]
           }
         ]
       }
@@ -443,5 +563,5 @@
       ]
     }
   ],
-  "_source_notes": "빅맥 5,700원/불고기버거 3,800원/상하이버거 5,200원, 세트 업그레이드 약 +1,900원 - 2026년 2월 가격 인상 반영 뉴스 기준. 단독 음료가(탄산 2,000원)는 기존 조사 노트 기준, 아이스 아메리카노 단독가(2,300원)는 세트 내 +300원 프리미엄을 승계한 추정치로 현장 확인 필요. 맥모닝(소시지에그맥머핀 4,200원/빅브렉퍼스트 6,900원), 사이드&디저트(맥너겟6조각 4,300원/해쉬브라운 1,700원/스낵랩 3,900원/치즈스틱 2,500원/소프트콘 1,000원/오레오맥플러리 3,500원/아포가토 3,800원), 맥카페(아메리카노 2,500원/카페라떼 3,200원/카푸치노 3,200원)는 전부 일반적인 맥도날드 가격대 추정치로 현장 확인 필요."
+  "_source_notes": "빅맥 5,700원/불고기버거 3,800원/상하이버거 5,200원, 세트 업그레이드 약 +1,900원 - 2026년 2월 가격 인상 반영 뉴스 기준. 단독 음료가(탄산 2,000원)는 기존 조사 노트 기준, 아이스 아메리카노 단독가(2,300원)는 세트 내 +300원 프리미엄을 승계한 추정치로 현장 확인 필요. 맥모닝(소시지에그맥머핀 4,200원/빅브렉퍼스트 6,900원), 사이드&디저트(맥너겟6조각 4,300원/해쉬브라운 1,700원/스낵랩 3,900원/치즈스틱 2,500원/소프트콘 1,000원/오레오맥플러리 3,500원/아포가토 3,800원), 맥카페(아메리카노 2,500원/카페라떼 3,200원/카푸치노 3,200원)는 전부 일반적인 맥도날드 가격대 추정치로 현장 확인 필요. 콜라·스프라이트·아이스아메리카노·맥카페 3종 단독구매 M/L 사이즈(+400원, v1.3.2)는 나무위키 근거 추정치로 현장 확인 필요."
 }
