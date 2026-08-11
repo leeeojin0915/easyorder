@@ -245,6 +245,33 @@ function assertEqual(label, actual, expected) {
   assertEqual(`[${brandId}] 치킨다리는 여전히 customize_steps 없음(고정가 유지)`, chickenLeg.customize_steps.length, 0);
 });
 
+// burgerking: 사이드 단독구매 카테고리 검증 (v1.3.4)
+['burgerking'].forEach((brandId) => {
+  const brand = loadBrand(brandId);
+  const sidesCat = brand.menu.categories.find((c) => c.category_id === 'sides');
+  assertEqual(`[${brandId}] 사이드 카테고리 존재`, !!sidesCat, true);
+  assertEqual(`[${brandId}] 사이드 카테고리 아이템 6종`, sidesCat.items.length, 6);
+
+  const fries = sidesCat.items.find((i) => i.item_id === 'fries_standalone');
+  const sizeStep = fries.customize_steps.find((s) => s.step_id === 'size');
+  assertEqual(`[${brandId}] 프렌치프라이 단독구매 사이즈 선택(R/L) 존재`, !!sizeStep, true);
+  assertEqual(`[${brandId}] 프렌치프라이 R 선택 시 base_price 그대로`, computeItemUnitPrice(fries, { size: ['r'] }), fries.base_price);
+  const lPrice = sizeStep.options.find((o) => o.option_id === 'l').price;
+  assertEqual(`[${brandId}] 프렌치프라이 L 선택 시 추가금 반영`, computeItemUnitPrice(fries, { size: ['l'] }), fries.base_price + lPrice);
+
+  const nugget = sidesCat.items.find((i) => i.item_id === 'nugget_king_standalone');
+  const pieceStep = nugget.customize_steps.find((s) => s.step_id === 'piece_count');
+  assertEqual(`[${brandId}] 너겟킹 단독구매 조각수 선택(4/8조각) 존재`, !!pieceStep, true);
+
+  const onionRings = sidesCat.items.find((i) => i.item_id === 'onion_rings_standalone');
+  assertEqual(`[${brandId}] 어니언링 단독구매는 customize_steps 없음(고정가)`, onionRings.customize_steps.length, 0);
+
+  // 사이드 단독 구매 -> 장바구니 담기 (버거 없이도 가능한지)
+  let cart = [];
+  cart = addCartLine(cart, brand, { categoryId: 'sides', itemId: 'onion_rings_standalone', customizeSelections: {} });
+  assertEqual(`[${brandId}] 버거 없이 사이드만 단독으로 장바구니 담기 가능`, computeCartTotal(cart), onionRings.base_price);
+});
+
 // all brands: item_id 브랜드 전체 고유성 회귀 (신규 아이템 추가 후)
 ['subway', 'burgerking', 'mcdonalds', 'lotteria', 'kfc'].forEach((brandId) => {
   const brand = loadBrand(brandId);

@@ -351,6 +351,20 @@ const CONTENT = {
             options: [{ option_id: 'basic', label: '기본', price: 0 }, { option_id: 'large', label: '라지 업그레이드', price: 700 }] },
         ] },
       ] },
+      { category_id: 'sides', label: '사이드', items: [
+        { item_id: 'fries_standalone', label: '프렌치프라이', base_price: 2000, visual: 'burger', customize_steps: [
+          { step_id: 'size', type: 'binary_choice', priceMode: 'delta', title: '사이즈를 선택하세요', voice_text: '사이드 사이즈를 선택해주세요.',
+            options: [{ option_id: 'r', label: 'R', price: 0 }, { option_id: 'l', label: 'L', price: 500 }] },
+        ] },
+        { item_id: 'onion_rings_standalone', label: '어니언링', base_price: 2300, visual: 'burger', customize_steps: [] },
+        { item_id: 'cheese_sticks_standalone', label: '치즈스틱', base_price: 2000, visual: 'burger', customize_steps: [] },
+        { item_id: 'corn_salad_standalone', label: '콘샐러드', base_price: 1900, visual: 'burger', customize_steps: [] },
+        { item_id: 'coleslaw_standalone', label: '코울슬로', base_price: 1900, visual: 'burger', customize_steps: [] },
+        { item_id: 'nugget_king_standalone', label: '너겟킹', base_price: 2400, visual: 'burger', customize_steps: [
+          { step_id: 'piece_count', type: 'binary_choice', priceMode: 'delta', title: '조각수를 선택하세요', voice_text: '너겟킹 조각수를 선택해주세요.',
+            options: [{ option_id: '4pcs', label: '4조각', price: 0 }, { option_id: '8pcs', label: '8조각', price: 2000 }] },
+        ] },
+      ] },
       { category_id: 'drinks', label: '음료', items: [
         { item_id: 'coke_standalone', label: '코카콜라', base_price: 2200, visual: 'drink', customize_steps: [
           { step_id: 'size', type: 'binary_choice', priceMode: 'delta', title: '사이즈를 선택하세요', voice_text: '음료 사이즈를 선택해주세요.',
