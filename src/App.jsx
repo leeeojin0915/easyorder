@@ -501,11 +501,25 @@ const CONTENT = {
       ] },
       { category_id: 'chicken', label: '치킨', items: [
         { item_id: 'chicken_leg', label: '치킨다리', base_price: 3200, customize_steps: [] },
-        { item_id: 'fire_wing', label: '화이어윙', base_price: 3200, customize_steps: [] },
-        { item_id: 'chicken_fillet', label: '치킨휠레', base_price: 3200, customize_steps: [] },
+        { item_id: 'fire_wing', label: '화이어윙', base_price: 3200, customize_steps: [
+          { step_id: 'piece_count', type: 'binary_choice', priceMode: 'delta', title: '조각수를 선택하세요', voice_text: '화이어윙 조각수를 선택해주세요.',
+            options: [{ option_id: '2pcs', label: '2조각', price: 0 }, { option_id: '4pcs', label: '4조각', price: 2100 }] },
+        ] },
+        { item_id: 'chicken_fillet', label: '치킨휠레', base_price: 3200, customize_steps: [
+          { step_id: 'piece_count', type: 'binary_choice', priceMode: 'delta', title: '조각수를 선택하세요', voice_text: '치킨휠레 조각수를 선택해주세요.',
+            options: [{ option_id: '2pcs', label: '2조각', price: 0 }, { option_id: '4pcs', label: '4조각', price: 3000 }] },
+          { step_id: 'sauce', type: 'single_select', priceMode: 'delta', title: '소스를 선택하세요', voice_text: '소스를 선택해주세요.',
+            options: [{ option_id: 'honey_mustard', label: '허니머스터드', price: 0 }, { option_id: 'sweet_and_sour', label: '스위트앤사워', price: 0 }] },
+        ] },
         { item_id: 'chicken_leg_half_pack_set', label: '치킨다리 하프팩 세트', base_price: 13900, customize_steps: [] },
-        { item_id: 'boneless_chicken_full_pack', label: '순살치킨 풀팩(22조각)', base_price: 24900, customize_steps: [] },
-        { item_id: 'boneless_chicken_half_pack', label: '순살치킨 하프팩(11조각)', base_price: 13900, customize_steps: [] },
+        { item_id: 'boneless_chicken_full_pack', label: '순살치킨 풀팩(22조각)', base_price: 24900, customize_steps: [
+          { step_id: 'sauce', type: 'multi_select', priceMode: 'delta', max_selections: 2, title: '소스를 2개 선택하세요', voice_text: '소스를 2개 선택해주세요.',
+            options: [{ option_id: 'creamy_garlic', label: '크리미마늘', price: 0 }, { option_id: 'seasoned', label: '양념', price: 0 }, { option_id: 'teriyaki', label: '데리야끼', price: 0 }, { option_id: 'mustard', label: '머스터드', price: 0 }] },
+        ] },
+        { item_id: 'boneless_chicken_half_pack', label: '순살치킨 하프팩(11조각)', base_price: 13900, customize_steps: [
+          { step_id: 'sauce', type: 'single_select', priceMode: 'delta', title: '소스를 선택하세요', voice_text: '소스를 선택해주세요.',
+            options: [{ option_id: 'creamy_garlic', label: '크리미마늘', price: 0 }, { option_id: 'seasoned', label: '양념', price: 0 }, { option_id: 'teriyaki', label: '데리야끼', price: 0 }, { option_id: 'mustard', label: '머스터드', price: 0 }] },
+        ] },
       ] },
       { category_id: 'drinks', label: '음료', items: [
         { item_id: 'coke_standalone', label: '코카콜라', base_price: 2000, visual: 'drink', customize_steps: [

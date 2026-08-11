@@ -216,6 +216,35 @@ function assertEqual(label, actual, expected) {
   assertEqual(`[${brandId}] chicken 카테고리 아이템 장바구니 담기·총액 반영`, computeCartTotal(cart), chickenItem.base_price);
 });
 
+// lotteria: 치킨 조각수/소스 커스터마이징 검증 (v1.3.3)
+['lotteria'].forEach((brandId) => {
+  const brand = loadBrand(brandId);
+  const chickenCat = brand.menu.categories.find((c) => c.category_id === 'chicken');
+
+  const fireWing = chickenCat.items.find((i) => i.item_id === 'fire_wing');
+  const pieceStep = fireWing.customize_steps.find((s) => s.step_id === 'piece_count');
+  const price4pcs = pieceStep.options.find((o) => o.option_id === '4pcs').price;
+  assertEqual(`[${brandId}] 화이어윙 2조각 선택 시 base_price 그대로`, computeItemUnitPrice(fireWing, { piece_count: ['2pcs'] }), fireWing.base_price);
+  assertEqual(`[${brandId}] 화이어윙 4조각 선택 시 추가금 반영`, computeItemUnitPrice(fireWing, { piece_count: ['4pcs'] }), fireWing.base_price + price4pcs);
+
+  const fillet = chickenCat.items.find((i) => i.item_id === 'chicken_fillet');
+  const filletSteps = fillet.customize_steps.map((s) => s.step_id);
+  assertEqual(`[${brandId}] 치킨휠레 조각수+소스 2단계 모두 노출`, filletSteps.includes('piece_count') && filletSteps.includes('sauce'), true);
+
+  const fullPack = chickenCat.items.find((i) => i.item_id === 'boneless_chicken_full_pack');
+  const fullPackSauceStep = fullPack.customize_steps.find((s) => s.step_id === 'sauce');
+  let sel = [];
+  fullPackSauceStep.options.forEach((opt) => { sel = toggleOption(fullPackSauceStep, sel, opt.option_id); });
+  assertEqual(`[${brandId}] 순살치킨 풀팩 소스 max_selections=2 캡`, sel.length, 2);
+
+  const halfPack = chickenCat.items.find((i) => i.item_id === 'boneless_chicken_half_pack');
+  const halfPackSauceStep = halfPack.customize_steps.find((s) => s.step_id === 'sauce');
+  assertEqual(`[${brandId}] 순살치킨 하프팩 소스는 single_select(1개만)`, halfPackSauceStep.type, 'single_select');
+
+  const chickenLeg = chickenCat.items.find((i) => i.item_id === 'chicken_leg');
+  assertEqual(`[${brandId}] 치킨다리는 여전히 customize_steps 없음(고정가 유지)`, chickenLeg.customize_steps.length, 0);
+});
+
 // all brands: item_id 브랜드 전체 고유성 회귀 (신규 아이템 추가 후)
 ['subway', 'burgerking', 'mcdonalds', 'lotteria', 'kfc'].forEach((brandId) => {
   const brand = loadBrand(brandId);
