@@ -448,7 +448,9 @@ const CONTENT = {
         { item_id: 'snack_wrap', label: '스낵랩', base_price: 3900, visual: 'burger', customize_steps: [] },
         { item_id: 'cheese_stick_mc', label: '치즈스틱', base_price: 2500, visual: 'burger', customize_steps: [] },
         { item_id: 'soft_serve_cone', label: '아이스크림 콘', base_price: 1000, visual: 'drink', customize_steps: [] },
-        { item_id: 'mcflurry_oreo', label: '오레오 맥플러리', base_price: 3500, visual: 'drink', customize_steps: [] },
+        { item_id: 'mcflurry_oreo', label: '오레오 맥플러리', base_price: 3600, visual: 'drink', customize_steps: [] },
+        { item_id: 'mcflurry_strawberry_oreo', label: '딸기오레오 맥플러리', base_price: 3600, visual: 'drink', customize_steps: [] },
+        { item_id: 'mcflurry_choco_oreo', label: '초코오레오 맥플러리', base_price: 3600, visual: 'drink', customize_steps: [] },
         { item_id: 'affogato', label: '아포가토', base_price: 3800, visual: 'drink', customize_steps: [] },
       ] },
       { category_id: 'mccafe', label: '맥카페', items: [

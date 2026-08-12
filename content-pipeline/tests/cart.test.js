@@ -272,6 +272,19 @@ function assertEqual(label, actual, expected) {
   assertEqual(`[${brandId}] 버거 없이 사이드만 단독으로 장바구니 담기 가능`, computeCartTotal(cart), onionRings.base_price);
 });
 
+// mcdonalds: 맥플러리 맛별 독립 아이템 검증 (v1.3.5)
+['mcdonalds'].forEach((brandId) => {
+  const brand = loadBrand(brandId);
+  const sidesCat = brand.menu.categories.find((c) => c.category_id === 'sides_desserts');
+  const flavors = ['mcflurry_oreo', 'mcflurry_strawberry_oreo', 'mcflurry_choco_oreo'];
+  flavors.forEach((itemId) => {
+    const item = sidesCat.items.find((i) => i.item_id === itemId);
+    assertEqual(`[${brandId}] ${itemId} 독립 아이템으로 존재`, !!item, true);
+    assertEqual(`[${brandId}] ${itemId} 가격 3600원`, item.base_price, 3600);
+    assertEqual(`[${brandId}] ${itemId} customize_steps 없음(고정가)`, item.customize_steps.length, 0);
+  });
+});
+
 // all brands: item_id 브랜드 전체 고유성 회귀 (신규 아이템 추가 후)
 ['subway', 'burgerking', 'mcdonalds', 'lotteria', 'kfc'].forEach((brandId) => {
   const brand = loadBrand(brandId);
