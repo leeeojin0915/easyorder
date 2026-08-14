@@ -285,6 +285,36 @@ function assertEqual(label, actual, expected) {
   });
 });
 
+// kfc: 박스 티어 검증 (v1.3.6)
+['kfc'].forEach((brandId) => {
+  const brand = loadBrand(brandId);
+  const burgersCat = brand.menu.categories.find((c) => c.category_id === 'burgers');
+
+  ['tower', 'zinger'].forEach((itemId) => {
+    const item = burgersCat.items.find((i) => i.item_id === itemId);
+    const boxStep = item.customize_steps.find((s) => s.step_id === 'box_upgrade');
+    assertEqual(`[${brandId}] ${itemId} box_upgrade 단계 존재`, !!boxStep, true);
+
+    // 단품 선택 시 박스업그레이드 단계 숨김
+    const singleSel = { set: ['single'] };
+    const visibleSingle = visibleCustomizeSteps(item, singleSel).map((s) => s.step_id);
+    assertEqual(`[${brandId}] ${itemId} 단품 선택 시 box_upgrade 단계 숨김`, visibleSingle.includes('box_upgrade'), false);
+
+    // 세트 선택 시 박스업그레이드 단계 노출, 박스 선택 시 가격 반영
+    const boxPrice = boxStep.options.find((o) => o.option_id === 'box').price;
+    const setSel = { set: ['set'], included_drink: ['coke'], box_upgrade: ['box'] };
+    const visibleSet = visibleCustomizeSteps(item, setSel).map((s) => s.step_id);
+    assertEqual(`[${brandId}] ${itemId} 세트 선택 시 box_upgrade 단계 노출`, visibleSet.includes('box_upgrade'), true);
+    const setDelta = item.customize_steps.find((s) => s.step_id === 'set').options.find((o) => o.option_id === 'set').price;
+    assertEqual(`[${brandId}] ${itemId} 박스 업그레이드 가격 반영`, computeItemUnitPrice(item, setSel), item.base_price + setDelta + boxPrice);
+  });
+
+  // 오리지널 치킨버거는 박스 옵션 없음(명칭 불일치 우려로 제외)
+  const originalChicken = burgersCat.items.find((i) => i.item_id === 'original_chicken');
+  const originalBoxStep = originalChicken.customize_steps.find((s) => s.step_id === 'box_upgrade');
+  assertEqual(`[${brandId}] 오리지널 치킨버거는 box_upgrade 없음`, !!originalBoxStep, false);
+});
+
 // all brands: item_id 브랜드 전체 고유성 회귀 (신규 아이템 추가 후)
 ['subway', 'burgerking', 'mcdonalds', 'lotteria', 'kfc'].forEach((brandId) => {
   const brand = loadBrand(brandId);

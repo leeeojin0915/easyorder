@@ -584,6 +584,9 @@ const CONTENT = {
           { step_id: 'included_drink', type: 'single_select', priceMode: 'delta', visual: 'drink', condition: { step_id: 'set', option_id: 'set' },
             title: '세트 음료를 선택하세요', voice_text: '세트에 포함된 음료를 골라주세요.',
             options: [{ option_id: 'coke', label: '코카콜라', price: 0 }, { option_id: 'sprite', label: '스프라이트', price: 0 }, { option_id: 'ice_americano', label: '아이스 아메리카노', price: 300 }] },
+          { step_id: 'box_upgrade', type: 'binary_choice', priceMode: 'delta', condition: { step_id: 'set', option_id: 'set' },
+            title: '박스로 업그레이드하시겠어요?', voice_text: '박스는 세트에 조각치킨이 추가로 포함돼요.',
+            options: [{ option_id: 'basic', label: '기본 세트', price: 0 }, { option_id: 'box', label: '박스로 업그레이드', price: 2100 }] },
         ] },
         { item_id: 'original_chicken', label: '오리지널 치킨버거', base_price: 4900, visual: 'burger', customize_steps: [
           { step_id: 'set', type: 'binary_choice', priceMode: 'delta', title: '세트로 하시겠어요?', voice_text: '세트로 하시면 사이드와 음료가 같이 나와요.',
@@ -598,6 +601,9 @@ const CONTENT = {
           { step_id: 'included_drink', type: 'single_select', priceMode: 'delta', visual: 'drink', condition: { step_id: 'set', option_id: 'set' },
             title: '세트 음료를 선택하세요', voice_text: '세트에 포함된 음료를 골라주세요.',
             options: [{ option_id: 'coke', label: '코카콜라', price: 0 }, { option_id: 'sprite', label: '스프라이트', price: 0 }, { option_id: 'ice_americano', label: '아이스 아메리카노', price: 300 }] },
+          { step_id: 'box_upgrade', type: 'binary_choice', priceMode: 'delta', condition: { step_id: 'set', option_id: 'set' },
+            title: '박스로 업그레이드하시겠어요?', voice_text: '박스는 세트에 조각치킨이 추가로 포함돼요.',
+            options: [{ option_id: 'basic', label: '기본 세트', price: 0 }, { option_id: 'box', label: '박스로 업그레이드', price: 2100 }] },
         ] },
       ] },
       { category_id: 'drinks', label: '음료', items: [
