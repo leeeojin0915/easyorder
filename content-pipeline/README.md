@@ -21,7 +21,7 @@ node validate.js              # 형식 검증
 node tests/cart.test.js       # 장바구니 로직 검증
 ```
 
-## 데이터 모델 (v1.3, 실제 키오스크 정합성 개선 반영)
+## 데이터 모델 (v1.3.6, 실제 키오스크 정합성 개선 반영)
 
 브랜드 하나는 **메뉴(MENU) = 카테고리(CATEGORY) 목록 → 각 카테고리는 아이템(ITEM) 목록 → 각 아이템은 자기만의 커스터마이징 단계(STEP)**를 갖는다. 사용자는 여러 아이템을 장바구니에 담아 한번에 결제한다(브랜드당 하나의 순차 흐름이었던 v1.0/v1.1과 다르다 — 자세한 배경은 `docs/키오스크도우미_데이터스키마.md` §7.4 참고).
 
@@ -61,11 +61,15 @@ node tests/cart.test.js       # 장바구니 로직 검증
 
 **`dining_options`(v1.3 신규, 브랜드 필수 필드)** — 매장식사/포장 여부. `menu`/`order_steps`와 형제 관계인 별도 최상위 필드다. `order_steps`에 넣지 않은 이유: `order_steps`는 "confirm 1개 + payment_mock 1개, 정확히 2개"로 고정 검증되고 의미상 장바구니 확인/결제 단계를 뜻하는데, 매장식사/포장은 메뉴 브라우징을 시작하기 **전에** 묻는 질문이라 순서·의미가 어긋난다. 화면상으로는 매장 선택 직후, 카테고리 브라우징 시작 전에 노출된다. 자세한 배경은 데이터스키마 §7.6 참고.
 
-**`max_selections`(v1.3 신규, `multi_select` 스텝 전용 선택 필드)** — "최대 N개까지"만 고를 수 있는 단계에 사용(예: 서브웨이 소스 최대 3개, KFC 치킨버킷 맛조합 최대 2개). `1 ≤ max_selections ≤ options.length`인 정수여야 하고, 초과 선택 시 그냥 선택이 막힌다(이미 선택한 항목은 해제 가능).
+**`max_selections`(v1.3 신규, `multi_select` 스텝 전용 선택 필드)** — "최대 N개까지"만 고를 수 있는 단계에 사용(예: 서브웨이 소스 최대 3개, KFC 치킨버킷 맛조합 최대 2개, 롯데리아 순살치킨 풀팩 소스 2개). `1 ≤ max_selections ≤ options.length`인 정수여야 하고, 초과 선택 시 그냥 선택이 막힌다(이미 선택한 항목은 해제 가능).
+
+**`required`(v1.3.1 신규, `multi_select` 스텝 전용 선택 필드, 기본값 `true`)** — 화면 로직이 모든 커스터마이징 단계에 "최소 1개 선택"을 획일적으로 강제하던 버그를 고친 필드. `false`로 지정하면 0개 선택 상태에서도 다음 단계로 진행 가능(예: 서브웨이 추가토핑/야채/소스는 안 골라도 진행돼야 함). `single_select`/`binary_choice`에는 사용 불가 — 이 타입들은 항상 정확히 1개를 선택해야 하는 구조라 의미가 없다.
 
 **세트 + 음료 패턴** (5개 브랜드 공통): 버거/샌드위치 아이템의 `customize_steps`에 `set`(binary_choice) 다음 `included_drink`(single_select, `condition: {step_id: "set", option_id: "set"}`)를 두면 "세트 선택 시에만 무료 음료 선택 단계가 나타남" 동작이 된다. 이와 별개로 `drinks` 카테고리에 같은 음료를 유료 단독 아이템(`customize_steps: []`)으로도 등록해서, 세트를 고르지 않아도 음료만 따로 장바구니에 담을 수 있게 한다 — 이 "두 경로 공존"이 장바구니 구조 개편의 핵심이었다.
 
-**조건부 스텝 다중 참조** (버거킹/서브웨이) — `included_side`와 `included_drink`처럼 서로 다른 스텝 2개가 **동일한** `condition`(예: `{step_id:"set", option_id:"set"}`)을 참조해도 문제없다. `validate.js`의 조회 로직에 단일 소비자 제약이 없어서 스키마·검증기 변경 없이 그대로 동작한다.
+**조건부 스텝 다중 참조** (버거킹/서브웨이) — `included_side`와 `included_drink`처럼 서로 다른 스텝 2개가 **동일한** `condition`(예: `{step_id:"set", option_id:"set"}`)을 참조해도 문제없다. `validate.js`의 조회 로직에 단일 소비자 제약이 없어서 스키마·검증기 변경 없이 그대로 동작한다. 버거킹의 `included_side`+`included_drink`+`set_size`(세트 라지 업그레이드), KFC의 `included_drink`+`box_upgrade`(세트→박스 업그레이드)도 같은 패턴이다.
+
+**단독구매 카테고리** — `burgers`/`drinks` 외에도 브랜드마다 `chicken`(KFC/롯데리아), `sides`(버거킹), `mcmorning`/`sides_desserts`/`mccafe`(맥도날드) 같은 카테고리가 있을 수 있다. 세트 옵션(`included_side` 등)으로만 존재하던 사이드/치킨 메뉴를 별도 카테고리의 독립 아이템(`customize_steps: []` 또는 자체 조각수/소스 선택)으로도 등록해서, 버거나 세트 없이도 단독 구매가 가능하게 한다 — "세트+음료 패턴"의 두 경로 공존 원칙을 사이드/치킨류로 확장한 것이다.
 
 ## 새 브랜드를 추가하는 절차
 
