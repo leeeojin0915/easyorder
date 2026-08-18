@@ -578,7 +578,7 @@ const CONTENT = {
         ] },
       ] },
       { category_id: 'burgers', label: '버거', items: [
-        { item_id: 'tower', label: '타워버거', base_price: 7900, visual: 'burger', customize_steps: [
+        { item_id: 'zinger_tower', label: '징거타워버거', base_price: 7200, visual: 'burger', customize_steps: [
           { step_id: 'set', type: 'binary_choice', priceMode: 'delta', title: '세트로 하시겠어요?', voice_text: '세트로 하시면 사이드와 음료가 같이 나와요.',
             options: [{ option_id: 'set', label: '네, 세트로 주세요', price: 2200 }, { option_id: 'single', label: '아니요, 버거만 주세요', price: 0 }] },
           { step_id: 'included_drink', type: 'single_select', priceMode: 'delta', visual: 'drink', condition: { step_id: 'set', option_id: 'set' },
@@ -588,14 +588,14 @@ const CONTENT = {
             title: '박스로 업그레이드하시겠어요?', voice_text: '박스는 세트에 조각치킨이 추가로 포함돼요.',
             options: [{ option_id: 'basic', label: '기본 세트', price: 0 }, { option_id: 'box', label: '박스로 업그레이드', price: 2100 }] },
         ] },
-        { item_id: 'original_chicken', label: '오리지널 치킨버거', base_price: 4900, visual: 'burger', customize_steps: [
+        { item_id: 'colonel_original', label: '커넬 오리지널버거', base_price: 4200, visual: 'burger', customize_steps: [
           { step_id: 'set', type: 'binary_choice', priceMode: 'delta', title: '세트로 하시겠어요?', voice_text: '세트로 하시면 사이드와 음료가 같이 나와요.',
             options: [{ option_id: 'set', label: '네, 세트로 주세요', price: 2200 }, { option_id: 'single', label: '아니요, 버거만 주세요', price: 0 }] },
           { step_id: 'included_drink', type: 'single_select', priceMode: 'delta', visual: 'drink', condition: { step_id: 'set', option_id: 'set' },
             title: '세트 음료를 선택하세요', voice_text: '세트에 포함된 음료를 골라주세요.',
             options: [{ option_id: 'coke', label: '코카콜라', price: 0 }, { option_id: 'sprite', label: '스프라이트', price: 0 }, { option_id: 'ice_americano', label: '아이스 아메리카노', price: 300 }] },
         ] },
-        { item_id: 'zinger', label: '징거버거', base_price: 6700, visual: 'burger', customize_steps: [
+        { item_id: 'zinger', label: '징거버거', base_price: 6200, visual: 'burger', customize_steps: [
           { step_id: 'set', type: 'binary_choice', priceMode: 'delta', title: '세트로 하시겠어요?', voice_text: '세트로 하시면 사이드와 음료가 같이 나와요.',
             options: [{ option_id: 'set', label: '네, 세트로 주세요', price: 2200 }, { option_id: 'single', label: '아니요, 버거만 주세요', price: 0 }] },
           { step_id: 'included_drink', type: 'single_select', priceMode: 'delta', visual: 'drink', condition: { step_id: 'set', option_id: 'set' },

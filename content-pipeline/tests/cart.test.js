@@ -290,7 +290,7 @@ function assertEqual(label, actual, expected) {
   const brand = loadBrand(brandId);
   const burgersCat = brand.menu.categories.find((c) => c.category_id === 'burgers');
 
-  ['tower', 'zinger'].forEach((itemId) => {
+  ['zinger_tower', 'zinger'].forEach((itemId) => {
     const item = burgersCat.items.find((i) => i.item_id === itemId);
     const boxStep = item.customize_steps.find((s) => s.step_id === 'box_upgrade');
     assertEqual(`[${brandId}] ${itemId} box_upgrade 단계 존재`, !!boxStep, true);
@@ -309,10 +309,10 @@ function assertEqual(label, actual, expected) {
     assertEqual(`[${brandId}] ${itemId} 박스 업그레이드 가격 반영`, computeItemUnitPrice(item, setSel), item.base_price + setDelta + boxPrice);
   });
 
-  // 오리지널 치킨버거는 박스 옵션 없음(명칭 불일치 우려로 제외)
-  const originalChicken = burgersCat.items.find((i) => i.item_id === 'original_chicken');
-  const originalBoxStep = originalChicken.customize_steps.find((s) => s.step_id === 'box_upgrade');
-  assertEqual(`[${brandId}] 오리지널 치킨버거는 box_upgrade 없음`, !!originalBoxStep, false);
+  // 커넬 오리지널버거는 박스 옵션 없음(저가 라인업, v1.3.7 명칭 재검토 참고)
+  const colonelOriginal = burgersCat.items.find((i) => i.item_id === 'colonel_original');
+  const colonelBoxStep = colonelOriginal.customize_steps.find((s) => s.step_id === 'box_upgrade');
+  assertEqual(`[${brandId}] 커넬 오리지널버거는 box_upgrade 없음`, !!colonelBoxStep, false);
 });
 
 // all brands: item_id 브랜드 전체 고유성 회귀 (신규 아이템 추가 후)
