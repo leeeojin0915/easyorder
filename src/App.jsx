@@ -3,7 +3,7 @@ import { storage } from './lib/storage';
 import {
   Search, Home as HomeIcon, List, Settings as SettingsIcon, Heart, ChevronRight,
   Volume2, VolumeX, RotateCcw, User, CreditCard, Smartphone, Banknote,
-  Check, ArrowLeft, Sandwich, Utensils, Trash2, Type, Eye, ClipboardCheck, Plus,
+  Check, ArrowLeft, Sandwich, Beef, Flame, ChefHat, Drumstick, Utensils, Trash2, Type, Eye, ClipboardCheck, Plus,
 } from 'lucide-react';
 
 /* ---------------------------------------------------------------
@@ -167,7 +167,7 @@ const CONTENT = {
     ],
   },
   burgerking: {
-    store: { name: '버거킹 홍대점', sub: '도보 5분 · 키오스크 주문', icon: Utensils, iconBg: '#C1502B' },
+    store: { name: '버거킹 홍대점', sub: '도보 5분 · 키오스크 주문', icon: Beef, iconBg: '#C1502B' },
     device: {
       shape: 'countertop_tablet', orientation: 'landscape',
       theme: { bg: '#241B17', card: '#332822', accent: '#E4592D', text: '#FFFFFF', mute: '#B9ACA5' },
@@ -384,7 +384,7 @@ const CONTENT = {
     ],
   },
   mcdonalds: {
-    store: { name: '맥도날드 종로점', sub: '도보 4분 · 키오스크 주문', icon: Utensils, iconBg: '#C62828' },
+    store: { name: '맥도날드 종로점', sub: '도보 4분 · 키오스크 주문', icon: Flame, iconBg: '#C62828' },
     device: {
       shape: 'freestanding_totem', orientation: 'portrait',
       theme: { bg: '#FFFBF2', card: '#FFFFFF', accent: '#C62828', text: '#2A211B', mute: '#9A8F84' },
@@ -475,7 +475,7 @@ const CONTENT = {
     ],
   },
   lotteria: {
-    store: { name: '롯데리아 신촌점', sub: '도보 2분 · 키오스크 주문', icon: Utensils, iconBg: '#D84315' },
+    store: { name: '롯데리아 신촌점', sub: '도보 2분 · 키오스크 주문', icon: ChefHat, iconBg: '#D84315' },
     device: {
       shape: 'countertop_tablet', orientation: 'landscape',
       theme: { bg: '#FBEFE4', card: '#FFFFFF', accent: '#D84315', text: '#2B211C', mute: '#B08D75' },
@@ -559,7 +559,7 @@ const CONTENT = {
     ],
   },
   kfc: {
-    store: { name: 'KFC 신림점', sub: '도보 6분 · 키오스크 주문', icon: Utensils, iconBg: '#E63946' },
+    store: { name: 'KFC 신림점', sub: '도보 6분 · 키오스크 주문', icon: Drumstick, iconBg: '#E63946' },
     device: {
       shape: 'freestanding_totem', orientation: 'portrait',
       theme: { bg: '#241012', card: '#3A1518', accent: '#E63946', text: '#FFFFFF', mute: '#C9A9A9' },
@@ -717,6 +717,13 @@ function priceLabel(step, price) {
   return `+${price.toLocaleString()}원`;
 }
 
+const SHADOW = {
+  sm: '0 1px 2px rgba(20,30,25,0.05), 0 1px 3px rgba(20,30,25,0.06)',
+  md: '0 4px 10px rgba(20,30,25,0.07), 0 2px 4px rgba(20,30,25,0.05)',
+  lg: '0 14px 32px rgba(20,30,25,0.14), 0 4px 10px rgba(20,30,25,0.08)',
+  inset: 'inset 0 0 0 1px rgba(20,30,25,0.05)',
+};
+
 const APP = {
   bg: '#F4F6F2', surface: '#FFFFFF', ink: '#232E28', inkSoft: '#5C6960', border: '#DFE5DC',
   practice: '#0F6E56', practiceSoft: '#E1F0EA', realtime: '#C1502B', realtimeSoft: '#FBEAE3', highlight: '#E8A33D',
@@ -725,6 +732,13 @@ const APP_HC = {
   bg: '#FFFFFF', surface: '#FFFFFF', ink: '#000000', inkSoft: '#3A3A3A', border: '#8A9089',
   practice: '#0B5A46', practiceSoft: '#CFEBDF', realtime: '#9E3A1C', realtimeSoft: '#F6D2C2', highlight: '#B9790A',
 };
+
+function hexToRgba(hex, alpha) {
+  const h = hex.replace('#', '');
+  const bigint = parseInt(h.length === 3 ? h.split('').map((c) => c + c).join('') : h, 16);
+  const r = (bigint >> 16) & 255, g = (bigint >> 8) & 255, b = bigint & 255;
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
 
 function PaymentIcon({ icon, style }) {
   if (icon === 'card') return <CreditCard style={style} />;
@@ -792,7 +806,7 @@ function Button({ children, onClick, variant = 'default', disabled, style, app }
     ghost: { background: 'transparent', border: 'none', color: app.inkSoft },
   };
   return (
-    <button onClick={disabled ? undefined : onClick} style={{ ...base, ...(variants[variant] || {}), ...style }}>
+    <button className="eo-btn" onClick={disabled ? undefined : onClick} disabled={disabled} style={{ ...base, ...(variants[variant] || {}), ...style }}>
       {children}
     </button>
   );
@@ -800,26 +814,30 @@ function Button({ children, onClick, variant = 'default', disabled, style, app }
 
 function StepTracker({ theme, currentPhase }) {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 3, padding: '12px 12px 8px', overflowX: 'auto' }}>
-      {PHASES.map((label, i) => {
-        const state = i < currentPhase ? 'done' : i === currentPhase ? 'current' : 'upcoming';
-        return (
-          <React.Fragment key={label}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 3, flexShrink: 0 }}>
-              <div style={{
-                width: 15, height: 15, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontSize: 8, fontWeight: 700, flexShrink: 0,
-                background: state === 'upcoming' ? theme.mute + '33' : theme.accent,
-                color: state === 'upcoming' ? theme.mute : '#fff',
-              }}>
-                {state === 'done' ? <Check style={{ width: 9, height: 9 }} /> : i + 1}
+    <div style={{ position: 'relative' }}>
+      <div className="eo-scroll" style={{ display: 'flex', alignItems: 'center', gap: 3, padding: '12px 12px 8px', overflowX: 'auto' }}>
+        {PHASES.map((label, i) => {
+          const state = i < currentPhase ? 'done' : i === currentPhase ? 'current' : 'upcoming';
+          return (
+            <React.Fragment key={label}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 3, flexShrink: 0 }}>
+                <div style={{
+                  width: 16, height: 16, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontSize: 8, fontWeight: 700, flexShrink: 0, transition: 'background 0.2s ease, box-shadow 0.2s ease',
+                  background: state === 'upcoming' ? theme.mute + '2A' : `linear-gradient(135deg, ${theme.accent}, ${hexToRgba(theme.accent, 0.78)})`,
+                  color: state === 'upcoming' ? theme.mute : '#fff',
+                  boxShadow: state === 'current' ? `0 0 0 3px ${hexToRgba(theme.accent, 0.18)}` : 'none',
+                }}>
+                  {state === 'done' ? <Check style={{ width: 9, height: 9 }} /> : i + 1}
+                </div>
+                <span style={{ fontSize: 9, color: state === 'current' ? theme.text : theme.mute, fontWeight: state === 'current' ? 700 : 400, whiteSpace: 'nowrap' }}>{label}</span>
               </div>
-              <span style={{ fontSize: 9, color: state === 'current' ? theme.text : theme.mute, fontWeight: state === 'current' ? 700 : 400, whiteSpace: 'nowrap' }}>{label}</span>
-            </div>
-            {i < PHASES.length - 1 && <ChevronRight style={{ width: 10, height: 10, color: theme.mute, flexShrink: 0 }} />}
-          </React.Fragment>
-        );
-      })}
+              {i < PHASES.length - 1 && <ChevronRight style={{ width: 10, height: 10, color: theme.mute, flexShrink: 0 }} />}
+            </React.Fragment>
+          );
+        })}
+      </div>
+      <div style={{ position: 'absolute', top: 0, right: 0, bottom: 0, width: 20, pointerEvents: 'none', background: `linear-gradient(to right, transparent, ${theme.bg})` }} />
     </div>
   );
 }
@@ -829,12 +847,12 @@ function CartBar({ theme, app, cart, mode, onReview }) {
   const total = computeCartTotal(cart);
   const barColors = mode === 'practice' ? { bg: theme.card, border: theme.mute + '33', text: theme.text, accent: theme.accent, mute: theme.mute } : { bg: app.surface, border: app.border, text: app.ink, accent: app.realtime, mute: app.inkSoft };
   return (
-    <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0, background: barColors.bg, borderTop: `1px solid ${barColors.border}`, padding: '12px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
+    <div className="eo-pop" style={{ position: 'absolute', left: 0, right: 0, bottom: 0, background: barColors.bg, borderTop: `1px solid ${barColors.border}`, padding: '12px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10, boxShadow: '0 -10px 24px rgba(20,30,25,0.1)' }}>
       <div>
         <div style={{ fontSize: 11, color: barColors.mute }}>담긴 메뉴 {cart.reduce((n, l) => n + l.qty, 0)}개</div>
         <div style={{ fontSize: 16, fontWeight: 700, color: barColors.text }}>{total.toLocaleString()}원</div>
       </div>
-      <button onClick={onReview} style={{ height: 44, padding: '0 18px', borderRadius: 10, background: barColors.accent, color: '#fff', border: 'none', fontSize: 14, fontWeight: 700, cursor: 'pointer' }}>
+      <button className="eo-btn" onClick={onReview} style={{ height: 44, padding: '0 18px', borderRadius: 10, background: `linear-gradient(135deg, ${barColors.accent}, ${hexToRgba(barColors.accent, 0.85)})`, color: '#fff', border: 'none', fontSize: 14, fontWeight: 700, cursor: 'pointer', boxShadow: SHADOW.md }}>
         장바구니 보기
       </button>
     </div>
@@ -843,10 +861,11 @@ function CartBar({ theme, app, cart, mode, onReview }) {
 
 const STORAGE_SETTINGS_KEY = 'easyorder:settings';
 const STORAGE_ORDERS_KEY = 'easyorder:saved_orders';
+const STORAGE_ONBOARDED_KEY = 'easyorder:onboarded';
 
 export default function App() {
   const [ready, setReady] = useState(false);
-  const [screen, setScreen] = useState('home');
+  const [screen, setScreen] = useState('onboarding');
   const [brandId, setBrandId] = useState('subway');
   const [mode, setMode] = useState('practice');
   const [diningOption, setDiningOption] = useState(null);
@@ -871,10 +890,18 @@ export default function App() {
         const o = await storage.get(STORAGE_ORDERS_KEY, false);
         if (o?.value) setSavedOrders(JSON.parse(o.value));
       } catch (e) {}
+      try {
+        const b = await storage.get(STORAGE_ONBOARDED_KEY, false);
+        if (b?.value === 'true') setScreen('home');
+      } catch (e) {}
       setReady(true);
     })();
   }, []);
 
+  async function finishOnboarding() {
+    setScreen('home');
+    try { await storage.set(STORAGE_ONBOARDED_KEY, 'true', false); } catch (e) {}
+  }
   async function updateSettings(patch) {
     const next = { ...settings, ...patch };
     setSettings(next);
@@ -994,27 +1021,88 @@ export default function App() {
   }
 
   return (
-    <div style={{ background: app.bg, minHeight: 480, display: 'flex', justifyContent: 'center', padding: '24px 0', ...font }}>
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&display=swap');`}</style>
-      <div style={{ width: 360, background: isImmersive ? theme.bg : app.surface, borderRadius: 28, border: '1px solid ' + app.border, overflow: 'hidden', minHeight: 640, display: 'flex', flexDirection: 'column' }}>
-        <div style={{ flex: 1, position: 'relative' }}>
+    <div style={{ background: `radial-gradient(circle at 30% 0%, ${hexToRgba(app.practice, 0.08)}, transparent 55%), ${app.bg}`, minHeight: 480, display: 'flex', justifyContent: 'center', padding: '24px 0', ...font }}>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&display=swap');
+        * { box-sizing: border-box; }
+        .eo-fadein { animation: eo-fadein 0.32s cubic-bezier(0.16, 1, 0.3, 1); }
+        @keyframes eo-fadein { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+        .eo-pop { animation: eo-pop 0.38s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        @keyframes eo-pop { from { opacity: 0; transform: scale(0.88); } to { opacity: 1; transform: scale(1); } }
+        .eo-card { transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease, background-color 0.16s ease; }
+        .eo-card:hover { transform: translateY(-2px); }
+        .eo-card:active { transform: translateY(0) scale(0.98); }
+        .eo-tile { transition: transform 0.14s ease, box-shadow 0.14s ease, border-color 0.14s ease; }
+        .eo-tile:hover:not([data-disabled="true"]) { transform: translateY(-3px); }
+        .eo-tile:active:not([data-disabled="true"]) { transform: translateY(-1px) scale(0.97); }
+        .eo-btn { transition: transform 0.12s ease, filter 0.12s ease, box-shadow 0.12s ease; }
+        .eo-btn:hover:not(:disabled) { filter: brightness(1.06); }
+        .eo-btn:active:not(:disabled) { transform: scale(0.97); }
+        .eo-row:hover { background-color: rgba(20,30,25,0.025); }
+        .eo-scroll::-webkit-scrollbar { width: 5px; height: 5px; }
+        .eo-scroll::-webkit-scrollbar-thumb { background: rgba(20,30,25,0.15); border-radius: 4px; }
+      `}</style>
+      <div style={{ position: 'relative', width: 376, filter: `drop-shadow(${SHADOW.lg})` }}>
+        <div style={{ position: 'absolute', inset: -8, borderRadius: 40, background: 'linear-gradient(160deg, rgba(255,255,255,0.5), rgba(255,255,255,0))', zIndex: 0 }} />
+        <div style={{ position: 'relative', width: 376, background: '#111', borderRadius: 36, padding: 8, boxShadow: SHADOW.inset }}>
+          <div style={{ position: 'absolute', top: 8, left: '50%', transform: 'translateX(-50%)', width: 92, height: 22, background: '#111', borderRadius: '0 0 14px 14px', zIndex: 2 }} />
+          <div style={{ width: 360, background: isImmersive ? theme.bg : app.surface, borderRadius: 28, overflow: 'hidden', minHeight: 640, display: 'flex', flexDirection: 'column', position: 'relative' }}>
+        <div className="eo-scroll" style={{ flex: 1, position: 'relative', overflowY: 'auto' }}>
+
+          {screen === 'onboarding' && (
+            <div className="eo-fadein" style={{ padding: 24, minHeight: 640, display: 'flex', flexDirection: 'column' }}>
+              <div style={{ flex: 1 }}>
+                <div style={{ width: 56, height: 56, borderRadius: 16, background: `linear-gradient(145deg, ${app.practiceSoft}, ${hexToRgba(app.practice, 0.3)})`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 20, boxShadow: SHADOW.sm }}>
+                  <Sandwich style={{ width: 28, height: 28, color: app.practice }} />
+                </div>
+                <div style={{ fontSize: fs(21), fontWeight: 600, color: app.ink, marginBottom: 10, lineHeight: 1.4 }}>
+                  키오스크 주문이<br />어렵게 느껴지셨나요?
+                </div>
+                <div style={{ fontSize: fs(14), color: app.inkSoft, lineHeight: 1.7, marginBottom: 24 }}>
+                  이지오더는 매장에 가기 전에 미리 연습해볼 수 있는 앱이에요.
+                  실제 키오스크와 똑같은 화면으로 버튼 누르는 순서를 익히고,
+                  매장 앞에서는 무엇을 골라야 하는지 옆에서 안내해드려요.
+                </div>
+                <div style={{ background: app.surface, border: '1px solid ' + app.border, borderRadius: 16, padding: 18, boxShadow: SHADOW.sm }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
+                    <Eye style={{ width: 16, height: 16, color: app.highlight }} />
+                    <span style={{ fontSize: fs(13), fontWeight: 600, color: app.ink }}>시작하기 전에 확인해주세요</span>
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                    <div style={{ display: 'flex', gap: 8 }}>
+                      <span style={{ fontSize: fs(13), color: app.practice, fontWeight: 700, flexShrink: 0 }}>연습하기</span>
+                      <span style={{ fontSize: fs(13), color: app.inkSoft, lineHeight: 1.5 }}>는 실제 결제가 되지 않는 연습 모드예요. 편하게 눌러보셔도 괜찮아요.</span>
+                    </div>
+                    <div style={{ display: 'flex', gap: 8 }}>
+                      <span style={{ fontSize: fs(13), color: app.realtime, fontWeight: 700, flexShrink: 0 }}>지금 매장이에요</span>
+                      <span style={{ fontSize: fs(13), color: app.inkSoft, lineHeight: 1.5 }}>는 실제 키오스크 앞에서 쓰는 기능이에요. 결제는 눈앞의 기계에서 직접 진행해주세요.</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <button className="eo-btn" onClick={finishOnboarding}
+                style={{ width: '100%', height: 54, borderRadius: 14, background: `linear-gradient(135deg, ${app.practice}, ${hexToRgba(app.practice, 0.85)})`, color: '#fff', border: 'none', fontSize: fs(16), fontWeight: 700, cursor: 'pointer', boxShadow: SHADOW.md }}>
+                시작하기
+              </button>
+            </div>
+          )}
 
           {screen === 'home' && (
-            <div style={{ padding: 20 }}>
+            <div className="eo-fadein" style={{ padding: 20 }}>
               <div style={{ fontSize: fs(20), fontWeight: 600, color: app.ink, marginBottom: 4 }}>안녕하세요</div>
               <div style={{ fontSize: fs(13), color: app.inkSoft, marginBottom: 28 }}>어떻게 도와드릴까요?</div>
-              <div onClick={() => pickMode('practice')} style={{ background: app.practiceSoft, borderRadius: 18, padding: 20, marginBottom: 14, cursor: 'pointer' }}>
+              <div className="eo-card" onClick={() => pickMode('practice')} style={{ background: `linear-gradient(145deg, ${app.practiceSoft}, ${hexToRgba(app.practice, 0.16)})`, borderRadius: 18, padding: 20, marginBottom: 14, cursor: 'pointer', boxShadow: SHADOW.sm, border: `1px solid ${hexToRgba(app.practice, 0.14)}` }}>
                 <div style={{ fontSize: fs(16), fontWeight: 600, color: app.practice, marginBottom: 4 }}>연습하기</div>
                 <div style={{ fontSize: fs(13), color: app.ink }}>화면이 매장 기계와 똑같이 바뀌어요</div>
               </div>
-              <div onClick={() => pickMode('realtime')} style={{ background: app.realtimeSoft, borderRadius: 18, padding: 20, cursor: 'pointer' }}>
+              <div className="eo-card" onClick={() => pickMode('realtime')} style={{ background: `linear-gradient(145deg, ${app.realtimeSoft}, ${hexToRgba(app.realtime, 0.16)})`, borderRadius: 18, padding: 20, cursor: 'pointer', boxShadow: SHADOW.sm, border: `1px solid ${hexToRgba(app.realtime, 0.14)}` }}>
                 <div style={{ fontSize: fs(16), fontWeight: 600, color: app.realtime, marginBottom: 4 }}>지금 매장이에요</div>
                 <div style={{ fontSize: fs(13), color: app.ink }}>키오스크 앞에서 실시간으로 안내받아요</div>
               </div>
               {savedOrders.length > 0 && (
                 <>
                   <div style={{ fontSize: fs(13), color: app.inkSoft, margin: '20px 0 8px' }}>저장된 내 주문</div>
-                  <div onClick={() => setScreen('orders')} style={{ display: 'flex', alignItems: 'center', gap: 10, background: app.bg, borderRadius: 12, padding: 14, cursor: 'pointer', border: settings.highContrast ? '1px solid ' + app.border : 'none' }}>
+                  <div className="eo-card eo-row" onClick={() => setScreen('orders')} style={{ display: 'flex', alignItems: 'center', gap: 10, background: app.surface, borderRadius: 12, padding: 14, cursor: 'pointer', border: '1px solid ' + app.border, boxShadow: SHADOW.sm }}>
                     <Heart style={{ width: 18, height: 18, color: app.highlight }} />
                     <span style={{ fontSize: fs(14), color: app.ink }}>{savedOrders[0].nickname} 외 {Math.max(savedOrders.length - 1, 0)}개</span>
                   </div>
@@ -1024,10 +1112,10 @@ export default function App() {
           )}
 
           {screen === 'storePicker' && (
-            <div style={{ padding: 20 }}>
+            <div className="eo-fadein" style={{ padding: 20 }}>
               <ArrowLeft onClick={goBack} style={{ width: 20, height: 20, color: app.inkSoft, cursor: 'pointer', marginBottom: 20 }} />
               <div style={{ fontSize: fs(20), fontWeight: 600, color: app.ink, marginBottom: 16 }}>매장을 선택하세요</div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, background: app.bg, borderRadius: 12, padding: '12px 14px', marginBottom: 20, border: settings.highContrast ? '1px solid ' + app.border : 'none' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, background: app.bg, borderRadius: 12, padding: '12px 14px', marginBottom: 20, border: `1px solid ${app.border}` }}>
                 <Search style={{ width: 18, height: 18, color: app.inkSoft }} />
                 <span style={{ fontSize: fs(14), color: app.inkSoft }}>매장 이름으로 검색</span>
               </div>
@@ -1035,9 +1123,9 @@ export default function App() {
               {Object.entries(CONTENT).map(([id, b]) => {
                 const Icon = b.store.icon;
                 return (
-                  <div key={id} onClick={() => pickStore(id)}
-                    style={{ display: 'flex', alignItems: 'center', gap: 12, background: app.bg, borderRadius: 16, padding: 16, marginBottom: 12, cursor: 'pointer', border: settings.highContrast ? '1px solid ' + app.border : 'none' }}>
-                    <div style={{ width: 46, height: 46, borderRadius: 12, background: b.store.iconBg, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <div key={id} className="eo-card eo-row" onClick={() => pickStore(id)}
+                    style={{ display: 'flex', alignItems: 'center', gap: 12, background: app.surface, borderRadius: 16, padding: 16, marginBottom: 12, cursor: 'pointer', border: '1px solid ' + app.border, boxShadow: SHADOW.sm }}>
+                    <div style={{ width: 46, height: 46, borderRadius: 12, background: `linear-gradient(150deg, ${b.store.iconBg}, ${hexToRgba(b.store.iconBg, 0.75)})`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, boxShadow: `0 3px 8px ${hexToRgba(b.store.iconBg, 0.35)}` }}>
                       <Icon style={{ width: 24, height: 24, color: '#fff' }} />
                     </div>
                     <div style={{ flex: 1 }}>
@@ -1057,19 +1145,19 @@ export default function App() {
                 <ArrowLeft onClick={goBack} style={{ width: 18, height: 18, color: theme.mute, cursor: 'pointer', flexShrink: 0, marginLeft: 10 }} />
                 <div style={{ flex: 1 }}><StepTracker theme={theme} currentPhase={phaseIndexForScreen(screen)} /></div>
               </div>
-              <div style={{ padding: '4px 20px 20px', flex: 1 }}>
+              <div className="eo-fadein" style={{ padding: '4px 20px 20px', flex: 1 }}>
                 <div style={{ fontSize: fs(19), fontWeight: 600, color: theme.text, marginBottom: 16 }}>{brand.dining_options.title}</div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                   {brand.dining_options.options.map((opt) => (
-                    <div key={opt.option_id} onClick={() => pickDiningOption(opt.option_id)}
-                      style={{ background: theme.card, borderRadius: 12, padding: '14px 16px', cursor: 'pointer', border: `1px solid ${theme.mute}44` }}>
+                    <div key={opt.option_id} className="eo-tile" onClick={() => pickDiningOption(opt.option_id)}
+                      style={{ background: theme.card, borderRadius: 14, padding: '16px 18px', cursor: 'pointer', border: `1px solid ${theme.mute}30`, boxShadow: SHADOW.sm }}>
                       <span style={{ fontSize: fs(15), fontWeight: 500, color: theme.text }}>{opt.label}</span>
                     </div>
                   ))}
                 </div>
               </div>
               {settings.voiceOn && (
-                <div style={{ margin: '0 16px 16px', background: 'rgba(0,0,0,0.62)', color: '#fff', borderRadius: 12, padding: '10px 12px', display: 'flex', alignItems: 'center', gap: 8, fontSize: fs(12) }}>
+                <div style={{ margin: '0 16px 16px', background: 'rgba(15,20,17,0.72)', backdropFilter: 'blur(6px)', color: '#fff', borderRadius: 12, padding: '10px 12px', display: 'flex', alignItems: 'center', gap: 8, fontSize: fs(12), boxShadow: SHADOW.md }}>
                   <Volume2 style={{ width: 15, height: 15, flexShrink: 0 }} />
                   {brand.dining_options.voice_text}
                 </div>
@@ -1078,7 +1166,7 @@ export default function App() {
           )}
 
           {screen === 'diningOption' && mode === 'realtime' && (
-            <div style={{ padding: 20 }}>
+            <div className="eo-fadein" style={{ padding: 20 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14 }}>
                 <ArrowLeft onClick={goBack} style={{ width: 18, height: 18, color: app.inkSoft, cursor: 'pointer' }} />
                 <span style={{ fontSize: 11, fontWeight: 600, padding: '3px 9px', borderRadius: 6, background: app.realtimeSoft, color: app.realtime }}>실시간 안내</span>
@@ -1086,9 +1174,9 @@ export default function App() {
               <div style={{ fontSize: fs(17), fontWeight: 600, color: app.ink, marginBottom: 16 }}>{brand.dining_options.title}</div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 14 }}>
                 {brand.dining_options.options.map((opt) => (
-                  <div key={opt.option_id} onClick={() => pickDiningOption(opt.option_id)}
+                  <div key={opt.option_id} className="eo-tile" onClick={() => pickDiningOption(opt.option_id)}
                     style={{ minHeight: 52, borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '8px 4px', fontSize: fs(14), fontWeight: 500, cursor: 'pointer',
-                      background: app.bg, border: '1px solid ' + app.border, color: app.ink }}>
+                      background: app.surface, border: '1px solid ' + app.border, color: app.ink, boxShadow: SHADOW.sm }}>
                     <span>{opt.label}</span>
                   </div>
                 ))}
@@ -1108,22 +1196,25 @@ export default function App() {
                 <ArrowLeft onClick={goBack} style={{ width: 18, height: 18, color: theme.mute, cursor: 'pointer', flexShrink: 0, marginLeft: 10 }} />
                 <div style={{ flex: 1 }}><StepTracker theme={theme} currentPhase={phaseIndexForScreen(screen)} /></div>
               </div>
-              <div style={{ padding: '4px 20px 100px', flex: 1 }}>
+              <div className="eo-fadein" style={{ padding: '4px 20px 100px', flex: 1 }}>
                 <div style={{ fontSize: fs(19), fontWeight: 600, color: theme.text, marginBottom: 16 }}>{brand.store.name}</div>
                 {getCategories(brandId).map((cat) => (
-                  <div key={cat.category_id} style={{ marginBottom: 20 }}>
-                    <div style={{ fontSize: fs(14), fontWeight: 600, color: theme.text, marginBottom: 10 }}>{cat.label}</div>
+                  <div key={cat.category_id} style={{ marginBottom: 22 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 12 }}>
+                      <span style={{ width: 4, height: 14, borderRadius: 2, background: theme.accent, flexShrink: 0 }} />
+                      <span style={{ fontSize: fs(14), fontWeight: 600, color: theme.text }}>{cat.label}</span>
+                    </div>
                     <div style={{ display: 'grid', gridTemplateColumns: device.orientation === 'landscape' ? '1fr 1fr 1fr' : '1fr 1fr', gap: 10 }}>
                       {cat.items.map((item) => (
-                        <div key={item.item_id} onClick={() => openItem(cat.category_id, item.item_id)}
-                          style={{ background: theme.card, borderRadius: 12, padding: 10, textAlign: 'center', cursor: 'pointer', border: `1px solid ${theme.mute}33` }}>
-                          <div style={{ width: '100%', aspectRatio: '1/1', borderRadius: 8, marginBottom: 8, background: theme.mute + '18', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                            <FoodIcon visual={item.visual} style={{ width: 26, height: 26, color: theme.mute }} />
+                        <div key={item.item_id} className="eo-tile" onClick={() => openItem(cat.category_id, item.item_id)}
+                          style={{ background: theme.card, borderRadius: 14, padding: 10, textAlign: 'center', cursor: 'pointer', border: `1px solid ${theme.mute}26`, boxShadow: SHADOW.sm }}>
+                          <div style={{ width: '100%', aspectRatio: '1/1', borderRadius: 10, marginBottom: 8, background: `linear-gradient(150deg, ${hexToRgba(theme.accent, 0.16)}, ${hexToRgba(theme.mute, 0.1)})`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            <FoodIcon visual={item.visual} style={{ width: 27, height: 27, color: theme.accent }} />
                           </div>
                           <div style={{ fontSize: fs(12), fontWeight: 600, color: theme.text }}>{item.label}</div>
                           <div style={{ fontSize: fs(10), color: theme.mute, marginTop: 2 }}>{item.base_price.toLocaleString()}원</div>
                           {item.customize_steps.length === 0 && (
-                            <div style={{ marginTop: 6, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 4, color: theme.accent, fontSize: fs(10), fontWeight: 700 }}>
+                            <div style={{ marginTop: 6, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 4, color: '#fff', background: theme.accent, borderRadius: 999, padding: '3px 9px', fontSize: fs(10), fontWeight: 700 }}>
                               <Plus style={{ width: 11, height: 11 }} /> 담기
                             </div>
                           )}
@@ -1138,7 +1229,7 @@ export default function App() {
           )}
 
           {screen === 'category' && mode === 'realtime' && (
-            <div style={{ padding: 20 }}>
+            <div className="eo-fadein" style={{ padding: 20 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14 }}>
                 <ArrowLeft onClick={goBack} style={{ width: 18, height: 18, color: app.inkSoft, cursor: 'pointer' }} />
                 <span style={{ fontSize: 11, fontWeight: 600, padding: '3px 9px', borderRadius: 6, background: app.realtimeSoft, color: app.realtime }}>실시간 안내</span>
@@ -1150,8 +1241,8 @@ export default function App() {
                   <div style={{ fontSize: fs(13), fontWeight: 600, color: app.ink, marginBottom: 8 }}>{cat.label}</div>
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
                     {cat.items.map((item) => (
-                      <div key={item.item_id} onClick={() => openItem(cat.category_id, item.item_id)}
-                        style={{ minWidth: '47%', flex: 1, borderRadius: 12, padding: '10px 12px', background: app.bg, border: '1px solid ' + app.border, cursor: 'pointer' }}>
+                      <div key={item.item_id} className="eo-tile" onClick={() => openItem(cat.category_id, item.item_id)}
+                        style={{ minWidth: '47%', flex: 1, borderRadius: 12, padding: '10px 12px', background: app.surface, border: '1px solid ' + app.border, cursor: 'pointer', boxShadow: SHADOW.sm }}>
                         <div style={{ fontSize: fs(13), fontWeight: 500, color: app.ink }}>{item.label}</div>
                         <div style={{ fontSize: fs(11), color: app.inkSoft }}>{item.base_price.toLocaleString()}원</div>
                       </div>
@@ -1171,11 +1262,11 @@ export default function App() {
                 <div style={{ flex: 1 }}><StepTracker theme={theme} currentPhase={phaseIndexForScreen(screen)} /></div>
               </div>
 
-              <div style={{ padding: '4px 20px 190px', flex: 1 }}>
+              <div key={customizeStep.step_id} className="eo-fadein" style={{ padding: '4px 20px 190px', flex: 1 }}>
                 <div style={{ fontSize: fs(13), color: theme.mute, marginBottom: 4 }}>{activeItem.label}</div>
                 <div style={{ fontSize: fs(19), fontWeight: 600, color: theme.text, marginBottom: 4 }}>{customizeStep.title}</div>
                 {customizeStep.max_selections !== undefined && (
-                  <div style={{ fontSize: fs(12), color: theme.mute, marginBottom: 12 }}>{currentCustomizeSelection.length}/{customizeStep.max_selections} 선택</div>
+                  <div style={{ display: 'inline-flex', fontSize: fs(11), fontWeight: 600, color: theme.accent, background: hexToRgba(theme.accent, 0.12), borderRadius: 999, padding: '3px 10px', marginBottom: 12 }}>{currentCustomizeSelection.length}/{customizeStep.max_selections} 선택</div>
                 )}
 
                 {customizeStep.type === 'binary_choice' ? (
@@ -1183,10 +1274,13 @@ export default function App() {
                     {customizeStep.options.map((opt) => {
                       const selected = currentCustomizeSelection.includes(opt.option_id);
                       return (
-                        <div key={opt.option_id} onClick={() => toggleCustomizeOption(opt.option_id)}
-                          style={{ background: selected ? theme.accent : theme.card, borderRadius: 12, padding: '14px 16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer', border: selected ? 'none' : `1px solid ${theme.mute}44` }}>
-                          <span style={{ fontSize: fs(15), fontWeight: selected ? 600 : 500, color: selected ? '#fff' : theme.text }}>{opt.label}</span>
-                          {opt.price > 0 && <span style={{ fontSize: fs(12), color: selected ? '#fff' : theme.mute }}>{priceLabel(customizeStep, opt.price)}</span>}
+                        <div key={opt.option_id} className="eo-tile" onClick={() => toggleCustomizeOption(opt.option_id)}
+                          style={{ background: selected ? `linear-gradient(135deg, ${theme.accent}, ${hexToRgba(theme.accent, 0.82)})` : theme.card, borderRadius: 14, padding: '14px 16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer', border: selected ? 'none' : `1px solid ${theme.mute}33`, boxShadow: selected ? SHADOW.md : SHADOW.sm }}>
+                          <span style={{ fontSize: fs(15), fontWeight: selected ? 600 : 500, color: selected ? '#fff' : theme.text, display: 'flex', alignItems: 'center', gap: 8 }}>
+                            {selected && <Check style={{ width: 15, height: 15, flexShrink: 0 }} />}
+                            {opt.label}
+                          </span>
+                          {opt.price > 0 && <span style={{ fontSize: fs(12), color: selected ? '#fff' : theme.mute, fontWeight: 600 }}>{priceLabel(customizeStep, opt.price)}</span>}
                         </div>
                       );
                     })}
@@ -1197,13 +1291,18 @@ export default function App() {
                       const selected = currentCustomizeSelection.includes(opt.option_id);
                       const disabledByCap = !selected && isStepAtSelectionCap(customizeStep, currentCustomizeSelection);
                       return (
-                        <div key={opt.option_id} onClick={() => !disabledByCap && toggleCustomizeOption(opt.option_id)}
-                          style={{ background: theme.card, borderRadius: 12, padding: 10, textAlign: 'center', cursor: disabledByCap ? 'not-allowed' : 'pointer', opacity: disabledByCap ? 0.4 : 1, border: selected ? `2px solid ${theme.accent}` : `1px solid ${theme.mute}33` }}>
-                          <div style={{ width: '100%', aspectRatio: '1/1', borderRadius: 8, marginBottom: 8, background: selected ? theme.accent + '22' : theme.mute + '18', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <div key={opt.option_id} className="eo-tile" data-disabled={disabledByCap} onClick={() => !disabledByCap && toggleCustomizeOption(opt.option_id)}
+                          style={{ position: 'relative', background: theme.card, borderRadius: 14, padding: 10, textAlign: 'center', cursor: disabledByCap ? 'not-allowed' : 'pointer', opacity: disabledByCap ? 0.4 : 1, border: selected ? `2px solid ${theme.accent}` : `1px solid ${theme.mute}26`, boxShadow: selected ? SHADOW.md : SHADOW.sm }}>
+                          {selected && (
+                            <div style={{ position: 'absolute', top: 6, right: 6, width: 18, height: 18, borderRadius: '50%', background: theme.accent, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: SHADOW.sm }}>
+                              <Check style={{ width: 11, height: 11, color: '#fff' }} />
+                            </div>
+                          )}
+                          <div style={{ width: '100%', aspectRatio: '1/1', borderRadius: 10, marginBottom: 8, background: selected ? `linear-gradient(150deg, ${hexToRgba(theme.accent, 0.24)}, ${hexToRgba(theme.accent, 0.1)})` : `linear-gradient(150deg, ${hexToRgba(theme.mute, 0.14)}, ${hexToRgba(theme.mute, 0.06)})`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                             <FoodIcon visual={customizeStep.visual} style={{ width: 26, height: 26, color: selected ? theme.accent : theme.mute }} />
                           </div>
                           <div style={{ fontSize: fs(12), fontWeight: selected ? 700 : 500, color: theme.text }}>{opt.label}</div>
-                          <div style={{ fontSize: fs(10), color: selected ? theme.accent : theme.mute, marginTop: 2 }}>{priceLabel(customizeStep, opt.price || 0)}</div>
+                          <div style={{ fontSize: fs(10), color: selected ? theme.accent : theme.mute, marginTop: 2, fontWeight: 600 }}>{priceLabel(customizeStep, opt.price || 0)}</div>
                         </div>
                       );
                     })}
@@ -1212,24 +1311,24 @@ export default function App() {
               </div>
 
               {settings.voiceOn && (
-                <div style={{ position: 'absolute', left: 16, right: 16, bottom: 118, background: 'rgba(0,0,0,0.62)', color: '#fff', borderRadius: 12, padding: '10px 12px', display: 'flex', alignItems: 'center', gap: 8, fontSize: fs(12) }}>
+                <div style={{ position: 'absolute', left: 16, right: 16, bottom: 118, background: 'rgba(15,20,17,0.72)', backdropFilter: 'blur(6px)', color: '#fff', borderRadius: 12, padding: '10px 12px', display: 'flex', alignItems: 'center', gap: 8, fontSize: fs(12), boxShadow: SHADOW.md }}>
                   <Volume2 style={{ width: 15, height: 15, flexShrink: 0 }} />
                   {customizeStep.voice_text}
                 </div>
               )}
 
-              <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0 }}>
-                <div style={{ background: theme.card, borderTop: `1px solid ${theme.mute}33`, padding: '10px 16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0, boxShadow: '0 -8px 24px rgba(20,30,25,0.08)' }}>
+                <div style={{ background: theme.card, borderTop: `1px solid ${theme.mute}26`, padding: '10px 16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <span style={{ fontSize: fs(11), color: theme.mute }}>이 메뉴 가격</span>
                   <span style={{ fontSize: fs(17), fontWeight: 700, color: theme.text }}>{itemUnitPricePreview.toLocaleString()}원</span>
                 </div>
                 <div style={{ display: 'flex' }}>
-                  <button onClick={() => { setCustomizeStepIndex(0); setItemDraftSelections({}); }}
+                  <button className="eo-btn" onClick={() => { setCustomizeStepIndex(0); setItemDraftSelections({}); }}
                     style={{ flex: 1, height: 58, background: theme.mute + '22', color: theme.text, border: 'none', fontSize: fs(13), fontWeight: 600, cursor: 'pointer' }}>취소</button>
-                  <button onClick={() => setCustomizeStepIndex((i) => Math.max(0, i - 1))} disabled={customizeStepIndex === 0}
+                  <button className="eo-btn" onClick={() => setCustomizeStepIndex((i) => Math.max(0, i - 1))} disabled={customizeStepIndex === 0}
                     style={{ flex: 1, height: 58, background: 'transparent', color: theme.text, border: 'none', borderLeft: `1px solid ${theme.mute}33`, fontSize: fs(13), fontWeight: 600, cursor: customizeStepIndex === 0 ? 'not-allowed' : 'pointer', opacity: customizeStepIndex === 0 ? 0.4 : 1 }}>이전</button>
-                  <button onClick={goNextCustomizeStep} disabled={!canProceedCustomize}
-                    style={{ flex: 2, height: 58, background: canProceedCustomize ? theme.accent : theme.mute, color: '#fff', border: 'none', fontSize: fs(16), fontWeight: 700, cursor: canProceedCustomize ? 'pointer' : 'not-allowed' }}>
+                  <button className="eo-btn" onClick={goNextCustomizeStep} disabled={!canProceedCustomize}
+                    style={{ flex: 2, height: 58, background: canProceedCustomize ? `linear-gradient(135deg, ${theme.accent}, ${hexToRgba(theme.accent, 0.85)})` : theme.mute, color: '#fff', border: 'none', fontSize: fs(16), fontWeight: 700, cursor: canProceedCustomize ? 'pointer' : 'not-allowed' }}>
                     {isLastCustomizeStep ? '장바구니에 담기' : '다음'}
                   </button>
                 </div>
@@ -1305,20 +1404,20 @@ export default function App() {
                 <ArrowLeft onClick={goBack} style={{ width: 18, height: 18, color: theme.mute, cursor: 'pointer', flexShrink: 0, marginLeft: 10 }} />
                 <div style={{ flex: 1 }}><StepTracker theme={theme} currentPhase={phaseIndexForScreen(screen)} /></div>
               </div>
-              <div style={{ padding: '4px 20px 190px', flex: 1 }}>
+              <div className="eo-fadein" style={{ padding: '4px 20px 190px', flex: 1 }}>
                 <div style={{ fontSize: fs(19), fontWeight: 600, color: theme.text, marginBottom: 16 }}>{confirmStep.title}</div>
                 {cart.length === 0 ? (
                   <div style={{ fontSize: fs(13), color: theme.mute, textAlign: 'center', padding: '40px 0' }}>담긴 메뉴가 없어요.</div>
                 ) : (
-                  <div style={{ background: theme.card, borderRadius: 14, padding: 16, display: 'flex', flexDirection: 'column', gap: 14 }}>
-                    {cart.map((line) => (
-                      <div key={line.cartItemId} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 10 }}>
+                  <div style={{ background: theme.card, borderRadius: 16, padding: 16, display: 'flex', flexDirection: 'column', gap: 14, boxShadow: SHADOW.sm, border: `1px solid ${theme.mute}20` }}>
+                    {cart.map((line, idx) => (
+                      <div key={line.cartItemId} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 10, paddingBottom: idx < cart.length - 1 ? 12 : 0, borderBottom: idx < cart.length - 1 ? `1px solid ${theme.mute}18` : 'none' }}>
                         <div style={{ flex: 1 }}>
                           <div style={{ fontSize: fs(14), fontWeight: 600, color: theme.text }}>{line.label}{line.qty > 1 ? ` x${line.qty}` : ''}</div>
                           {line.optionLabels.length > 0 && <div style={{ fontSize: fs(12), color: theme.mute }}>{line.optionLabels.join(', ')}</div>}
                         </div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                          <span style={{ fontSize: fs(13), color: theme.text }}>{line.lineTotal.toLocaleString()}원</span>
+                          <span style={{ fontSize: fs(13), color: theme.text, fontWeight: 600 }}>{line.lineTotal.toLocaleString()}원</span>
                           <Trash2 onClick={() => removeFromCart(line.cartItemId)} style={{ width: 16, height: 16, color: theme.mute, cursor: 'pointer' }} />
                         </div>
                       </div>
@@ -1327,21 +1426,21 @@ export default function App() {
                 )}
               </div>
               {settings.voiceOn && (
-                <div style={{ position: 'absolute', left: 16, right: 16, bottom: 158, background: 'rgba(0,0,0,0.62)', color: '#fff', borderRadius: 12, padding: '10px 12px', display: 'flex', alignItems: 'center', gap: 8, fontSize: fs(12) }}>
+                <div style={{ position: 'absolute', left: 16, right: 16, bottom: 158, background: 'rgba(15,20,17,0.72)', backdropFilter: 'blur(6px)', color: '#fff', borderRadius: 12, padding: '10px 12px', display: 'flex', alignItems: 'center', gap: 8, fontSize: fs(12), boxShadow: SHADOW.md }}>
                   <Volume2 style={{ width: 15, height: 15, flexShrink: 0 }} />
                   {confirmStep.voice_text}
                 </div>
               )}
-              <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0 }}>
-                <div style={{ background: theme.card, borderTop: `1px solid ${theme.mute}33`, padding: '10px 16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0, boxShadow: '0 -8px 24px rgba(20,30,25,0.08)' }}>
+                <div style={{ background: theme.card, borderTop: `1px solid ${theme.mute}26`, padding: '10px 16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <span style={{ fontSize: fs(11), color: theme.mute }}>주문 금액</span>
                   <span style={{ fontSize: fs(17), fontWeight: 700, color: theme.text }}>{total.toLocaleString()}원</span>
                 </div>
                 <div style={{ display: 'flex' }}>
-                  <button onClick={() => setScreen('category')}
+                  <button className="eo-btn" onClick={() => setScreen('category')}
                     style={{ flex: 1, height: 58, background: theme.mute + '22', color: theme.text, border: 'none', fontSize: fs(13), fontWeight: 600, cursor: 'pointer' }}>메뉴 더 담기</button>
-                  <button onClick={goToPayment} disabled={cart.length === 0}
-                    style={{ flex: 2, height: 58, background: cart.length === 0 ? theme.mute : theme.accent, color: '#fff', border: 'none', fontSize: fs(16), fontWeight: 700, cursor: cart.length === 0 ? 'not-allowed' : 'pointer' }}>
+                  <button className="eo-btn" onClick={goToPayment} disabled={cart.length === 0}
+                    style={{ flex: 2, height: 58, background: cart.length === 0 ? theme.mute : `linear-gradient(135deg, ${theme.accent}, ${hexToRgba(theme.accent, 0.85)})`, color: '#fff', border: 'none', fontSize: fs(16), fontWeight: 700, cursor: cart.length === 0 ? 'not-allowed' : 'pointer' }}>
                     결제하러 가기
                   </button>
                 </div>
@@ -1394,14 +1493,14 @@ export default function App() {
                 <ArrowLeft onClick={goBack} style={{ width: 18, height: 18, color: theme.mute, cursor: 'pointer', flexShrink: 0, marginLeft: 10 }} />
                 <div style={{ flex: 1 }}><StepTracker theme={theme} currentPhase={phaseIndexForScreen(screen)} /></div>
               </div>
-              <div style={{ padding: '4px 20px 100px', flex: 1 }}>
+              <div className="eo-fadein" style={{ padding: '4px 20px 100px', flex: 1 }}>
                 <div style={{ fontSize: fs(19), fontWeight: 600, color: theme.text, marginBottom: 16 }}>{paymentStep.title}</div>
                 <div style={{ fontSize: fs(13), color: theme.mute, marginBottom: 14 }}>결제 금액 <b style={{ color: theme.text }}>{total.toLocaleString()}원</b></div>
                 <div style={{ display: 'grid', gridTemplateColumns: device.orientation === 'landscape' ? '1fr 1fr' : '1fr', gap: 10 }}>
                   {paymentStep.options.map((opt) => (
-                    <div key={opt.option_id} onClick={completeOrder}
-                      style={{ background: theme.card, borderRadius: 12, padding: '14px 16px', display: 'flex', alignItems: 'center', gap: 12, cursor: 'pointer', border: `1px solid ${theme.mute}44` }}>
-                      <span style={{ color: theme.text }}><PaymentIcon icon={opt.icon} style={{ width: 20, height: 20 }} /></span>
+                    <div key={opt.option_id} className="eo-tile" onClick={completeOrder}
+                      style={{ background: theme.card, borderRadius: 14, padding: '14px 16px', display: 'flex', alignItems: 'center', gap: 12, cursor: 'pointer', border: `1px solid ${theme.mute}2A`, boxShadow: SHADOW.sm }}>
+                      <span style={{ width: 36, height: 36, borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', background: hexToRgba(theme.accent, 0.14), color: theme.accent, flexShrink: 0 }}><PaymentIcon icon={opt.icon} style={{ width: 19, height: 19 }} /></span>
                       <span style={{ fontSize: fs(15), fontWeight: 500, color: theme.text }}>{opt.label}</span>
                     </div>
                   ))}
@@ -1409,7 +1508,7 @@ export default function App() {
                 <div style={{ marginTop: 12, fontSize: fs(11), color: theme.mute }}>연습 모드입니다. 실제 결제는 진행되지 않아요.</div>
               </div>
               {settings.voiceOn && (
-                <div style={{ position: 'absolute', left: 16, right: 16, bottom: 16, background: 'rgba(0,0,0,0.62)', color: '#fff', borderRadius: 12, padding: '10px 12px', display: 'flex', alignItems: 'center', gap: 8, fontSize: fs(12) }}>
+                <div style={{ position: 'absolute', left: 16, right: 16, bottom: 16, background: 'rgba(15,20,17,0.72)', backdropFilter: 'blur(6px)', color: '#fff', borderRadius: 12, padding: '10px 12px', display: 'flex', alignItems: 'center', gap: 8, fontSize: fs(12), boxShadow: SHADOW.md }}>
                   <Volume2 style={{ width: 15, height: 15, flexShrink: 0 }} />
                   {paymentStep.voice_text}
                 </div>
@@ -1457,17 +1556,19 @@ export default function App() {
           )}
 
           {screen === 'complete' && (
-            <div style={{ padding: 24, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', minHeight: 500, justifyContent: 'center' }}>
-              <div style={{ width: 56, height: 56, borderRadius: '50%', background: mode === 'practice' ? app.practiceSoft : app.realtimeSoft, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16 }}>
-                <Check style={{ width: 28, height: 28, color: mode === 'practice' ? app.practice : app.realtime }} />
+            <div className="eo-fadein" style={{ padding: 24, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', minHeight: 500, justifyContent: 'center' }}>
+              <div className="eo-pop" style={{ width: 64, height: 64, borderRadius: '50%', background: mode === 'practice' ? `linear-gradient(145deg, ${app.practiceSoft}, ${hexToRgba(app.practice, 0.3)})` : `linear-gradient(145deg, ${app.realtimeSoft}, ${hexToRgba(app.realtime, 0.3)})`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 18, boxShadow: `0 8px 20px ${hexToRgba(mode === 'practice' ? app.practice : app.realtime, 0.25)}` }}>
+                <Check style={{ width: 30, height: 30, color: mode === 'practice' ? app.practice : app.realtime }} />
               </div>
-              <div style={{ fontSize: fs(18), fontWeight: 600, color: app.ink, marginBottom: 6 }}>
+              <div style={{ fontSize: fs(18), fontWeight: 600, color: app.ink, marginBottom: 10 }}>
                 {mode === 'practice' ? '연습을 완료했어요' : '주문을 완료했어요'}
               </div>
-              <div style={{ fontSize: fs(13), color: app.inkSoft, marginBottom: 8, lineHeight: 1.6 }}>
-                {cartSummaryLine(cart)}
+              <div style={{ width: '100%', background: app.surface, border: '1px solid ' + app.border, borderRadius: 14, padding: '14px 16px', marginBottom: 20, boxShadow: SHADOW.sm }}>
+                <div style={{ fontSize: fs(13), color: app.inkSoft, marginBottom: 6, lineHeight: 1.6 }}>
+                  {cartSummaryLine(cart)}
+                </div>
+                <div style={{ fontSize: fs(16), color: app.ink, fontWeight: 700 }}>총 {total.toLocaleString()}원</div>
               </div>
-              <div style={{ fontSize: fs(15), color: app.ink, fontWeight: 700, marginBottom: 20 }}>총 {total.toLocaleString()}원</div>
               {!savedThisRun ? (
                 <>
                   <input
@@ -1476,12 +1577,12 @@ export default function App() {
                     placeholder="이 조합 이름 (예: 내가 좋아하는 조합)"
                     style={{ width: '100%', height: 44, borderRadius: 10, border: '1px solid ' + app.border, padding: '0 12px', fontSize: fs(13), marginBottom: 10, boxSizing: 'border-box', color: app.ink, background: app.surface }}
                   />
-                  <Button app={app} variant="primary" style={{ width: '100%', marginBottom: 10 }} onClick={saveCurrentOrder}>
+                  <Button app={app} variant="primary" style={{ width: '100%', marginBottom: 10, background: app.ink, boxShadow: SHADOW.md }} onClick={saveCurrentOrder}>
                     <Heart style={{ width: 16, height: 16 }} /> 내 주문으로 저장
                   </Button>
                 </>
               ) : (
-                <div style={{ fontSize: fs(13), color: app.practice, marginBottom: 10 }}>저장했어요</div>
+                <div style={{ fontSize: fs(13), color: app.practice, marginBottom: 10, fontWeight: 600 }}>저장했어요</div>
               )}
               <Button app={app} variant="ghost" style={{ width: '100%' }} onClick={() => setScreen('home')}>
                 <HomeIcon style={{ width: 16, height: 16 }} /> 홈으로
@@ -1539,12 +1640,18 @@ export default function App() {
                 </div>
               </div>
               <div onClick={() => updateSettings({ highContrast: !settings.highContrast })}
-                style={{ display: 'flex', alignItems: 'center', gap: 10, background: app.bg, borderRadius: 12, padding: 14, cursor: 'pointer' }}>
+                style={{ display: 'flex', alignItems: 'center', gap: 10, background: app.bg, borderRadius: 12, padding: 14, marginBottom: 12, cursor: 'pointer' }}>
                 <Eye style={{ width: 18, height: 18, color: settings.highContrast ? app.practice : app.inkSoft }} />
                 <span style={{ flex: 1, fontSize: fs(14), color: app.ink }}>고대비 모드</span>
                 <div style={{ width: 40, height: 24, borderRadius: 12, background: settings.highContrast ? app.practice : app.border, position: 'relative' }}>
                   <div style={{ width: 18, height: 18, borderRadius: '50%', background: '#fff', position: 'absolute', top: 3, left: settings.highContrast ? 19 : 3 }} />
                 </div>
+              </div>
+              <div className="eo-row" onClick={() => setScreen('onboarding')}
+                style={{ display: 'flex', alignItems: 'center', gap: 10, background: app.bg, borderRadius: 12, padding: 14, cursor: 'pointer' }}>
+                <ClipboardCheck style={{ width: 18, height: 18, color: app.inkSoft }} />
+                <span style={{ flex: 1, fontSize: fs(14), color: app.ink }}>앱 안내 다시 보기</span>
+                <ChevronRight style={{ width: 16, height: 16, color: app.inkSoft }} />
               </div>
             </div>
           )}
@@ -1565,6 +1672,8 @@ export default function App() {
             ))}
           </div>
         )}
+          </div>
+        </div>
       </div>
     </div>
   );
