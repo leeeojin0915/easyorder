@@ -865,6 +865,7 @@ const STORAGE_ONBOARDED_KEY = 'easyorder:onboarded';
 
 export default function App() {
   const [ready, setReady] = useState(false);
+  const [showSplash, setShowSplash] = useState(true);
   const [screen, setScreen] = useState('onboarding');
   const [brandId, setBrandId] = useState('subway');
   const [mode, setMode] = useState('practice');
@@ -896,6 +897,11 @@ export default function App() {
       } catch (e) {}
       setReady(true);
     })();
+  }, []);
+
+  useEffect(() => {
+    const t = setTimeout(() => setShowSplash(false), 1100);
+    return () => clearTimeout(t);
   }, []);
 
   async function finishOnboarding() {
@@ -1012,10 +1018,22 @@ export default function App() {
   const isImmersive = mode === 'practice' && ['diningOption', 'itemCustomize', 'cartReview', 'payment'].includes(screen);
   const showTabs = ['home', 'orders', 'settings'].includes(screen);
 
-  if (!ready) {
+  if (!ready || showSplash) {
     return (
-      <div style={{ background: app.bg, minHeight: 480, display: 'flex', alignItems: 'center', justifyContent: 'center', ...font }}>
-        <span style={{ fontSize: 14, color: app.inkSoft }}>불러오는 중…</span>
+      <div style={{ background: app.bg, minHeight: 480, display: 'flex', justifyContent: 'center', padding: '24px 0', ...font }}>
+        <style>{`
+          .eo-splash-logo { animation: eo-splash-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
+          @keyframes eo-splash-pop { from { opacity: 0; transform: scale(0.7); } to { opacity: 1; transform: scale(1); } }
+          .eo-splash-text { animation: eo-fadein 0.5s ease 0.15s both; }
+          @keyframes eo-fadein { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+        `}</style>
+        <div style={{ width: 360, background: app.surface, borderRadius: 28, border: '1px solid ' + app.border, minHeight: 640, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+          <div className="eo-splash-logo" style={{ width: 72, height: 72, borderRadius: 20, background: `linear-gradient(145deg, ${app.practice}, ${hexToRgba(app.practice, 0.75)})`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 18, boxShadow: SHADOW.lg }}>
+            <Sandwich style={{ width: 36, height: 36, color: '#fff' }} />
+          </div>
+          <div className="eo-splash-text" style={{ fontSize: 22, fontWeight: 700, color: app.ink, marginBottom: 6 }}>이지오더</div>
+          <div className="eo-splash-text" style={{ fontSize: 13, color: app.inkSoft }}>키오스크 주문, 미리 연습하고 자신있게</div>
+        </div>
       </div>
     );
   }
@@ -1114,7 +1132,10 @@ export default function App() {
           {screen === 'storePicker' && (
             <div className="eo-fadein" style={{ padding: 20 }}>
               <ArrowLeft onClick={goBack} style={{ width: 20, height: 20, color: app.inkSoft, cursor: 'pointer', marginBottom: 20 }} />
-              <div style={{ fontSize: fs(20), fontWeight: 600, color: app.ink, marginBottom: 16 }}>매장을 선택하세요</div>
+              <div style={{ fontSize: fs(20), fontWeight: 600, color: app.ink, marginBottom: 4 }}>매장을 선택하세요</div>
+              <div style={{ fontSize: fs(13), color: app.inkSoft, marginBottom: 16 }}>
+                {mode === 'practice' ? '연습하고 싶은 매장을 골라주세요. 실제 키오스크와 같은 화면으로 미리 연습할 수 있어요.' : '지금 계신 매장을 골라주세요. 눈앞의 키오스크와 같은 메뉴로 안내해드려요.'}
+              </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, background: app.bg, borderRadius: 12, padding: '12px 14px', marginBottom: 20, border: `1px solid ${app.border}` }}>
                 <Search style={{ width: 18, height: 18, color: app.inkSoft }} />
                 <span style={{ fontSize: fs(14), color: app.inkSoft }}>매장 이름으로 검색</span>
@@ -1197,7 +1218,8 @@ export default function App() {
                 <div style={{ flex: 1 }}><StepTracker theme={theme} currentPhase={phaseIndexForScreen(screen)} /></div>
               </div>
               <div className="eo-fadein" style={{ padding: '4px 20px 100px', flex: 1 }}>
-                <div style={{ fontSize: fs(19), fontWeight: 600, color: theme.text, marginBottom: 16 }}>{brand.store.name}</div>
+                <div style={{ fontSize: fs(19), fontWeight: 600, color: theme.text, marginBottom: 4 }}>{brand.store.name}</div>
+                <div style={{ fontSize: fs(12), color: theme.mute, marginBottom: 16 }}>메뉴를 눌러보면 실제 매장에서처럼 옵션을 골라볼 수 있어요.</div>
                 {getCategories(brandId).map((cat) => (
                   <div key={cat.category_id} style={{ marginBottom: 22 }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 12 }}>
@@ -1454,7 +1476,8 @@ export default function App() {
                 <ArrowLeft onClick={goBack} style={{ width: 18, height: 18, color: app.inkSoft, cursor: 'pointer' }} />
                 <span style={{ fontSize: 11, fontWeight: 600, padding: '3px 9px', borderRadius: 6, background: app.realtimeSoft, color: app.realtime }}>실시간 안내</span>
               </div>
-              <div style={{ fontSize: fs(17), fontWeight: 600, color: app.ink, marginBottom: 12 }}>{confirmStep.title}</div>
+              <div style={{ fontSize: fs(17), fontWeight: 600, color: app.ink, marginBottom: 4 }}>{confirmStep.title}</div>
+              <div style={{ fontSize: fs(12), color: app.inkSoft, marginBottom: 12 }}>지금까지 담은 메뉴가 맞는지 확인하고, 다르면 여기서 지울 수 있어요.</div>
               {cart.length === 0 ? (
                 <div style={{ fontSize: fs(13), color: app.inkSoft, textAlign: 'center', padding: '30px 0' }}>담긴 메뉴가 없어요.</div>
               ) : (
